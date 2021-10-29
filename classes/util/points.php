@@ -13,10 +13,10 @@ namespace local_evokegame\util;
 defined('MOODLE_INTERNAL') || die;
 
 class points {
-    protected $dbpoints;
+    public $mypoints;
 
     public function __construct($courseid, $userid) {
-        $this->dbpoints = $this->get_user_course_points($courseid, $userid);
+        $this->mypoints = $this->get_user_course_points($courseid, $userid);
     }
 
     public function add_points($pointsource, $pointsourcetype, $sourceid, $skill, $points) {
@@ -26,9 +26,9 @@ class points {
             return;
         }
 
-        $this->dbpoints->points += $points;
+        $this->mypoints->points += $points;
 
-        $DB->update_record('evokegame_points', $this->dbpoints);
+        $DB->update_record('evokegame_points', $this->mypoints);
 
         $this->insert_log_point_entry($pointsource, $pointsourcetype, $sourceid, $skill, $points);
     }
@@ -60,8 +60,8 @@ class points {
         global $DB;
 
         $pointsdata = new \stdClass();
-        $pointsdata->courseid = $this->dbpoints->courseid;
-        $pointsdata->userid = $this->dbpoints->userid;
+        $pointsdata->courseid = $this->mypoints->courseid;
+        $pointsdata->userid = $this->mypoints->userid;
         $pointsdata->pointsource = $pointsource;
         $pointsdata->pointsourcetype = $pointsourcetype;
         $pointsdata->sourceid = $sourceid;
@@ -77,8 +77,8 @@ class points {
         global $DB;
 
         $records = $DB->get_records('evokegame_logs', [
-            'courseid' => $this->dbpoints->courseid,
-            'userid' => $this->dbpoints->userid,
+            'courseid' => $this->mypoints->courseid,
+            'userid' => $this->mypoints->userid,
             'pointsource' => $pointsource,
             'pointsourcetype' => $pointsourcetype,
             'sourceid' => $sourceid,

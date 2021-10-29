@@ -1,0 +1,30 @@
+<div class="evokegame">
+    <div class="evokegame-scoreboard">
+        <div class="awards">
+            <div class="score">
+                <div class="icon">
+                    <img class="evocoin black" src="{{{config.wwwroot}}}/blocks/game/pix/evocoin.svg" alt="Evocoin">
+                </div>
+                <div class="points">{{{points}}}</div>
+            </div>
+            <div class="badges">
+                <img src="http://localhost/evoke/pluginfile.php/25/badges/badgeimage/1/f1?refresh=7497" alt="Portfolio Badge #1" class="evokebadge dimmed">
+                <img src="http://localhost/evoke/pluginfile.php/25/badges/badgeimage/2/f1?refresh=6738" alt="Portfolio Badge #2" class="evokebadge dimmed">
+                <img src="http://localhost/evoke/pluginfile.php/25/badges/badgeimage/3/f1?refresh=4148" alt="Badge Evoke" class="evokebadge dimmed">
+                <img src="http://localhost/evoke/pluginfile.php/25/badges/badgeimage/7/f1?refresh=958" alt="Badge demo" class="evokebadge dimmed">
+            </div>
+            <div class="navigation">
+                <a href="{{{config.wwwroot}}}/local/evokegame/scoreboard.php?id={{{courseid}}}" class="btn btn-primary"><i class="fa fa-trophy icon"></i> <span class="text">{{#str}}viewscoreboard, block_game{{/str}}</span></a>
+            </div>
+        </div>
+
+        <div class="userinfo">
+            <div class="username">
+                Admin
+            </div>
+            <div class="userpicture">
+                <form action="http://localhost/evoke/blocks/game/set_avatar_form.php" method="get"><input name="id" type="hidden" value="2"><input name="avatar" type="hidden" value="0"> <input class="img-fluid" type="image" src="http://localhost/evoke/blocks/game/pix/a0.svg" "="" height="140" width="140"> </form>
+            </div>
+        </div>
+    </div>
+</div>

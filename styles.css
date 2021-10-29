@@ -1,0 +1,158 @@
+.evokegame-scoreboard {
+    display: flex;
+    align-items: center;
+}
+
+.evokegame-scoreboard .awards,
+.evokegame-scoreboard .userinfo {
+    flex-direction: row;
+}
+
+.evokegame-scoreboard .awards {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 40px;
+    border: 1px solid #c3c3c3;
+    padding: 10px;
+}
+
+.evokegame-scoreboard .awards .score,
+.evokegame-scoreboard .awards .badges {
+    flex-direction: row;
+}
+
+.evokegame-scoreboard .awards .score {
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    padding: 6px 20px 8px 8px;
+    background: linear-gradient(90deg, rgba(51, 41, 255, 1) 0%, rgba(51, 41, 255, 1) 22%,  rgba(0, 240, 166, 1) 100%);
+}
+
+.evokegame-scoreboard .awards .score .icon,
+.evokegame-scoreboard .awards .score .points {
+    flex-direction: row;
+}
+
+.evokegame-scoreboard .awards .score .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+.evokegame-scoreboard .awards .score .icon .evocoin {
+    width: 28px;
+}
+
+.evokegame-scoreboard .awards .score .points {
+    background-color: #fff;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.evokegame-scoreboard .awards .navigation .btn {
+    margin-left: 0.5rem;
+    border-radius: 40px;
+    font-size: calc(0.9271875rem + 0.32625vw);
+    padding: 12px;
+}
+
+.evokegame-scoreboard .awards .navigation .btn .icon {
+    font-size: 22px;
+    width: 24px;
+    height: 24px;
+}
+
+.evokegame-scoreboard .awards .badges {
+    border-radius: 40px;
+    border: 1px solid rgba(0, 240, 166, 1);
+    padding: 12px;
+    margin-left: 0.5rem;
+}
+
+.evokegame-scoreboard .awards .badges .evokebadge {
+    width: 32px;
+}
+
+.evokegame-scoreboard .awards .badges .evokebadge.dimmed {
+    filter: grayscale(100%) opacity(30%);
+}
+
+.evokegame-scoreboard .userinfo {
+    margin-left: auto;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 40px;
+    border: 1px solid #c3c3c3;
+    padding: 17px 15px 17px 30px;
+    position: relative;
+}
+
+.evokegame-scoreboard .userinfo .username,
+.evokegame-scoreboard .userinfo .userpicture {
+    flex-direction: row;
+}
+
+.evokegame-scoreboard .userinfo .username {
+    font-size: 28px;
+    font-family: "Bungee", cursive;
+    margin-right: 100px;
+}
+
+.evokegame-scoreboard .userinfo .userpicture .img-fluid {
+    width: 100px;
+    position: absolute;
+    right: 0;
+    top: -12px;
+}
+
+.evokegame-scoreboard .awards,
+.evokegame-scoreboard .navigation,
+.evokegame-scoreboard .userinfo {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-content: space-between;
+    align-content: space-between;
+    flex-flow: row wrap;
+}
+
+@media (max-width: 991.98px) {
+    .evokegame-scoreboard {
+        display: flex;
+        flex-flow: column wrap;
+    }
+    .evokegame-scoreboard .awards,
+    .evokegame-scoreboard .userinfo {
+        -webkit-flex-direction: column;
+        flex-direction: column;
+        -webkit-align-content: space-between;
+        align-content: space-between;
+        flex-flow: row wrap;
+    }
+
+    .evokegame-scoreboard .navigation .btn {
+        padding: 12px 14px !important;
+    }
+
+    .evokegame-scoreboard .navigation .btn .icon {
+        margin-right: 0;
+    }
+
+    .evokegame-scoreboard .navigation .btn .text {
+        display: none;
+    }
+
+    .evokegame-scoreboard .userinfo {
+        flex-direction: row-reverse;
+        margin: 20px 0 0 0;
+    }
+}

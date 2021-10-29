@@ -1,0 +1,18 @@
+<table class="table table-hover table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Student</th>
+            <th scope="col">Points</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#scoreboard}}
+            <tr>
+                <th scope="row">{{{id}}}</th>
+                <td>{{{firstname}}} {{{lastname}}}</td>
+                <td>{{{points}}}</td>
+            </tr>
+        {{/scoreboard}}
+    </tbody>
+</table>
