@@ -34,13 +34,6 @@ class mod_handler extends \core_customfield\handler {
      */
     protected $parentcontext;
 
-    /** @var int Field is displayed in the course listing, visible to everybody */
-    const VISIBLETOALL = 2;
-    /** @var int Field is displayed in the course listing but only for teachers */
-    const VISIBLETOTEACHERS = 1;
-    /** @var int Field is not displayed in the course listing */
-    const NOTVISIBLE = 0;
-
     /**
      * Returns a singleton
      *
@@ -101,14 +94,7 @@ class mod_handler extends \core_customfield\handler {
      * @return bool true if the current can edit custom fields, false otherwise
      */
     public function can_view(field_controller $field, int $instanceid) : bool {
-        $visibility = $field->get_configdata_property('visibility');
-        if ($visibility == self::NOTVISIBLE) {
-            return false;
-        } else if ($visibility == self::VISIBLETOTEACHERS) {
-            return has_capability('moodle/course:update', $this->get_instance_context($instanceid));
-        } else {
-            return true;
-        }
+        return true;
     }
 
     /**
@@ -182,13 +168,8 @@ class mod_handler extends \core_customfield\handler {
         $mform->addElement('selectyesno', 'configdata[locked]', get_string('customfield_islocked', 'core_course'));
         $mform->addHelpButton('configdata[locked]', 'customfield_islocked', 'core_course');
 
-        // Field data visibility.
-        $visibilityoptions = [self::VISIBLETOALL => get_string('customfield_visibletoall', 'core_course'),
-            self::VISIBLETOTEACHERS => get_string('customfield_visibletoteachers', 'core_course'),
-            self::NOTVISIBLE => get_string('customfield_notvisible', 'core_course')];
-        $mform->addElement('select', 'configdata[visibility]', get_string('customfield_visibility', 'core_course'),
-            $visibilityoptions);
-        $mform->addHelpButton('configdata[visibility]', 'customfield_visibility', 'core_course');
+        $options = array('multiple' => true, 'includefrontpage' => false);
+        $mform->addElement('course', 'configdata[availableincourses]', get_string('courses'), $options);
     }
 
     /**
@@ -238,5 +219,34 @@ class mod_handler extends \core_customfield\handler {
         $PAGE->navbar->add($title);
 
         return $title;
+    }
+
+    /**
+     * Returns list of fields defined for this instance as an array (not groupped by categories)
+     *
+     * Fields are sorted in the same order they would appear on the instance edit form
+     *
+     * Note that this function returns all fields in all categories regardless of whether the current user
+     * can view or edit data associated with them
+     *
+     * @return field_controller[]
+     */
+    public function get_fields() : array {
+        global $COURSE;
+
+        $categories = $this->get_categories_with_fields();
+        $fields = [];
+        foreach ($categories as $category) {
+            foreach ($category->get_fields() as $field) {
+                $courses = $field->get_configdata_property('availableincourses');
+
+                if (!empty($courses) && !in_array($COURSE->id, $courses)) {
+                    continue;
+                }
+
+                $fields[$field->get('id')] = $field;
+            }
+        }
+        return $fields;
     }
 }
