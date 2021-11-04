@@ -14,7 +14,7 @@ defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
 use local_evokegame\customfield\mod_handler as extrafieldshandler;
-use local_evokegame\util\points;
+use local_evokegame\util\point;
 
 class submissionsent {
     public static function observer(baseevent $event) {
@@ -29,7 +29,7 @@ class submissionsent {
             return;
         }
 
-        $points = new points($event->courseid, $event->relateduserid);
+        $points = new point($event->courseid, $event->relateduserid);
 
         foreach ($data as $skill => $value) {
             if (!$value || empty($value) || $value == 0) {

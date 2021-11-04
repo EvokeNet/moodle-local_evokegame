@@ -7,12 +7,13 @@
                 </div>
                 <div class="points">{{{points}}}</div>
             </div>
-            <div class="badges">
-                <img src="http://localhost/evoke/pluginfile.php/25/badges/badgeimage/1/f1?refresh=7497" alt="Portfolio Badge #1" class="evokebadge dimmed">
-                <img src="http://localhost/evoke/pluginfile.php/25/badges/badgeimage/2/f1?refresh=6738" alt="Portfolio Badge #2" class="evokebadge dimmed">
-                <img src="http://localhost/evoke/pluginfile.php/25/badges/badgeimage/3/f1?refresh=4148" alt="Badge Evoke" class="evokebadge dimmed">
-                <img src="http://localhost/evoke/pluginfile.php/25/badges/badgeimage/7/f1?refresh=958" alt="Badge demo" class="evokebadge dimmed">
-            </div>
+            {{#hasbadges}}
+                <div class="badges">
+                    {{#badges}}
+                        <img src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge {{^awarded}}dimmed{{/awarded}}">
+                    {{/badges}}
+                </div>
+            {{/hasbadges}}
             <div class="navigation">
                 <a href="{{{config.wwwroot}}}/local/evokegame/scoreboard.php?id={{{courseid}}}" class="btn btn-primary"><i class="fa fa-trophy icon"></i> <span class="text">{{#str}}viewscoreboard, block_game{{/str}}</span></a>
             </div>

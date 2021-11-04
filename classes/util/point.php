@@ -12,7 +12,7 @@ namespace local_evokegame\util;
 
 defined('MOODLE_INTERNAL') || die;
 
-class points {
+class point {
     public $mypoints;
 
     public function __construct($courseid, $userid) {
