@@ -75,10 +75,13 @@
     margin-left: 0.5rem;
 }
 
+.path-local-evokegame .evokebadge,
 .evokegame-scoreboard .awards .badges .evokebadge {
     width: 32px;
+    margin: 0 2px;
 }
 
+.path-local-evokegame .evokebadge.dimmed,
 .evokegame-scoreboard .awards .badges .evokebadge.dimmed {
     filter: grayscale(100%) opacity(30%);
 }
@@ -123,6 +126,20 @@
     -webkit-align-content: space-between;
     align-content: space-between;
     flex-flow: row wrap;
+}
+
+.path-local-evokegame .table-scoreboard {
+    font-family: "Bungee",cursive;
+}
+
+.path-local-evokegame .table-scoreboard thead th {
+    background-color: #ff0540;
+    border-color: #f62657;
+    color: #fff;
+}
+
+.path-local-evokegame .table-scoreboard thead th a {
+    color: #fff;
 }
 
 @media (max-width: 991.98px) {
