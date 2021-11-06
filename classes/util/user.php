@@ -12,8 +12,6 @@ namespace local_evokegame\util;
 
 defined('MOODLE_INTERNAL') || die;
 
-use moodle_url;
-
 class user {
     public function get_user_avatar_or_image($user = null) {
         global $USER, $PAGE, $CFG;

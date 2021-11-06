@@ -15,16 +15,18 @@
                 </div>
             {{/hasbadges}}
             <div class="navigation">
-                <a href="{{{config.wwwroot}}}/local/evokegame/scoreboard.php?id={{{courseid}}}" class="btn btn-primary"><i class="fa fa-trophy icon"></i> <span class="text">{{#str}}viewscoreboard, block_game{{/str}}</span></a>
+                <a href="{{{config.wwwroot}}}/local/evokegame/scoreboard.php?id={{{courseid}}}" class="btn btn-primary">
+                    <i class="fa fa-trophy icon"></i> <span class="text">{{#str}}viewscoreboard, block_game{{/str}}</span>
+                </a>
             </div>
         </div>
 
         <div class="userinfo">
             <div class="username">
-                Admin
+                {{{ userfirstname }}}
             </div>
             <div class="userpicture" data-action="choose-avatar-modal">
-                <img id="evokegame-user-avatar" class="img-fluid cursor-pointer" src="{{{useravatar}}}">
+                <img id="evokegame-user-avatar" class="img-fluid cursor-pointer" src="{{{useravatar}}}" alt="{{{userfirstname}}}">
             </div>
         </div>
     </div>

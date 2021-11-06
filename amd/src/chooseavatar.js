@@ -6,7 +6,6 @@
  * @author     Willian Mano <willianmanoaraujo@gmail.com>
  */
 
-/* eslint-disable no-console */
 define([
         'jquery',
         'core/config',
@@ -110,10 +109,10 @@ define([
             var item = JSON.parse(data.data);
 
             var useravatar = $('#evokegame-user-avatar');
-
             useravatar.attr('src', item);
 
-            console.log(item);
+            var navuserimg = $('.usermenu .userpicture');
+            navuserimg.attr('src', item);
 
             var Toast = Swal.mixin({
                 toast: true,

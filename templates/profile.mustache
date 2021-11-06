@@ -1,0 +1,67 @@
+<div class="evokegame">
+    <div class="evokegame-scoreboard">
+        <div class="awards">
+            <div class="score">
+                <div class="icon">
+                    <img class="evocoin black" src="{{{config.wwwroot}}}/local/evokegame/pix/evocoin.svg" alt="Evocoin">
+                </div>
+                <div class="points">{{{points}}}</div>
+            </div>
+        </div>
+
+        <div class="navigation ml-4">
+            <a href="{{{config.wwwroot}}}/course/view.php?id={{{courseid}}}" class="btn btn-primary">
+                {{#str}}backtomission, local_evokegame{{/str}}
+            </a>
+            <a href="{{{config.wwwroot}}}/local/evokegame/scoreboard.php?id={{{courseid}}}" class="btn btn-primary ml-2">
+                {{#str}}totheleaderboard, local_evokegame{{/str}}
+            </a>
+        </div>
+
+        <div class="userinfo">
+            <div class="username">
+                {{{userfirstname}}}
+            </div>
+            <div class="userpicture" data-action="choose-avatar-modal">
+                <img id="evokegame-user-avatar" class="img-fluid cursor-pointer" src="{{{useravatar}}}" alt="{{{userfirstname}}}">
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#hasbadges}}
+    <div class="row mt-4">
+        <div class="col">
+            <table id="superpowerstable" class="table">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="2">
+                        <h2>{{#str}}mysuperpowers, local_evokegame{{/str}}</h2>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#badges}}
+                    {{#awarded}}
+                        <tr>
+                            <td class="badge-image-column">
+                                <img src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge">
+                            </td>
+                            <td>
+                                <h3>{{{name}}}</h3>
+                                <p>{{{description}}}</p>
+                            </td>
+                        </tr>
+                    {{/awarded}}
+                {{/badges}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{{/hasbadges}}
+
+{{#js}}
+    require(['local_evokegame/chooseavatar'], function(ChooseAvatar) {
+        ChooseAvatar.init('[data-action=choose-avatar-modal]', {{{contextid}}});
+    });
+{{/js}}

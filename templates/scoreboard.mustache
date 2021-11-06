@@ -1,10 +1,10 @@
 <h2>{{#str}}scoreboard, local_evokegame{{/str}}</h2>
 
 <div class="navigationbuttons mb-4">
-    <a class="btn btn-primary" href="http://localhost/evoke/course/view.php?id={{{courseid}}}">
+    <a class="btn btn-primary" href="{{{config.wwwroot}}}/course/view.php?id={{{courseid}}}">
         {{#str}}backtomission, local_evokegame{{/str}}
     </a>
-    <a class="btn btn-primary ml-2" href="http://localhost/evoke/blocks/game/perfil_gamer.php?id={{{courseid}}}">
+    <a class="btn btn-primary ml-2" href="{{{config.wwwroot}}}/local/evokegame/profile.php?id={{{courseid}}}">
         {{#str}}backtopersonalscore, local_evokegame{{/str}}
     </a>
 </div>

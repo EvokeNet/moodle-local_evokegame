@@ -82,6 +82,10 @@
     margin: 0 2px;
 }
 
+#page-local-evokegame-profile .evokebadge {
+    width: 100px;
+}
+
 .path-local-evokegame .evokebadge.dimmed,
 .evokegame-scoreboard .awards .badges .evokebadge.dimmed {
     filter: grayscale(100%) opacity(30%);
@@ -162,6 +166,11 @@
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+#superpowerstable .badge-image-column {
+    width: 120px;
+    text-align: center;
 }
 
 @media (max-width: 991.98px) {
