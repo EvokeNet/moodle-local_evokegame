@@ -23,9 +23,15 @@
             <div class="username">
                 Admin
             </div>
-            <div class="userpicture">
-                <form action="http://localhost/evoke/blocks/game/set_avatar_form.php" method="get"><input name="id" type="hidden" value="2"><input name="avatar" type="hidden" value="0"> <input class="img-fluid" type="image" src="http://localhost/evoke/blocks/game/pix/a0.svg" "="" height="140" width="140"> </form>
+            <div class="userpicture" data-action="choose-avatar-modal">
+                <img id="evokegame-user-avatar" class="img-fluid cursor-pointer" src="{{{useravatar}}}">
             </div>
         </div>
     </div>
 </div>
+
+{{#js}}
+    require(['local_evokegame/chooseavatar'], function(ChooseAvatar) {
+        ChooseAvatar.init('[data-action=choose-avatar-modal]', {{{contextid}}});
+    });
+{{/js}}

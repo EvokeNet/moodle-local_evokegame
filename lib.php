@@ -75,3 +75,20 @@ function local_evokegame_coursemodule_edit_post_actions($moduleinfo, $course) {
 
     return $moduleinfo;
 }
+
+function local_evokegame_output_fragment_chooseavatar_form($args) {
+    GLOBAL $CFG;
+
+    $args = (object) $args;
+
+    $o = html_writer::start_div('chooseavatar-form');
+
+    for ($i = 1; $i < 33; $i++) {
+        $url = $CFG->wwwroot . '/local/evokegame/pix/a' . $i . '.svg';
+        $o .= html_writer::img($url, 'avatar', ['class' => 'avatar', 'data-id' => $i]);
+    }
+
+    $o .= html_writer::end_div();
+
+    return $o;
+}

@@ -1,6 +1,7 @@
 .evokegame-scoreboard {
     display: flex;
     align-items: center;
+    min-height: 100px;
 }
 
 .evokegame-scoreboard .awards,
@@ -27,7 +28,7 @@
     align-items: center;
     border-radius: 30px;
     padding: 6px 20px 8px 8px;
-    background: linear-gradient(90deg, rgba(51, 41, 255, 1) 0%, rgba(51, 41, 255, 1) 22%,  rgba(0, 240, 166, 1) 100%);
+    background: linear-gradient(90deg, rgba(51, 41, 255, 1) 0%, rgba(51, 41, 255, 1) 22%, rgba(0, 240, 166, 1) 100%);
 }
 
 .evokegame-scoreboard .awards .score .icon,
@@ -140,6 +141,27 @@
 
 .path-local-evokegame .table-scoreboard thead th a {
     color: #fff;
+}
+
+.chooseavatar-form {
+    text-align: center;
+}
+
+.chooseavatar-form .avatar {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: .25rem;
+}
+
+.chooseavatar-form .avatar:hover {
+    border: 1px solid #c3c3c3;
+    box-shadow: 0 0 4px 4px rgba(255, 5, 64, 0.15);
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
 
 @media (max-width: 991.98px) {

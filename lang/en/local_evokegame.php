@@ -19,3 +19,6 @@ $string['backtomission'] = 'Back to mission';
 $string['backtopersonalscore'] = 'Back to personal score';
 $string['collectedsuperpowers'] ='Collected superpowers';
 $string['points'] = 'Points';
+
+$string['chooseavatar'] = 'Choose your avatar';
+$string['chooseavatar_success'] = 'Avatar successfully saved.';

@@ -6,6 +6,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use local_evokegame\util\badge;
 use local_evokegame\util\point;
+use local_evokegame\util\user;
 use mod_evokeportfolio\util\group;
 use mod_evokeportfolio\util\section as sectionutil;
 use renderable;
@@ -40,7 +41,11 @@ class dashboard implements renderable, templatable {
             $badges = $badgeutil->get_course_badges_with_user_award($USER->id, $this->course->id);
         }
 
+        $userutil = new user();
+
         return [
+            'useravatar' => $userutil->get_user_avatar_or_image($USER),
+            'contextid' => $this->context->id,
             'courseid' => $this->course->id,
             'points' => $points->mypoints->points,
             'hasbadges' => $hasbadges,
