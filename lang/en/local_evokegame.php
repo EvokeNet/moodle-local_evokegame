@@ -20,7 +20,8 @@ $string['totheleaderboard'] = 'To the leaderboard';
 $string['backtopersonalscore'] = 'Back to personal score';
 $string['collectedsuperpowers'] ='Collected superpowers';
 $string['mysuperpowers'] = 'My Superpowers';
+$string['myskills'] = 'My skills';
 $string['points'] = 'Points';
-
+$string['viewscoreboard'] = 'View scoreboard';
 $string['chooseavatar'] = 'Choose your avatar';
 $string['chooseavatar_success'] = 'Avatar successfully saved.';

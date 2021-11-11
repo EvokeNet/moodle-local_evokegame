@@ -29,17 +29,35 @@
     </div>
 </div>
 
+{{#hasskills}}
+    <div class="row mt-4">
+        <div class="col">
+            <h2>{{#str}}myskills, local_evokegame{{/str}}</h2>
+            <table id="skillsstable" class="table table-bordered">
+                <tbody>
+                {{#skills}}
+                    <tr>
+                        <td class="badge-image-column">
+                            {{{skill}}}
+                        </td>
+                        <td style="width: 70%;">
+                            <div class="progress mb-0 ml-0" style="width: initial;">
+                                <div class="progress-bar" role="progressbar" style="width: {{{points}}}%" aria-valuenow="{{{points}}}" aria-valuemin="0" aria-valuemax="10"></div>
+                            </div>
+                        </td>
+                    </tr>
+                {{/skills}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{{/hasskills}}
+
 {{#hasbadges}}
     <div class="row mt-4">
         <div class="col">
+            <h2>{{#str}}mysuperpowers, local_evokegame{{/str}}</h2>
             <table id="superpowerstable" class="table">
-                <thead>
-                <tr>
-                    <th scope="col" colspan="2">
-                        <h2>{{#str}}mysuperpowers, local_evokegame{{/str}}</h2>
-                    </th>
-                </tr>
-                </thead>
                 <tbody>
                 {{#badges}}
                     {{#awarded}}

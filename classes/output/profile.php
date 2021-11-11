@@ -6,6 +6,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use local_evokegame\util\badge;
 use local_evokegame\util\point;
+use local_evokegame\util\skill;
 use local_evokegame\util\user;
 use renderable;
 use templatable;
@@ -41,11 +42,16 @@ class profile implements renderable, templatable {
 
         $userutil = new user();
 
+        $skillutil = new skill();
+        $skills = $skillutil->get_course_skills_set($this->course->id, $this->user->id);
+
         return [
             'contextid' => $this->context->id,
             'points' => $points->mypoints->points,
             'userfirstname' => $this->user->firstname,
             'useravatar' => $userutil->get_user_avatar_or_image($this->user),
+            'hasskills' => $skills != false,
+            'skills' => $skills,
             'courseid' => $this->course->id,
             'hasbadges' => $hasbadges,
             'badges' => $badges
