@@ -61,12 +61,29 @@ class badge {
         return $badges;
     }
 
-    function get_course_badges($courseid) {
+    public function get_course_badges($courseid) {
         // Get badges fro badgelib.
         return badges_get_badges(BADGE_TYPE_COURSE, $courseid);
     }
 
-    function get_user_course_badges($userid, $courseid) {
+    public function get_active_course_badges_select($courseid) {
+        $badges = $this->get_course_badges($courseid);
+
+        if(!$badges) {
+            return false;
+        }
+
+        $data = [];
+        foreach ($badges as $badge) {
+            if ($badge->status == 1 || $badge->status == 3) {
+                $data[$badge->id] = $badge->name;
+            }
+        }
+
+        return $data;
+    }
+
+    public function get_user_course_badges($userid, $courseid) {
         // Get badges fro badgelib.
         $userbadges = badges_get_user_badges($userid, $courseid);
 
@@ -77,7 +94,7 @@ class badge {
         return false;
     }
 
-    function get_badge_image_url($contextid, $badgeid) {
+    public function get_badge_image_url($contextid, $badgeid) {
         $imageurl = moodle_url::make_pluginfile_url($contextid, 'badges', 'badgeimage', $badgeid, '/', 'f1', false);
 
         $imageurl->param('refresh', rand(1, 10000));

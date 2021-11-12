@@ -92,3 +92,48 @@ function local_evokegame_output_fragment_chooseavatar_form($args) {
 
     return $o;
 }
+
+function local_evokegame_extend_navigation_course($navigation, $course, $context) {
+    if (has_capability('moodle/course:update', $context)) {
+        $url = new moodle_url('/local/evokegame/superpower.php', array('id' => $course->id));
+
+        $navigation->add(
+            get_string('superpowerssettings', 'local_evokegame'),
+            $url,
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'superpowerssettings',
+            new pix_icon('t/award', '')
+        );
+    }
+}
+
+function local_evokegame_output_fragment_superpower_form($args) {
+    $args = (object) $args;
+    $o = '';
+
+    $formdata = [];
+    if (!empty($args->jsonformdata)) {
+        $serialiseddata = json_decode($args->jsonformdata);
+        parse_str($serialiseddata, $formdata);
+    }
+
+    $mform = new \local_evokegame\forms\superpower($formdata, [
+        'id' => $serialiseddata->id,
+        'courseid' => $serialiseddata->courseid,
+        'badgeid' => $serialiseddata->badgeid,
+        'name' => $serialiseddata->name
+    ]);
+
+    if (!empty($args->jsonformdata)) {
+        // If we were passed non-empty form data we want the mform to call validation functions and show errors.
+        $mform->is_validated();
+    }
+
+    ob_start();
+    $mform->display();
+    $o .= ob_get_contents();
+    ob_end_clean();
+
+    return $o;
+}
