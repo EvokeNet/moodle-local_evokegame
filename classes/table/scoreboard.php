@@ -52,7 +52,11 @@ class scoreboard extends table_sql {
         $params = $capjoin->params;
         $params['courseid'] = $this->course->id;
 
-        $this->set_sql($fields, $from, $capjoin->wheres, $params);
+        $where = $capjoin->wheres;
+
+        $where .= ' ORDER BY p.points DESC';
+
+        $this->set_sql($fields, $from, $where, $params);
     }
 
     public function col_fullname($user) {
