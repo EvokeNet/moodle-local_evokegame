@@ -20,7 +20,7 @@ class user {
             $user = $USER;
         }
 
-        $useravatar = get_user_preferences('evokegame_avatarid', null);
+        $useravatar = get_user_preferences('evokegame_avatarid', null, $user);
 
         if ($useravatar) {
             return $CFG->wwwroot . '/local/evokegame/pix/a' . $useravatar . '.svg';
