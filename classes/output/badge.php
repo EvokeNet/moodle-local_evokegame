@@ -4,7 +4,7 @@ namespace local_evokegame\output;
 
 defined('MOODLE_INTERNAL') || die();
 
-use local_evokegame\util\superpower as superpowerutil;
+use local_evokegame\util\badge as badgeutil;
 use renderable;
 use templatable;
 use renderer_base;
@@ -15,7 +15,7 @@ use renderer_base;
  * @copyright   2021 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
-class superpower implements renderable, templatable {
+class badge implements renderable, templatable {
     protected $course;
     protected $context;
 
@@ -25,12 +25,12 @@ class superpower implements renderable, templatable {
     }
 
     public function export_for_template(renderer_base $output) {
-        $superpowerutil = new superpowerutil();
+        $badgeutil = new badgeutil();
 
         return [
             'contextid' => $this->context->id,
             'courseid' => $this->course->id,
-            'superpowers' => $superpowerutil->get_course_superpowers($this->course->id)
+            'badges' => $badgeutil->get_course_badges($this->course->id)
         ];
     }
 }

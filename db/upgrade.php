@@ -27,7 +27,7 @@ function xmldb_local_evokegame_upgrade($oldversion) {
     if ($oldversion < 2021111000) {
         $dbman = $DB->get_manager();
 
-        $table = new xmldb_table('evokegame_superpowers');
+        $table = new xmldb_table('evokegame_badges');
 
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE);
         $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);

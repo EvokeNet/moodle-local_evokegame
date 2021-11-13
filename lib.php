@@ -95,20 +95,20 @@ function local_evokegame_output_fragment_chooseavatar_form($args) {
 
 function local_evokegame_extend_navigation_course($navigation, $course, $context) {
     if (has_capability('moodle/course:update', $context)) {
-        $url = new moodle_url('/local/evokegame/superpower.php', array('id' => $course->id));
+        $url = new moodle_url('/local/evokegame/badge.php', array('id' => $course->id));
 
         $navigation->add(
-            get_string('superpowerssettings', 'local_evokegame'),
+            get_string('badgessettings', 'local_evokegame'),
             $url,
             navigation_node::TYPE_CUSTOM,
             null,
-            'superpowerssettings',
+            'badgessettings',
             new pix_icon('t/award', '')
         );
     }
 }
 
-function local_evokegame_output_fragment_superpower_form($args) {
+function local_evokegame_output_fragment_badge_form($args) {
     $args = (object) $args;
     $o = '';
 
@@ -118,7 +118,7 @@ function local_evokegame_output_fragment_superpower_form($args) {
         parse_str($serialiseddata, $formdata);
     }
 
-    $mform = new \local_evokegame\forms\superpower($formdata, [
+    $mform = new \local_evokegame\forms\badge($formdata, [
         'id' => $serialiseddata->id,
         'courseid' => $serialiseddata->courseid,
         'badgeid' => $serialiseddata->badgeid,

@@ -1,5 +1,5 @@
 /**
- * Delete superpower js logic.
+ * Delete badge js logic.
  *
  * @package    local_evokegame
  * @copyright  2021 World Bank Group <https://worldbank.org>
@@ -33,18 +33,18 @@ define(['jquery', 'core/ajax', 'core/str', 'local_evokegame/sweetalert'], functi
             component: 'local_evokegame'
         },
         {
-            key: 'deletesuperpower_success',
+            key: 'deletebadge_success',
             component: 'local_evokegame'
         },
     ];
 
-    var DeleteSuperpower = function() {
+    var DeleteBadge = function() {
         this.getStrings();
 
         this.registerEventListeners();
     };
 
-    DeleteSuperpower.prototype.getStrings = function() {
+    DeleteBadge.prototype.getStrings = function() {
         var stringsPromise = Str.get_strings(componentStrings);
 
         $.when(stringsPromise).done(function(strings) {
@@ -56,8 +56,8 @@ define(['jquery', 'core/ajax', 'core/str', 'local_evokegame/sweetalert'], functi
         });
     };
 
-    DeleteSuperpower.prototype.registerEventListeners = function() {
-        $("body").on("click", ".delete-evokegame-superpower", function(event) {
+    DeleteBadge.prototype.registerEventListeners = function() {
+        $("body").on("click", ".delete-evokegame-badge", function(event) {
             event.preventDefault();
 
             var eventTarget = $(event.currentTarget);
@@ -79,11 +79,11 @@ define(['jquery', 'core/ajax', 'core/str', 'local_evokegame/sweetalert'], functi
         }.bind(this));
     };
 
-    DeleteSuperpower.prototype.deleteItemRow = function(eventTarget) {
+    DeleteBadge.prototype.deleteItemRow = function(eventTarget) {
         var request = Ajax.call([{
-            methodname: 'local_evokegame_deletesuperpower',
+            methodname: 'local_evokegame_deletebadge',
             args: {
-                superpower: {
+                badge: {
                     id: eventTarget.data('id')
                 }
             }
@@ -101,7 +101,7 @@ define(['jquery', 'core/ajax', 'core/str', 'local_evokegame/sweetalert'], functi
         }.bind(this));
     };
 
-    DeleteSuperpower.prototype.removeChapterLine = function(eventTarget) {
+    DeleteBadge.prototype.removeChapterLine = function(eventTarget) {
         var tableLine = eventTarget.closest('tr');
 
         tableLine.fadeOut("normal", function() {
@@ -111,7 +111,7 @@ define(['jquery', 'core/ajax', 'core/str', 'local_evokegame/sweetalert'], functi
         this.showToast('success', STRINGS.SUCCESS);
     };
 
-    DeleteSuperpower.prototype.showToast = function(type, message) {
+    DeleteBadge.prototype.showToast = function(type, message) {
         var Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -132,7 +132,7 @@ define(['jquery', 'core/ajax', 'core/str', 'local_evokegame/sweetalert'], functi
 
     return {
         'init': function() {
-            return new DeleteSuperpower();
+            return new DeleteBadge();
         }
     };
 });

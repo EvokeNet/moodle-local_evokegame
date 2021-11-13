@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configure course superpowers.
+ * Configure course badges.
  *
  * @package     mod_evokeportfolio
  * @copyright   2021 World Bank Group <https://worldbank.org>
@@ -18,7 +18,7 @@ require_course_login($course, true);
 
 $context = context_course::instance($course->id);
 
-$PAGE->set_url('/local/evokegame/superpower.php', ['id' => $course->id]);
+$PAGE->set_url('/local/evokegame/badge.php', ['id' => $course->id]);
 $PAGE->set_title(format_string($course->fullname));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
@@ -27,7 +27,7 @@ echo $OUTPUT->header();
 
 $renderer = $PAGE->get_renderer('local_evokegame');
 
-$contentrenderable = new \local_evokegame\output\superpower($course, $context);
+$contentrenderable = new \local_evokegame\output\badge($course, $context);
 
 echo $renderer->render($contentrenderable);
 

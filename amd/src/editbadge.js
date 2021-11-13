@@ -1,5 +1,5 @@
 /**
- * Edit superpower js logic.
+ * Edit badge js logic.
  *
  * @package    local_evokegame
  * @copyright  2021 World Bank Group <https://worldbank.org>
@@ -18,12 +18,12 @@ define([
         'core/yui'],
     function($, Config, Str, ModalFactory, ModalEvents, Fragment, Ajax, Swal, Y) {
         /**
-         * Constructor for the EditSuperpower.
+         * Constructor for the EditBadge.
          *
          * @param selector The selector to open the modal
          * @param contextid The course module contextid
          */
-        var EditSuperpower = function(contextid) {
+        var EditBadge = function(contextid) {
             this.contextid = contextid;
 
             this.registerEventListeners();
@@ -33,23 +33,23 @@ define([
          * @var {Modal} modal
          * @private
          */
-        EditSuperpower.prototype.modal = null;
+        EditBadge.prototype.modal = null;
 
         /**
          * @var {int} contextid
          * @private
          */
-        EditSuperpower.prototype.contextid = -1;
+        EditBadge.prototype.contextid = -1;
 
-        EditSuperpower.prototype.eventtarget = null;
+        EditBadge.prototype.eventtarget = null;
 
-        EditSuperpower.prototype.registerEventListeners = function() {
-            $("body").on("click", ".edit-evokegame-superpower", function(event) {
+        EditBadge.prototype.registerEventListeners = function() {
+            $("body").on("click", ".edit-evokegame-badge", function(event) {
                 event.preventDefault();
 
                 this.eventtarget = $(event.currentTarget);
 
-                return Str.get_string('editsuperpower', 'local_evokegame').then(function(title) {
+                return Str.get_string('editbadge', 'local_evokegame').then(function(title) {
                     // Create the modal.
                     return ModalFactory.create({
                         type: ModalFactory.types.SAVE_CANCEL,
@@ -97,7 +97,7 @@ define([
          *
          * @return {Promise}
          */
-        EditSuperpower.prototype.getBody = function(formdata) {
+        EditBadge.prototype.getBody = function(formdata) {
             if (typeof formdata === "undefined") {
                 formdata = {};
             }
@@ -105,7 +105,7 @@ define([
             // Get the content of the modal.
             var params = {jsonformdata: JSON.stringify(formdata)};
 
-            return Fragment.loadFragment('local_evokegame', 'superpower_form', this.contextid, params);
+            return Fragment.loadFragment('local_evokegame', 'badge_form', this.contextid, params);
         };
 
         /**
@@ -115,22 +115,22 @@ define([
          *
          * @return {Promise}
          */
-        EditSuperpower.prototype.handleFormSubmissionResponse = function(data) {
+        EditBadge.prototype.handleFormSubmissionResponse = function(data) {
             this.modal.hide();
             // We could trigger an event instead.
             Y.use('moodle-core-formchangechecker', function() {
                 M.core_formchangechecker.reset_form_dirty_state();
             });
 
-            var superpower = JSON.parse(data.data);
+            var badge = JSON.parse(data.data);
 
             var tablenamecolumn = this.eventtarget.closest('tr').find('td:first');
 
-            tablenamecolumn.html(superpower.name);
+            tablenamecolumn.html(badge.name);
 
-            this.eventtarget.data('id', superpower.id);
-            this.eventtarget.data('name', superpower.name);
-            this.eventtarget.data('badgeid', superpower.badgeid);
+            this.eventtarget.data('id', badge.id);
+            this.eventtarget.data('name', badge.name);
+            this.eventtarget.data('badgeid', badge.badgeid);
 
             this.eventtarget.closest('tr').hide('normal').show('normal');
 
@@ -159,7 +159,7 @@ define([
          *
          * @return {Promise}
          */
-        EditSuperpower.prototype.handleFormSubmissionFailure = function(data) {
+        EditBadge.prototype.handleFormSubmissionFailure = function(data) {
             // Oh noes! Epic fail :(
             // Ah wait - this is normal. We need to re-display the form with errors!
             this.modal.setBody(this.getBody(data));
@@ -174,7 +174,7 @@ define([
          *
          * @param {Event} e Form submission event.
          */
-        EditSuperpower.prototype.submitFormAjax = function(e) {
+        EditBadge.prototype.submitFormAjax = function(e) {
             // We don't want to do a real form submission.
             e.preventDefault();
 
@@ -206,7 +206,7 @@ define([
 
             // Now we can continue...
             Ajax.call([{
-                methodname: 'local_evokegame_editsuperpower',
+                methodname: 'local_evokegame_editbadge',
                 args: {contextid: this.contextid, jsonformdata: JSON.stringify(formData)},
                 done: this.handleFormSubmissionResponse.bind(this),
                 fail: this.handleFormSubmissionFailure.bind(this, formData)
@@ -220,7 +220,7 @@ define([
          * @param {Event} e Form submission event.
          * @private
          */
-        EditSuperpower.prototype.submitForm = function(e) {
+        EditBadge.prototype.submitForm = function(e) {
             e.preventDefault();
 
             this.modal.getRoot().find('form').submit();
@@ -228,7 +228,7 @@ define([
 
         return {
             init: function(contextid) {
-                return new EditSuperpower(contextid);
+                return new EditBadge(contextid);
             }
         };
     }

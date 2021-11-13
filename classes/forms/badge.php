@@ -6,15 +6,15 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 
-use local_evokegame\util\badge;
+use local_evokegame\util\badge as badgeutil;
 
 /**
- * The mform class for creating a superpower
+ * The mform class for creating a badge
  *
  * @copyright   2021 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
-class superpower extends \moodleform {
+class badge extends \moodleform {
 
     /**
      * Class constructor.
@@ -23,7 +23,7 @@ class superpower extends \moodleform {
      * @param array $customodata
      */
     public function __construct($formdata, $customodata = null) {
-        parent::__construct(null, $customodata, 'post',  '', ['class' => 'evokegame-superpower-form'], true, $formdata);
+        parent::__construct(null, $customodata, 'post',  '', ['class' => 'evokegame-badge-form'], true, $formdata);
 
         $this->set_display_vertical();
     }
@@ -52,7 +52,7 @@ class superpower extends \moodleform {
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_TEXT);
 
-        $badgeutil = new badge();
+        $badgeutil = new badgeutil();
 
         $coursebadges = $badgeutil->get_active_course_badges_select($this->_customdata['courseid']);
         $mform->addElement('select', 'badgeid', get_string('relatedbadge', 'local_evokegame'), $coursebadges);

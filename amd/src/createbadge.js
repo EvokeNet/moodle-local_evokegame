@@ -1,5 +1,5 @@
 /**
- * Create superpower js logic.
+ * Create badge js logic.
  *
  * @package    local_evokegame
  * @copyright  2021 World Bank Group <https://worldbank.org>
@@ -18,13 +18,13 @@ define([
         'core/yui'],
     function($, Config, Str, ModalFactory, ModalEvents, Fragment, Ajax, Swal, Y) {
         /**
-         * Constructor for the CreateSuperpower.
+         * Constructor for the CreateBadge.
          *
          * @param selector The selector to open the modal
          * @param contextid The course module contextid
          * @param course The course id
          */
-        var CreateSuperpower = function(selector, contextid, course) {
+        var CreateBadge = function(selector, contextid, course) {
             this.contextid = contextid;
 
             this.course = course;
@@ -36,29 +36,29 @@ define([
          * @var {Modal} modal
          * @private
          */
-        CreateSuperpower.prototype.modal = null;
+        CreateBadge.prototype.modal = null;
 
         /**
          * @var {int} contextid
          * @private
          */
-        CreateSuperpower.prototype.contextid = -1;
+        CreateBadge.prototype.contextid = -1;
 
         /**
          * @var {int} course
          * @private
          */
-        CreateSuperpower.prototype.course = -1;
+        CreateBadge.prototype.course = -1;
 
         /**
          * Set up all of the event handling for the modal.
          *
          * @method init
          */
-        CreateSuperpower.prototype.init = function(selector) {
+        CreateBadge.prototype.init = function(selector) {
             var triggers = $(selector);
 
-            return Str.get_string('createsuperpower', 'local_evokegame').then(function(title) {
+            return Str.get_string('createbadge', 'local_evokegame').then(function(title) {
                 // Create the modal.
                 return ModalFactory.create({
                     type: ModalFactory.types.SAVE_CANCEL,
@@ -96,7 +96,7 @@ define([
          *
          * @return {Promise}
          */
-        CreateSuperpower.prototype.getBody = function(formdata) {
+        CreateBadge.prototype.getBody = function(formdata) {
             if (typeof formdata === "undefined") {
                 formdata = {};
             }
@@ -104,7 +104,7 @@ define([
             // Get the content of the modal.
             var params = {jsonformdata: JSON.stringify(formdata)};
 
-            return Fragment.loadFragment('local_evokegame', 'superpower_form', this.contextid, params);
+            return Fragment.loadFragment('local_evokegame', 'badge_form', this.contextid, params);
         };
 
         /**
@@ -114,7 +114,7 @@ define([
          *
          * @return {Promise}
          */
-        CreateSuperpower.prototype.handleFormSubmissionResponse = function(data) {
+        CreateBadge.prototype.handleFormSubmissionResponse = function(data) {
             this.modal.hide();
             // We could trigger an event instead.
             Y.use('moodle-core-formchangechecker', function() {
@@ -129,17 +129,17 @@ define([
                 '<td style="width: 120px; text-align: center;">' +
                 '<a href="#" data-id="'+item.id+'" data-name="'+item.name+'"' +
                     'data-courseid="'+item.courseid+'" data-badgeid="'+item.badgeid+'"' +
-                    'class="btn btn-warning btn-sm edit-evokegame-superpower">' +
+                    'class="btn btn-warning btn-sm edit-evokegame-badge">' +
                 '<i class="fa fa-pencil-square-o text-white"></i>' +
                 '</a> ' +
-                '<a href="#" data-id="'+item.id+'" class="btn btn-danger btn-sm delete-evokegame-superpower">' +
+                '<a href="#" data-id="'+item.id+'" class="btn btn-danger btn-sm delete-evokegame-badge">' +
                 '<i class="fa fa-trash-o"></i>' +
                 '</a> ' +
                 '</td>' +
                 '</tr>');
 
             tableLine
-                .appendTo('.table-evokegame-superpowers tbody')
+                .appendTo('.table-evokegame-badges tbody')
                 .hide().fadeIn('normal');
 
             var Toast = Swal.mixin({
@@ -167,7 +167,7 @@ define([
          *
          * @return {Promise}
          */
-        CreateSuperpower.prototype.handleFormSubmissionFailure = function(data) {
+        CreateBadge.prototype.handleFormSubmissionFailure = function(data) {
             // Oh noes! Epic fail :(
             // Ah wait - this is normal. We need to re-display the form with errors!
             this.modal.setBody(this.getBody(data));
@@ -182,7 +182,7 @@ define([
          *
          * @param {Event} e Form submission event.
          */
-        CreateSuperpower.prototype.submitFormAjax = function(e) {
+        CreateBadge.prototype.submitFormAjax = function(e) {
             // We don't want to do a real form submission.
             e.preventDefault();
 
@@ -214,7 +214,7 @@ define([
 
             // Now we can continue...
             Ajax.call([{
-                methodname: 'local_evokegame_createsuperpower',
+                methodname: 'local_evokegame_createbadge',
                 args: {contextid: this.contextid, course: this.course, jsonformdata: JSON.stringify(formData)},
                 done: this.handleFormSubmissionResponse.bind(this),
                 fail: this.handleFormSubmissionFailure.bind(this, formData)
@@ -228,7 +228,7 @@ define([
          * @param {Event} e Form submission event.
          * @private
          */
-        CreateSuperpower.prototype.submitForm = function(e) {
+        CreateBadge.prototype.submitForm = function(e) {
             e.preventDefault();
 
             this.modal.getRoot().find('form').submit();
@@ -236,7 +236,7 @@ define([
 
         return {
             init: function(selector, contextid, course) {
-                return new CreateSuperpower(selector, contextid, course);
+                return new CreateBadge(selector, contextid, course);
             }
         };
     }
