@@ -50,20 +50,30 @@ class badge extends \moodleform {
 
         $mform->addElement('text', 'name', get_string('name', 'local_evokegame'));
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
+        $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->setType('name', PARAM_TEXT);
 
-        $badgeutil = new badgeutil();
+        $mform->addElement('textarea', 'description', get_string('description', 'badges'), 'wrap="virtual" rows="8" cols="70"');
+        $mform->setType('description', PARAM_NOTAGS);
+        $mform->addRule('description', null, 'required');
 
-        $coursebadges = $badgeutil->get_active_course_badges_select($this->_customdata['courseid']);
-        $mform->addElement('select', 'badgeid', get_string('relatedbadge', 'local_evokegame'), $coursebadges);
+        $imageoptions = array('maxbytes' => 262144, 'accepted_types' => array('optimised_image'));
+        $mform->addElement('filepicker', 'image', get_string('newimage', 'badges'), null, $imageoptions);
+        $mform->addRule('image', null, 'required');
+        $mform->addHelpButton('image', 'badgeimage', 'badges');
+
+//        $badgeutil = new badgeutil();
+//
+//        $coursebadges = $badgeutil->get_active_course_badges_select($this->_customdata['courseid']);
+//        $mform->addElement('select', 'badgeid', get_string('relatedbadge', 'local_evokegame'), $coursebadges);
 
         if ($name) {
             $mform->setDefault('name', $name);
         }
 
-        if ($badgeid) {
-            $mform->setDefault('badgeid', $badgeid);
-        }
+//        if ($badgeid) {
+//            $mform->setDefault('badgeid', $badgeid);
+//        }
     }
 
     /**

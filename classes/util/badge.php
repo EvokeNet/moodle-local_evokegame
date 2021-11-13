@@ -101,4 +101,16 @@ class badge {
 
         return $imageurl;
     }
+
+    public function get_evoke_badges($courseid) {
+        global $DB;
+
+        $records = $DB->get_records('evokegame_badges', ['courseid' => $courseid]);
+
+        if (!$records) {
+            return false;
+        }
+
+        return array_values($records);
+    }
 }

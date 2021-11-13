@@ -30,7 +30,7 @@ class badge implements renderable, templatable {
         return [
             'contextid' => $this->context->id,
             'courseid' => $this->course->id,
-            'badges' => $badgeutil->get_course_badges($this->course->id)
+            'badges' => $badgeutil->get_evoke_badges($this->course->id)
         ];
     }
 }

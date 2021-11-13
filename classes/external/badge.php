@@ -7,7 +7,7 @@ use external_api;
 use external_value;
 use external_single_structure;
 use external_function_parameters;
-use local_evokegame\forms\superpower as superpowerform;
+use local_evokegame\forms\badge as badgeform;
 
 /**
  * Avatar external api class.
@@ -16,9 +16,9 @@ use local_evokegame\forms\superpower as superpowerform;
  * @copyright   2021 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
-class superpower extends external_api {
+class badge extends external_api {
     /**
-     * Create superpower parameters
+     * Create badge parameters
      *
      * @return external_function_parameters
      */
@@ -26,12 +26,12 @@ class superpower extends external_api {
         return new external_function_parameters([
             'contextid' => new external_value(PARAM_INT, 'The context id for the course module'),
             'course' => new external_value(PARAM_INT, 'The course id'),
-            'jsonformdata' => new external_value(PARAM_RAW, 'The data from the superpower form, encoded as a json array')
+            'jsonformdata' => new external_value(PARAM_RAW, 'The data from the badge form, encoded as a json array')
         ]);
     }
 
     /**
-     * Create superpower method
+     * Create badge method
      *
      * @param int $contextid
      * @param int $course
@@ -45,7 +45,7 @@ class superpower extends external_api {
      * @throws \moodle_exception
      */
     public static function create($contextid, $course, $jsonformdata) {
-        global $DB;
+        global $DB, $PAGE, $CFG, $USER, $SITE;
 
         // We always must pass webservice params through validate_parameters.
         $params = self::validate_parameters(self::create_parameters(),
@@ -61,7 +61,7 @@ class superpower extends external_api {
         $data = [];
         parse_str($serialiseddata, $data);
 
-        $mform = new superpowerform($data);
+        $mform = new badgeform($data);
 
         $validateddata = $mform->get_data();
 
@@ -69,26 +69,82 @@ class superpower extends external_api {
             throw new \moodle_exception('invalidformdata');
         }
 
-        $superpower = new \stdClass();
-        $superpower->courseid = $course;
-        $superpower->name = $validateddata->name;
-        $superpower->badgeid = $validateddata->badgeid;
-        $superpower->timecreated = time();
-        $superpower->timemodified = time();
+        $now = time();
 
-        $superpowerid = $DB->insert_record('evokegame_superpowers', $superpower);
+        // Creates Moodle Badge.
+        require_once($CFG->libdir . '/badgeslib.php');
 
-        $superpower->id = $superpowerid;
+        $mdlbadge = new \stdClass();
+        $mdlbadge->name = $validateddata->name;
+        $mdlbadge->description = $validateddata->description;
+        $mdlbadge->courseid = $course;
+        $mdlbadge->usercreated = $USER->id;
+        $mdlbadge->usermodified = $USER->id;
+        $mdlbadge->version = '';
+        $mdlbadge->type = 2;
+        $mdlbadge->imageauthorname = '';
+        $mdlbadge->imageauthoremail = '';
+        $mdlbadge->imageauthorurl = '';
+        $mdlbadge->imagecaption = '';
+        $mdlbadge->timecreated = $now;
+        $mdlbadge->timemodified = $now;
+        $mdlbadge->issuerurl = $CFG->wwwroot;
+        $mdlbadge->issuername = $SITE->fullname;
+        $mdlbadge->issuercontact = $CFG->badges_defaultissuercontact;
+
+        $mdlbadge->messagesubject = get_string('messagesubject', 'badges');
+        $mdlbadge->message = get_string('messagebody', 'badges',
+            \html_writer::link($CFG->wwwroot . '/badges/mybadges.php', get_string('managebadges', 'badges')));
+        $mdlbadge->attachment = 1;
+        $mdlbadge->notification = BADGE_MESSAGE_NEVER;
+        $mdlbadge->status = BADGE_STATUS_ACTIVE;
+
+        $mdlbadgeid = $DB->insert_record('badge', $mdlbadge);
+
+        // Add badges criterias.
+        $badgecriteria = new \stdClass();
+
+        $badgecriteria->badgeid = $mdlbadgeid;
+        $badgecriteria->criteriatype = 0;
+        $badgecriteria->method = 1;
+        $badgecriteria->description = '';
+        $badgecriteria->descriptionformat = 1;
+
+        $DB->insert_record('badge_criteria', $badgecriteria);
+
+        $badgecriteria->criteriatype = 2;
+        $badgecriteria->method = 2;
+
+        $DB->insert_record('badge_criteria', $badgecriteria);
+
+        $eventparams = array('objectid' => $mdlbadgeid, 'context' => $PAGE->context);
+        $event = \core\event\badge_created::create($eventparams);
+        $event->trigger();
+
+        $newbadge = new \core_badges\badge($mdlbadgeid);
+
+        badges_process_badge_image($newbadge, $mform->save_temp_file('image'));
+
+        $evokebadge = new \stdClass();
+        $evokebadge->courseid = $course;
+        $evokebadge->badgeid = $mdlbadgeid;
+        $evokebadge->name = $validateddata->name;
+        $evokebadge->timecreated = time();
+        $evokebadge->timemodified = time();
+
+        $evokebadgeid = $DB->insert_record('evokegame_badges', $evokebadge);
+
+        $evokebadge->id = $evokebadgeid;
 
         return [
             'status' => 'ok',
-            'message' => get_string('createsuperpower_success', 'local_evokegame'),
-            'data' => json_encode($superpower)
+            'message' => get_string('createbadge_success', 'local_evokegame'),
+            'data' => json_encode($evokebadge)
         ];
     }
 
     /**
-     * Create superpower return fields
+     * Create badge return fields
      *
      * @return external_single_structure
      */
@@ -103,19 +159,19 @@ class superpower extends external_api {
     }
 
     /**
-     * Create superpower parameters
+     * Create badge parameters
      *
      * @return external_function_parameters
      */
     public static function edit_parameters() {
         return new external_function_parameters([
             'contextid' => new external_value(PARAM_INT, 'The context id for the course module'),
-            'jsonformdata' => new external_value(PARAM_RAW, 'The data from the superpower form, encoded as a json array')
+            'jsonformdata' => new external_value(PARAM_RAW, 'The data from the badge form, encoded as a json array')
         ]);
     }
 
     /**
-     * Create superpower method
+     * Create badge method
      *
      * @param int $contextid
      * @param string $jsonformdata
@@ -144,7 +200,7 @@ class superpower extends external_api {
         $data = [];
         parse_str($serialiseddata, $data);
 
-        $mform = new superpowerform($data);
+        $mform = new badgeform($data);
 
         $validateddata = $mform->get_data();
 
@@ -152,23 +208,23 @@ class superpower extends external_api {
             throw new \moodle_exception('invalidformdata');
         }
 
-        $superpower = new \stdClass();
-        $superpower->id = $validateddata->id;
-        $superpower->name = $validateddata->name;
-        $superpower->badgeid = $validateddata->badgeid;
-        $superpower->timemodified = time();
+        $badge = new \stdClass();
+        $badge->id = $validateddata->id;
+        $badge->name = $validateddata->name;
+        $badge->badgeid = $validateddata->badgeid;
+        $badge->timemodified = time();
 
-        $DB->update_record('evokegame_superpowers', $superpower);
+        $DB->update_record('evokegame_badges', $badge);
 
         return [
             'status' => 'ok',
-            'message' => get_string('editsuperpower_success', 'local_evokegame'),
-            'data' => json_encode($superpower)
+            'message' => get_string('editbadge_success', 'local_evokegame'),
+            'data' => json_encode($badge)
         ];
     }
 
     /**
-     * Create superpower return fields
+     * Create badge return fields
      *
      * @return external_single_structure
      */
@@ -183,22 +239,22 @@ class superpower extends external_api {
     }
 
     /**
-     * Delete superpower parameters
+     * Delete badge parameters
      *
      * @return external_function_parameters
      */
     public static function delete_parameters() {
         return new external_function_parameters([
-            'superpower' => new external_single_structure([
-                'id' => new external_value(PARAM_INT, 'The superpower id', VALUE_REQUIRED)
+            'badge' => new external_single_structure([
+                'id' => new external_value(PARAM_INT, 'The badge id', VALUE_REQUIRED)
             ])
         ]);
     }
 
     /**
-     * Delete superpower method
+     * Delete badge method
      *
-     * @param array $superpower
+     * @param array $badge
      *
      * @return array
      *
@@ -207,23 +263,23 @@ class superpower extends external_api {
      * @throws \invalid_parameter_exception
      * @throws \moodle_exception
      */
-    public static function delete($superpower) {
+    public static function delete($badge) {
         global $DB;
 
-        self::validate_parameters(self::delete_parameters(), ['superpower' => $superpower]);
+        self::validate_parameters(self::delete_parameters(), ['badge' => $badge]);
 
-        $superpower = (object)$superpower;
+        $badge = (object)$badge;
 
-        $DB->delete_records('evokegame_superpowers', ['id' => $superpower->id]);
+        $DB->delete_records('evokegame_badges', ['id' => $badge->id]);
 
         return [
             'status' => 'ok',
-            'message' => get_string('deletesuperpower_success', 'local_evokegame')
+            'message' => get_string('deletebadge_success', 'local_evokegame')
         ];
     }
 
     /**
-     * Delete superpower return fields
+     * Delete badge return fields
      *
      * @return external_single_structure
      */

@@ -54,7 +54,7 @@ class scoreboard extends table_sql {
 
         $where = $capjoin->wheres;
 
-        $where .= ' ORDER BY p.points DESCw';
+        $where .= ' ORDER BY p.points DESC';
 
         $this->set_sql($fields, $from, $where, $params);
     }

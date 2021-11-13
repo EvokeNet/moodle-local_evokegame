@@ -19,27 +19,27 @@ $functions = [
         'type' => 'write',
         'ajax' => true
     ],
-    'local_evokegame_createsuperpower' => [
-        'classname' => 'local_evokegame\external\superpower',
-        'classpath' => 'local/evokegame/classes/external/superpower.php',
+    'local_evokegame_createbadge' => [
+        'classname' => 'local_evokegame\external\badge',
+        'classpath' => 'local/evokegame/classes/external/badge.php',
         'methodname' => 'create',
-        'description' => 'Creates a new superpower',
+        'description' => 'Creates a new badge',
         'type' => 'write',
         'ajax' => true
     ],
-    'local_evokegame_editsuperpower' => [
-        'classname' => 'local_evokegame\external\superpower',
-        'classpath' => 'local/evokegame/classes/external/superpower.php',
+    'local_evokegame_editbadge' => [
+        'classname' => 'local_evokegame\external\badge',
+        'classpath' => 'local/evokegame/classes/external/badge.php',
         'methodname' => 'edit',
-        'description' => 'Creates a new superpower',
+        'description' => 'Creates a new badge',
         'type' => 'write',
         'ajax' => true
     ],
-    'local_evokegame_deletesuperpower' => [
-        'classname' => 'local_evokegame\external\superpower',
-        'classpath' => 'local/evokegame/classes/external/superpower.php',
+    'local_evokegame_deletebadge' => [
+        'classname' => 'local_evokegame\external\badge',
+        'classpath' => 'local/evokegame/classes/external/badge.php',
         'methodname' => 'delete',
-        'description' => 'Creates a new superpower',
+        'description' => 'Creates a new badge',
         'type' => 'write',
         'ajax' => true
     ],
