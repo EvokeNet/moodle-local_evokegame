@@ -126,7 +126,10 @@ define([
             var tableLine = $('<tr>' +
                 '<th scope="row">'+item.id+'</th>' +
                 '<td>'+item.name+'</td>' +
-                '<td style="width: 120px; text-align: center;">' +
+                '<td style="width: 160px; text-align: center;">' +
+                '<a href="'+Config.wwwroot+'/local/evokegame/badgesettings.php?id='+item.id+'" data-id="'+item.id+'" ' +
+                    'class="btn btn-primary btn-sm"><i class="fa fa-cog"></i></a>' +
+                '</a>' +
                 '<a href="#" data-id="'+item.id+'" data-name="'+item.name+'"' +
                     'data-courseid="'+item.courseid+'" data-badgeid="'+item.badgeid+'"' +
                     'class="btn btn-warning btn-sm edit-evokegame-badge">' +

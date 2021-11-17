@@ -55,7 +55,8 @@ class usergraded {
             // String submission_ length == 8.
             $submissionskill = substr($skill, 8);
 
-            $pointstoadd = $event->get_grade()->finalgrade * $value;
+//            $pointstoadd = $event->get_grade()->finalgrade * $value;
+            $pointstoadd = $value;
 
             $points->add_points('module', 'grading', $cm->id, $submissionskill, $pointstoadd);
         }
