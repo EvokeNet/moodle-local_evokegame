@@ -1,5 +1,5 @@
 {
   "plugintypes": {
-    "evokebadgecriteria": "local\/evokegame\/evokebadgecriteria"
+    "badgecriteria": "local\/evokegame\/badgecriteria"
   }
 }

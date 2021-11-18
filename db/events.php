@@ -26,4 +26,9 @@ $observers = [
         'callback' => '\local_evokegame\observers\usergraded::observer',
         'internal' => false
     ],
+    [
+        'eventname' => '\local_evokegame\event\points_added',
+        'callback' => '\local_evokegame\observers\badgeissuer::observer',
+        'internal' => false
+    ],
 ];

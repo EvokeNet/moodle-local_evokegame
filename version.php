@@ -11,7 +11,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_evokegame';
-$plugin->release = '0.0.4';
-$plugin->version = 2021111600;
+$plugin->release = '0.0.5';
+$plugin->version = 2021111900;
 $plugin->requires = 2021051700;
 $plugin->maturity = MATURITY_BETA;

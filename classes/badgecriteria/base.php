@@ -8,7 +8,7 @@
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
 
-namespace local_evokegame\evokebadgecriteria;
+namespace local_evokegame\badgecriteria;
 
 defined('MOODLE_INTERNAL') || die;
 

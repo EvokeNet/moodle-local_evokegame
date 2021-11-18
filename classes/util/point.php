@@ -70,7 +70,22 @@ class point {
         $pointsdata->timecreated = time();
         $pointsdata->timemodified = time();
 
-        return $DB->insert_record('evokegame_logs', $pointsdata);
+        $pointid = $DB->insert_record('evokegame_logs', $pointsdata);
+        $pointsdata->id = $pointid;
+
+        $context = \context_course::instance($this->mypoints->courseid);
+
+        $params = array(
+            'context' => $context,
+            'objectid' => $this->mypoints->id,
+            'courseid' => $this->mypoints->courseid,
+            'relateduserid' => $this->mypoints->userid
+        );
+        $event = \local_evokegame\event\points_added::create($params);
+        $event->add_record_snapshot('evokegame_logs', $pointsdata);
+        $event->trigger();
+
+        return $pointsdata;
     }
 
     public function points_already_added($pointsource, $pointsourcetype, $sourceid, $skill) {

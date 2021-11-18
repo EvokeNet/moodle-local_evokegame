@@ -12,7 +12,7 @@ use local_evokegame\util\skill;
 use local_evokegame\util\badgecriteria as badgecriteriautil;
 
 /**
- * Avatar external api class.
+ * Badge criteria external api class.
  *
  * @package     local_evokegame
  * @copyright   2021 World Bank Group <https://worldbank.org>

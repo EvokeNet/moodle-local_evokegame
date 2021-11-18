@@ -12,7 +12,7 @@ namespace local_evokegame\util;
 
 defined('MOODLE_INTERNAL') || die;
 
-use moodle_url;
+use local_evokegame\badgecriteria\skill\badgecriteria as skillcriteria;
 
 class badgecriteria {
     public const CRITERIA_SKILL_POINTS = 1;
@@ -38,6 +38,14 @@ class badgecriteria {
                 return 'courseaccess';
             default:
                 return '';
+        }
+    }
+
+    public function check_if_user_achieved_criteria($userid, $badgecriteria) {
+        if ($badgecriteria->method == 'skillpoints') {
+            $skillcriteria = new skillcriteria();
+
+            return $skillcriteria->check_if_user_achieved_criteria($userid, $badgecriteria);
         }
     }
 }

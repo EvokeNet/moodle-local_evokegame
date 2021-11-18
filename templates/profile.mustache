@@ -79,7 +79,9 @@
 {{/hasbadges}}
 
 {{#js}}
-    require(['local_evokegame/chooseavatar'], function(ChooseAvatar) {
+    require(['local_evokegame/chooseavatar', 'local_evokegame/notificationbadge'], function(ChooseAvatar, NotificationBadge) {
         ChooseAvatar.init('[data-action=choose-avatar-modal]', {{{contextid}}});
+
+        NotificationBadge.init();
     });
 {{/js}}

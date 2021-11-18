@@ -59,4 +59,13 @@ $functions = [
         'type' => 'write',
         'ajax' => true
     ],
+    'local_evokegame_checknotificationbadge' => [
+        'classname' => 'local_evokegame\external\notification',
+        'classpath' => 'local/evokegame/classes/external/notification.php',
+        'methodname' => 'checknotificationbadge',
+        'description' => 'Check if a user has a badge notification pending',
+        'type' => 'write',
+        'ajax' => true
+    ],
+
 ];

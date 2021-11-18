@@ -174,6 +174,28 @@
     text-align: center;
 }
 
+.evoke-game-notification-badge-modal .modal-content .modal-header {
+    background-color: #ff0540;
+}
+
+.evoke-game-notification-badge-modal .modal-content .modal-header .modal-title {
+    color: #fff;
+    font-size: 1.3rem;
+}
+
+.evoke-game-notification-badge-modal .modal-content .modal-body {
+    text-align: center;
+    font-family: "Bungee", cursive;
+}
+
+.evoke-game-notification-badge-modal img {
+    border-radius: 50%;
+    border: 1px solid #d7dfe3;
+    padding: 0.25rem;
+    width: 142px;
+    height: 142px;
+}
+
 @media (max-width: 991.98px) {
     .evokegame-scoreboard {
         display: flex;

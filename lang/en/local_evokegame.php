@@ -51,3 +51,10 @@ $string['subplugintype_evokebadgecriteria_skillpoints'] = 'Skill points';
 $string['subplugintype_evokebadgecriteria_courseaccess'] = 'Course access';
 $string['createbadgecriteria_success'] = 'Criteria successfully created';
 $string['deletebadgecriteria_success'] = 'Criteria successfully deleted';
+
+$string['eventpoints_added'] = 'Points added event';
+$string['congratulations'] = 'Congratulations!';
+$string['youveearnedabadge'] = 'You\'ve earned a badge!';
+$string['youjustearnedanewbadge'] = 'You just earned a new badge!';
+$string['youjustearnedanewbadge_desc'] = 'For outstanding work, you\'ve earned the <b><i>{$a}</i></b> badge';
+$string['checkyourscoreboard'] = 'Check your score board';

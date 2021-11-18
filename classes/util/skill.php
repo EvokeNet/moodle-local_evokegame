@@ -45,7 +45,7 @@ class skill {
             }
 
             $data[] = [
-                'skill' => ucfirst($record->skill),
+                'skill' => $record->skill,
                 'points' => $points,
                 'percentpoints' => $percentpoints,
                 'totalpoints' => $totalpoints,

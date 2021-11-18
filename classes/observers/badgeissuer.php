@@ -14,9 +14,46 @@ defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
 use core_badges\badge;
+use local_evokegame\util\badgecriteria;
 
 class badgeissuer {
     public static function observer(baseevent $event) {
+        global $DB;
+
+        $evokebadges = $DB->get_records('evokegame_badges', ['courseid' => $event->courseid]);
+
+        if (!$evokebadges) {
+            return;
+        }
+
+        foreach ($evokebadges as $evokebadge) {
+            $badgecriterias = $DB->get_records('evokegame_badges_criterias', ['evokebadgeid' => $evokebadge->id]);
+
+            if (!$badgecriterias) {
+                continue;
+            }
+
+            if (self::check_if_user_can_receive_badge($event->relateduserid, $badgecriterias)) {
+                self::deliver_badge($event->relateduserid, $evokebadge);
+            }
+        }
+    }
+
+    private static function check_if_user_can_receive_badge($userid, $badgecriterias) {
+        $badgecriteriautil = new badgecriteria();
+
+        foreach ($badgecriterias as $badgecriteria) {
+            $hascriteria = $badgecriteriautil->check_if_user_achieved_criteria($userid, $badgecriteria);
+
+            if (!$hascriteria) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static function deliver_badge($userid, $evokebadge) {
         global $CFG;
 
         require_once($CFG->libdir . '/badgeslib.php');
@@ -27,10 +64,16 @@ class badgeissuer {
         // Admin role.
         $issuerrole = 3;
 
-        $badge = new \core_badges\badge($event->badgeid);
+        $badge = new \core_badges\badge($evokebadge->badgeid);
 
-        process_manual_award($event->relateduserid, $issuerid, $issuerrole, $event->badgeid);
+        $badgeadded = process_manual_award($userid, $issuerid, $issuerrole, $evokebadge->badgeid);
 
-        $badge->issue($event->relateduserid);
+        if ($badgeadded) {
+            $badge->issue($userid);
+
+            $notification = new \local_evokegame\notification\badge($userid);
+
+            $notification->notify($evokebadge->id);
+        }
     }
 }

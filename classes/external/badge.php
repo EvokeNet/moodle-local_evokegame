@@ -10,7 +10,7 @@ use external_function_parameters;
 use local_evokegame\forms\badge as badgeform;
 
 /**
- * Avatar external api class.
+ * Badge external api class.
  *
  * @package     local_evokegame
  * @copyright   2021 World Bank Group <https://worldbank.org>
