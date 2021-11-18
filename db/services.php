@@ -39,7 +39,23 @@ $functions = [
         'classname' => 'local_evokegame\external\badge',
         'classpath' => 'local/evokegame/classes/external/badge.php',
         'methodname' => 'delete',
-        'description' => 'Creates a new badge',
+        'description' => 'Deletes a badge',
+        'type' => 'write',
+        'ajax' => true
+    ],
+    'local_evokegame_createbadgecriteria' => [
+        'classname' => 'local_evokegame\external\badgecriteria',
+        'classpath' => 'local/evokegame/classes/external/badgecriteria.php',
+        'methodname' => 'create',
+        'description' => 'Creates a new badge criteria',
+        'type' => 'write',
+        'ajax' => true
+    ],
+    'local_evokegame_deletebadgecriteria' => [
+        'classname' => 'local_evokegame\external\badgecriteria',
+        'classpath' => 'local/evokegame/classes/external/badgecriteria.php',
+        'methodname' => 'delete',
+        'description' => 'Deletes a badge',
         'type' => 'write',
         'ajax' => true
     ],

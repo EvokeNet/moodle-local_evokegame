@@ -107,4 +107,51 @@ class skill {
 
         return '';
     }
+
+    public function get_course_skills_select($courseid) {
+        global $DB;
+
+        $sql = 'SELECT d.id, f.shortname
+                FROM {customfield_category} c
+                INNER JOIN {customfield_field} f ON f.categoryid = c.id
+                INNER JOIN {customfield_data} d ON d.fieldid = f.id
+                INNER JOIN {course_modules} cm ON cm.id = d.instanceid
+                WHERE c.component = "local_evokegame" AND c.area = "mod" AND cm.course = :courseid
+                GROUP BY f.shortname
+                ORDER BY d.id';
+
+        $records = $DB->get_records_sql($sql, ['courseid' => $courseid]);
+
+        if (!$records) {
+            return false;
+        }
+
+        $data = [
+            get_string('chooseanoption', 'local_evokegame')
+        ];
+        foreach ($records as $record) {
+            $skillname = $record->shortname;
+
+            if (strpos($skillname, 'submission_') === false && strpos($skillname, 'grading_') === false) {
+                continue;
+            }
+
+            $evaluations = ['submission_', 'grading_'];
+            $skillname = str_replace($evaluations, "", $skillname);
+
+            if (in_array($skillname, $data)) {
+                continue;
+            }
+
+            $data[] = $skillname;
+        }
+
+        return $data;
+    }
+
+    public function get_skill_string_name($courseid, $skillid) {
+        $skillsselect = $this->get_course_skills_select($courseid);
+
+        return $skillsselect[$skillid];
+    }
 }

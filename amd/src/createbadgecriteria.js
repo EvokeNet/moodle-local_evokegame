@@ -18,16 +18,19 @@ define([
         'core/yui'],
     function($, Config, Str, ModalFactory, ModalEvents, Fragment, Ajax, Swal, Y) {
         /**
-         * Constructor for the CreateBadge.
+         * Constructor for the CreateBadgeCriteria.
          *
          * @param selector The selector to open the modal
-         * @param contextid The course module contextid
-         * @param course The course id
+         * @param contextid The courseid module contextid
+         * @param courseid The courseid id
+         * @param badgeid The evoke badge id
          */
-        var CreateBadge = function(selector, contextid, course) {
+        var CreateBadgeCriteria = function(selector, contextid, courseid, badgeid) {
             this.contextid = contextid;
 
-            this.course = course;
+            this.courseid = courseid;
+
+            this.badgeid = badgeid;
 
             this.init(selector);
         };
@@ -36,34 +39,40 @@ define([
          * @var {Modal} modal
          * @private
          */
-        CreateBadge.prototype.modal = null;
+        CreateBadgeCriteria.prototype.modal = null;
 
         /**
          * @var {int} contextid
          * @private
          */
-        CreateBadge.prototype.contextid = -1;
+        CreateBadgeCriteria.prototype.contextid = -1;
 
         /**
-         * @var {int} course
+         * @var {int} courseid
          * @private
          */
-        CreateBadge.prototype.course = -1;
+        CreateBadgeCriteria.prototype.courseid = -1;
+
+        /**
+         * @var {int} badgeid
+         * @private
+         */
+        CreateBadgeCriteria.prototype.badgeid = -1;
 
         /**
          * Set up all of the event handling for the modal.
          *
          * @method init
          */
-        CreateBadge.prototype.init = function(selector) {
+        CreateBadgeCriteria.prototype.init = function(selector) {
             var triggers = $(selector);
 
-            return Str.get_string('createbadge', 'local_evokegame').then(function(title) {
+            return Str.get_string('createbadgecriteria', 'local_evokegame').then(function(title) {
                 // Create the modal.
                 return ModalFactory.create({
                     type: ModalFactory.types.SAVE_CANCEL,
                     title: title,
-                    body: this.getBody({course: this.course})
+                    body: this.getBody({courseid: this.courseid, badgeid: this.badgeid})
                 }, triggers);
             }.bind(this)).then(function(modal) {
                 // Keep a reference to the modal.
@@ -71,7 +80,7 @@ define([
 
                 // We want to reset the form every time it is opened.
                 this.modal.getRoot().on(ModalEvents.hidden, function() {
-                    this.modal.setBody(this.getBody({course: this.course}));
+                    this.modal.setBody(this.getBody({courseid: this.courseid, badgeid: this.badgeid}));
                 }.bind(this));
 
                 // We want to hide the submit buttons every time it is opened.
@@ -96,7 +105,7 @@ define([
          *
          * @return {Promise}
          */
-        CreateBadge.prototype.getBody = function(formdata) {
+        CreateBadgeCriteria.prototype.getBody = function(formdata) {
             if (typeof formdata === "undefined") {
                 formdata = {};
             }
@@ -104,7 +113,7 @@ define([
             // Get the content of the modal.
             var params = {jsonformdata: JSON.stringify(formdata)};
 
-            return Fragment.loadFragment('local_evokegame', 'badge_form', this.contextid, params);
+            return Fragment.loadFragment('local_evokegame', 'badgecriteria_form', this.contextid, params);
         };
 
         /**
@@ -114,7 +123,7 @@ define([
          *
          * @return {Promise}
          */
-        CreateBadge.prototype.handleFormSubmissionResponse = function(data) {
+        CreateBadgeCriteria.prototype.handleFormSubmissionResponse = function(data) {
             this.modal.hide();
             // We could trigger an event instead.
             Y.use('moodle-core-formchangechecker', function() {
@@ -123,26 +132,25 @@ define([
 
             var item = JSON.parse(data.data);
 
+            var target = item.target;
+            if (typeof item.target === 'undefined') {
+                target = '';
+            }
+
             var tableLine = $('<tr>' +
                 '<th scope="row">'+item.id+'</th>' +
-                '<td>'+item.name+'</td>' +
-                '<td style="width: 160px; text-align: center;">' +
-                '<a href="'+Config.wwwroot+'/local/evokegame/badgecriterias.php?id='+item.id+'" data-id="'+item.id+'" ' +
-                    'class="btn btn-primary btn-sm"><i class="fa fa-cog"></i></a>' +
-                '</a>' +
-                '<a href="#" data-id="'+item.id+'" data-name="'+item.name+'"' +
-                    'data-courseid="'+item.courseid+'" data-badgeid="'+item.badgeid+'"' +
-                    'class="btn btn-warning btn-sm edit-evokegame-badge">' +
-                '<i class="fa fa-pencil-square-o text-white"></i>' +
-                '</a> ' +
-                '<a href="#" data-id="'+item.id+'" class="btn btn-danger btn-sm delete-evokegame-badge">' +
+                '<td>'+item.method+'</td>' +
+                '<td>'+target+'</td>' +
+                '<td>'+item.value+'</td>' +
+                '<td style="width: 120px; text-align: center;">' +
+                '<a href="#" data-id="'+item.id+'" class="btn btn-danger btn-sm delete-evokegame-badgecriteria">' +
                 '<i class="fa fa-trash-o"></i>' +
                 '</a> ' +
                 '</td>' +
                 '</tr>');
 
             tableLine
-                .appendTo('.table-evokegame-badges tbody')
+                .appendTo('.table-evokegame-badgecriterias tbody')
                 .hide().fadeIn('normal');
 
             var Toast = Swal.mixin({
@@ -170,7 +178,7 @@ define([
          *
          * @return {Promise}
          */
-        CreateBadge.prototype.handleFormSubmissionFailure = function(data) {
+        CreateBadgeCriteria.prototype.handleFormSubmissionFailure = function(data) {
             // Oh noes! Epic fail :(
             // Ah wait - this is normal. We need to re-display the form with errors!
             this.modal.setBody(this.getBody(data));
@@ -185,7 +193,7 @@ define([
          *
          * @param {Event} e Form submission event.
          */
-        CreateBadge.prototype.submitFormAjax = function(e) {
+        CreateBadgeCriteria.prototype.submitFormAjax = function(e) {
             // We don't want to do a real form submission.
             e.preventDefault();
 
@@ -217,8 +225,8 @@ define([
 
             // Now we can continue...
             Ajax.call([{
-                methodname: 'local_evokegame_createbadge',
-                args: {contextid: this.contextid, course: this.course, jsonformdata: JSON.stringify(formData)},
+                methodname: 'local_evokegame_createbadgecriteria',
+                args: {contextid: this.contextid, courseid: this.courseid, jsonformdata: JSON.stringify(formData)},
                 done: this.handleFormSubmissionResponse.bind(this),
                 fail: this.handleFormSubmissionFailure.bind(this, formData)
             }]);
@@ -231,15 +239,15 @@ define([
          * @param {Event} e Form submission event.
          * @private
          */
-        CreateBadge.prototype.submitForm = function(e) {
+        CreateBadgeCriteria.prototype.submitForm = function(e) {
             e.preventDefault();
 
             this.modal.getRoot().find('form').submit();
         };
 
         return {
-            init: function(selector, contextid, course) {
-                return new CreateBadge(selector, contextid, course);
+            init: function(selector, contextid, courseid, badgeid) {
+                return new CreateBadgeCriteria(selector, contextid, courseid, badgeid);
             }
         };
     }

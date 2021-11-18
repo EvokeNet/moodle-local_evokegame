@@ -1,0 +1,39 @@
+<div class="text-right mb-3">
+    <a href="#"
+       class="btn btn-primary" data-action="create-badge-modal">
+        <i class="fa fa-plus-circle"></i> {{#str}}createbadgecriteria, local_evokegame{{/str}}
+    </a>
+</div>
+
+<table class="table table-bordered table-hover table-evokegame-badgecriterias">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">{{#str}}criteriamethod, local_evokegame{{/str}}</th>
+        <th scope="col">{{#str}}criteriatarget, local_evokegame{{/str}}</th>
+        <th scope="col">{{#str}}criteriavalue, local_evokegame{{/str}}</th>
+        <th scope="col">{{#str}}actions, local_evokegame{{/str}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#criterias}}
+        <tr>
+            <th scope="row">{{{id}}}</th>
+            <td>{{{method}}}</td>
+            <td>{{{target}}}</td>
+            <td>{{{value}}}</td>
+            <td style="width: 120px; text-align: center;">
+                <a href="#" data-id="{{id}}" class="btn btn-danger btn-sm delete-evokegame-badgecriteria"><i class="fa fa-trash-o"></i></a>
+            </td>
+        </tr>
+    {{/criterias}}
+    </tbody>
+</table>
+
+{{#js}}
+    require(['local_evokegame/createbadgecriteria', 'local_evokegame/deletebadgecriteria'], function(CreateBadgeCriteria, DeleteBadgeCriteria) {
+        CreateBadgeCriteria.init('[data-action=create-badge-modal]', {{{contextid}}}, {{{courseid}}}, {{{badgeid}}});
+
+        DeleteBadgeCriteria.init();
+    });
+{{/js}}

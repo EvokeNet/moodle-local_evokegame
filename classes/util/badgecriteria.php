@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * Evoke badge criterias util class
+ *
+ * @package     local_evokegame
+ * @copyright   2021 World Bank Group <https://worldbank.org>
+ * @author      Willian Mano <willianmanoaraujo@gmail.com>
+ */
+
+namespace local_evokegame\util;
+
+defined('MOODLE_INTERNAL') || die;
+
+use moodle_url;
+
+class badgecriteria {
+    public const CRITERIA_SKILL_POINTS = 1;
+    public const CRITERIA_COURSE_ACCESS = 2;
+
+    public function get_evoke_badge_criterias($evokebadgeid) {
+        global $DB;
+
+        $records = $DB->get_records('evokegame_badges_criterias', ['evokebadgeid' => $evokebadgeid]);
+
+        if (!$records) {
+            return false;
+        }
+
+        return array_values($records);
+    }
+
+    public function get_criteria_method_name($badgecriteriaid) {
+        switch ($badgecriteriaid) {
+            case 1:
+                return 'skillpoints';
+            case 2:
+                return 'courseaccess';
+            default:
+                return '';
+        }
+    }
+}

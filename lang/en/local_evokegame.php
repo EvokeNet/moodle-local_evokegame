@@ -38,3 +38,16 @@ $string['createbadge_success'] = 'Superpower successfully created';
 $string['editbadge_success'] = 'Superpower successfully updated';
 $string['deletebadge_success'] = 'Superpower successfully deleted';
 $string['editbadge'] = 'Edit badge';
+
+$string['subplugintype_evokebadgecriteria'] = 'Evoke badge criteria method';
+$string['subplugintype_evokebadgecriteria_plural'] = 'Evoke badge criterias methods';
+$string['createbadgecriteria'] = 'Create badge criteria';
+$string['criteriamethod'] = 'Criteria method';
+$string['criteriatarget'] = 'Criteria target';
+$string['criteriavalue'] = 'Criteria value';
+$string['value'] = 'Value';
+$string['chooseanoption'] = 'Choose an option';
+$string['subplugintype_evokebadgecriteria_skillpoints'] = 'Skill points';
+$string['subplugintype_evokebadgecriteria_courseaccess'] = 'Course access';
+$string['createbadgecriteria_success'] = 'Criteria successfully created';
+$string['deletebadgecriteria_success'] = 'Criteria successfully deleted';

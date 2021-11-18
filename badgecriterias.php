@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configure course badgesettings.
+ * Configure course badgecriterias.
  *
  * @package     mod_evokeportfolio
  * @copyright   2021 World Bank Group <https://worldbank.org>
@@ -20,7 +20,7 @@ require_course_login($course, true);
 
 $context = context_course::instance($course->id);
 
-$PAGE->set_url('/local/evokegame/badgesettings.php', ['id' => $course->id]);
+$PAGE->set_url('/local/evokegame/badgecriterias.php', ['id' => $course->id]);
 $PAGE->set_title(format_string($course->fullname));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
@@ -29,7 +29,7 @@ echo $OUTPUT->header();
 
 $renderer = $PAGE->get_renderer('local_evokegame');
 
-$contentrenderable = new \local_evokegame\output\badgesettings($course, $context, $evokebadge);
+$contentrenderable = new \local_evokegame\output\badgecriterias($course, $context, $evokebadge);
 
 echo $renderer->render($contentrenderable);
 

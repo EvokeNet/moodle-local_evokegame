@@ -14,7 +14,7 @@ use renderer_base;
  * @copyright   2021 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
-class badgesettings implements renderable, templatable {
+class badgecriterias implements renderable, templatable {
     protected $course;
     protected $context;
     protected $evokebadge;
@@ -26,8 +26,13 @@ class badgesettings implements renderable, templatable {
     }
 
     public function export_for_template(renderer_base $output) {
-        return [
+        $badgecriteriautil = new \local_evokegame\util\badgecriteria();
 
+        return [
+            'contextid' => $this->context->id,
+            'courseid' => $this->course->id,
+            'badgeid' => $this->evokebadge->id,
+            'criterias' => $badgecriteriautil->get_evoke_badge_criterias($this->evokebadge->id)
         ];
     }
 }
