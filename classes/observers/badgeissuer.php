@@ -27,6 +27,10 @@ class badgeissuer {
         }
 
         foreach ($evokebadges as $evokebadge) {
+            if (self::user_already_have_badge($event->relateduserid, $evokebadge->badgeid)) {
+                continue;
+            }
+
             $badgecriterias = $DB->get_records('evokegame_badges_criterias', ['evokebadgeid' => $evokebadge->id]);
 
             if (!$badgecriterias) {
@@ -37,6 +41,12 @@ class badgeissuer {
                 self::deliver_badge($event->relateduserid, $evokebadge);
             }
         }
+    }
+
+    private static function user_already_have_badge($userid, $badgerid) {
+        $badge = new \core_badges\badge($badgerid);
+
+        return $badge->is_issued($userid);
     }
 
     private static function check_if_user_can_receive_badge($userid, $badgecriterias) {
