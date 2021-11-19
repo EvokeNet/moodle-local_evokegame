@@ -84,8 +84,8 @@ class badgecriteria extends external_api {
         $badgecriteria->timecreated = $now;
         $badgecriteria->timemodified = $now;
 
-        if ($validateddata->target && $validateddata->method == $badgecriteriautil::CRITERIA_SKILL_POINTS) {
-            $badgecriteria->target = $skillutil->get_skill_string_name($courseid, $validateddata->target);
+        if ($validateddata->skilltarget && $validateddata->method == $badgecriteriautil::CRITERIA_SKILL_POINTS) {
+            $badgecriteria->target = $skillutil->get_skill_string_name($courseid, $validateddata->skilltarget);
         }
 
         $badgecriteriaid = $DB->insert_record('evokegame_badges_criterias', $badgecriteria);

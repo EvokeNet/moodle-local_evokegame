@@ -20,6 +20,12 @@ class badgeissuer {
     public static function observer(baseevent $event) {
         global $DB;
 
+        $userid = $event->relateduserid;
+
+        if (get_class($event) === 'core\event\course_viewed') {
+            $userid = $event->userid;
+        }
+
         $evokebadges = $DB->get_records('evokegame_badges', ['courseid' => $event->courseid]);
 
         if (!$evokebadges) {
@@ -27,7 +33,7 @@ class badgeissuer {
         }
 
         foreach ($evokebadges as $evokebadge) {
-            if (self::user_already_have_badge($event->relateduserid, $evokebadge->badgeid)) {
+            if (self::user_already_have_badge($userid, $evokebadge->badgeid)) {
                 continue;
             }
 
@@ -37,8 +43,8 @@ class badgeissuer {
                 continue;
             }
 
-            if (self::check_if_user_can_receive_badge($event->relateduserid, $badgecriterias)) {
-                self::deliver_badge($event->relateduserid, $evokebadge);
+            if (self::check_if_user_can_receive_badge($userid, $badgecriterias)) {
+                self::deliver_badge($userid, $evokebadge);
             }
         }
     }

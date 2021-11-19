@@ -55,9 +55,9 @@ class badgecriteria extends \moodleform {
         $mform->addRule('method', null, 'required', null, 'client');
 
         $skillutil = new skill();
-        $mform->addElement('select', 'target', get_string('criteriavalue', 'local_evokegame'), $skillutil->get_course_skills_select($courseid));
-        $mform->setType('target', PARAM_INT);
-        $mform->hideIf('target', 'method', 'neq', '1');
+        $mform->addElement('select', 'skilltarget', get_string('criteriavalue', 'local_evokegame'), $skillutil->get_course_skills_select($courseid));
+        $mform->setType('skilltarget', PARAM_INT);
+        $mform->hideIf('skilltarget', 'method', 'neq', '1');
 
         $mform->addElement('text', 'value', get_string('value', 'local_evokegame'));
         $mform->addRule('value', get_string('required'), 'required', null, 'client');
