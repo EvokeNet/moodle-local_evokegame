@@ -1,0 +1,25 @@
+<div class="evokegame">
+    <div class="evokegame-scoreboard dashboardnavbar">
+        <div class="awards">
+            <div class="score">
+                <div class="icon">
+                    <img class="evocoin black" src="{{{config.wwwroot}}}/local/evokegame/pix/evocoin.svg" alt="Evocoin">
+                </div>
+                <div class="points">{{{points}}}</div>
+            </div>
+            {{#hasbadges}}
+                <div class="badges">
+                    {{#badges}}
+                        <img src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge {{^awarded}}dimmed{{/awarded}}">
+                    {{/badges}}
+                </div>
+            {{/hasbadges}}
+        </div>
+    </div>
+</div>
+
+{{#js}}
+    require(['local_evokegame/notificationbadge'], function(NotificationBadge) {
+        NotificationBadge.init();
+    });
+{{/js}}

@@ -27,4 +27,10 @@ class renderer extends plugin_renderer_base {
 
         return parent::render_from_template('local_evokegame/dashboard', $data);
     }
+
+    public function render_dashboardnavbar(renderable $page) {
+        $data = $page->export_for_template($this);
+
+        return parent::render_from_template('local_evokegame/dashboardnavbar', $data);
+    }
 }

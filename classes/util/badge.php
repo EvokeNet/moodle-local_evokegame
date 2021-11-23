@@ -21,7 +21,7 @@ class badge {
         require_once($CFG->libdir . '/badgeslib.php');
     }
 
-    public function get_course_badges_with_user_award($userid, $courseid) {
+    public function get_course_badges_with_user_award($userid, $courseid, $contextid) {
         global $CFG, $PAGE;
 
         $coursebadges = $this->get_course_badges($courseid);
@@ -38,7 +38,7 @@ class badge {
                 'id' => $coursebadge->id,
                 'name' => $coursebadge->name,
                 'description' => $coursebadge->description,
-                'badgeimage' => $this->get_badge_image_url($PAGE->context->id, $coursebadge->id),
+                'badgeimage' => $this->get_badge_image_url($contextid, $coursebadge->id),
                 'awarded' => false
             ];
         }

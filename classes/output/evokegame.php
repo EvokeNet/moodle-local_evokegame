@@ -22,4 +22,14 @@ class evokegame {
 
         return $renderer->render($contentrenderable);
     }
+
+    public function get_dashboardnavbar($course, $context) {
+        global $PAGE;
+
+        $renderer = $PAGE->get_renderer('local_evokegame');
+
+        $contentrenderable = new \local_evokegame\output\dashboardnavbar($course, $context);
+
+        return $renderer->render($contentrenderable);
+    }
 }

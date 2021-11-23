@@ -66,7 +66,7 @@ class scoreboard extends table_sql {
     public function col_superpowers($user) {
         $badgeutil = new badge();
 
-        $userbadges = $badgeutil->get_course_badges_with_user_award($user->id, $this->course->id);
+        $userbadges = $badgeutil->get_course_badges_with_user_award($user->id, $this->course->id, $this->context->id);
         $userbadgescolumncontent = '';
         if ($userbadges) {
             foreach ($userbadges as $userbadge) {

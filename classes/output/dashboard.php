@@ -38,7 +38,7 @@ class dashboard implements renderable, templatable {
         $hasbadges = $badgeutil->get_course_badges($this->course->id);
         $badges = [];
         if ($hasbadges) {
-            $badges = $badgeutil->get_course_badges_with_user_award($USER->id, $this->course->id);
+            $badges = $badgeutil->get_course_badges_with_user_award($USER->id, $this->course->id, $this->context->id);
         }
 
         $userutil = new user();
