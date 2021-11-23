@@ -19,7 +19,11 @@
 </div>
 
 {{#js}}
-    require(['local_evokegame/notificationbadge'], function(NotificationBadge) {
+    require(['jquery', 'local_evokegame/notificationbadge'], function($, NotificationBadge) {
         NotificationBadge.init();
+
+        $(function() {
+            $('body').addClass('evokegame-navwith-dashboardnavbar');
+        });
     });
 {{/js}}

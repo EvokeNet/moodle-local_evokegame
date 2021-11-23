@@ -106,6 +106,10 @@
     width: 100px;
 }
 
+#page-local-evokegame-profile .evokegame-scoreboard.dashboardnavbar .evokebadge {
+    width: 32px;
+}
+
 .path-local-evokegame .evokebadge.dimmed,
 .evokegame-scoreboard .awards .badges .evokebadge.dimmed {
     filter: grayscale(100%) opacity(30%);
@@ -189,7 +193,8 @@
     cursor: pointer;
 }
 
-#superpowerstable .badge-image-column {
+#superpowerstable .badge-image-column,
+#awardsstable .badge-image-column {
     width: 120px;
     text-align: center;
 }
@@ -245,5 +250,21 @@
     .evokegame-scoreboard .userinfo {
         flex-direction: row-reverse;
         margin: 20px 0 0 0;
+    }
+}
+
+@media (max-width: 767px) {
+    body.evokegame-navwith-dashboardnavbar #page {
+        margin-top: 120px;
+    }
+
+    .evokegame-scoreboard.dashboardnavbar {
+        position: absolute;
+        top: 70px;
+        margin-left: 0;
+        width: 100%;
+        left: 0;
+        background: #000;
+        background-image: linear-gradient(to right, #000 40%, #140f3f 60%);
     }
 }

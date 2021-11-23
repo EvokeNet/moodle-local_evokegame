@@ -38,15 +38,21 @@ class badge extends \moodleform {
         $mform = $this->_form;
 
         $id = !(empty($this->_customdata['id'])) ? $this->_customdata['id'] : null;
-        $name = !(empty($this->_customdata['name'])) ? $this->_customdata['name'] : null;
         $courseid = !(empty($this->_customdata['courseid'])) ? $this->_customdata['courseid'] : null;
-        $badgeid = !(empty($this->_customdata['badgeid'])) ? $this->_customdata['badgeid'] : null;
 
         if (!empty($courseid)) {
             $mform->addElement('hidden', 'courseid', $courseid);
         }
 
         $mform->addElement('hidden', 'id', $id);
+
+        $options = [
+            1 => get_string('badgetype_badge', 'local_evokegame'),
+            2 => get_string('badgetype_award', 'local_evokegame'),
+        ];
+        $mform->addElement('select', 'type', get_string('badgetype', 'local_evokegame'), $options);
+        $mform->setDefault('type', 1);
+        $mform->addRule('type', null, 'required', null, 'client');
 
         $mform->addElement('text', 'name', get_string('name', 'local_evokegame'));
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
@@ -61,19 +67,6 @@ class badge extends \moodleform {
         $mform->addElement('filepicker', 'image', get_string('newimage', 'badges'), null, $imageoptions);
         $mform->addRule('image', null, 'required');
         $mform->addHelpButton('image', 'badgeimage', 'badges');
-
-//        $badgeutil = new badgeutil();
-//
-//        $coursebadges = $badgeutil->get_active_course_badges_select($this->_customdata['courseid']);
-//        $mform->addElement('select', 'badgeid', get_string('relatedbadge', 'local_evokegame'), $coursebadges);
-
-        if ($name) {
-            $mform->setDefault('name', $name);
-        }
-
-//        if ($badgeid) {
-//            $mform->setDefault('badgeid', $badgeid);
-//        }
     }
 
     /**

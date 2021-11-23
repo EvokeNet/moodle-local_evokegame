@@ -21,24 +21,57 @@ class badge {
         require_once($CFG->libdir . '/badgeslib.php');
     }
 
-    public function get_course_badges_with_user_award($userid, $courseid, $contextid) {
-        global $CFG, $PAGE;
+    public function get_awarded_course_badges($userid, $courseid, $contextid) {
+        $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid);
 
-        $coursebadges = $this->get_course_badges($courseid);
+        if (!$badges) {
+            return false;
+        }
+
+        $mybadges = [];
+        foreach ($badges as $badge) {
+            if ($badge['awarded']) {
+                $mybadges[] = $badge;
+            }
+        }
+
+        return $mybadges;
+    }
+
+    public function get_awarded_course_awards($userid, $courseid, $contextid) {
+        $badgetype = 2;
+
+        $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid, $badgetype);
+
+        if (!$badges) {
+            return false;
+        }
+
+        $myawards = [];
+        foreach ($badges as $badge) {
+            if ($badge['awarded']) {
+                $myawards[] = $badge;
+            }
+        }
+
+        return $myawards;
+    }
+
+    public function get_course_badges_with_user_award($userid, $courseid, $contextid, $type = 1) {
+        $coursebadges = $this->get_course_badges($courseid, $type);
 
         if (!$coursebadges) {
             return false;
         }
 
-        require_once($CFG->libdir . '/badgeslib.php');
-
         $badges = [];
         foreach ($coursebadges as $coursebadge) {
             $badges[] = [
                 'id' => $coursebadge->id,
+                'badgeid' => $coursebadge->badgeid,
                 'name' => $coursebadge->name,
                 'description' => $coursebadge->description,
-                'badgeimage' => $this->get_badge_image_url($contextid, $coursebadge->id),
+                'badgeimage' => $this->get_badge_image_url($contextid, $coursebadge->badgeid),
                 'awarded' => false
             ];
         }
@@ -51,7 +84,7 @@ class badge {
 
         foreach ($badges as $key => $badge) {
             foreach ($userbadges as $userbadge) {
-                if ($badge['id'] == $userbadge->id) {
+                if ($badge['badgeid'] == $userbadge->id) {
                     $badges[$key]['awarded'] = true;
                     continue 2;
                 }
@@ -61,26 +94,21 @@ class badge {
         return $badges;
     }
 
-    public function get_course_badges($courseid) {
-        // Get badges fro badgelib.
-        return badges_get_badges(BADGE_TYPE_COURSE, $courseid);
-    }
+    public function get_course_badges($courseid, $type = 1) {
+        global $DB;
 
-    public function get_active_course_badges_select($courseid) {
-        $badges = $this->get_course_badges($courseid);
+        $sql = 'SELECT eb.*, b.description
+                FROM {evokegame_badges} eb
+                INNER JOIN {badge} b ON b.id = eb.badgeid
+                WHERE b.courseid = :courseid AND eb.type = :type';
 
-        if(!$badges) {
+        $records = $DB->get_records_sql($sql, ['courseid' => $courseid, 'type' => $type]);
+
+        if (!$records) {
             return false;
         }
 
-        $data = [];
-        foreach ($badges as $badge) {
-            if ($badge->status == 1 || $badge->status == 3) {
-                $data[$badge->id] = $badge->name;
-            }
-        }
-
-        return $data;
+        return array_values($records);
     }
 
     public function get_user_course_badges($userid, $courseid) {

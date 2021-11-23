@@ -60,23 +60,44 @@
             <table id="superpowerstable" class="table">
                 <tbody>
                 {{#badges}}
-                    {{#awarded}}
-                        <tr>
-                            <td class="badge-image-column">
-                                <img src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge">
-                            </td>
-                            <td>
-                                <h3>{{{name}}}</h3>
-                                <p>{{{description}}}</p>
-                            </td>
-                        </tr>
-                    {{/awarded}}
+                    <tr>
+                        <td class="badge-image-column">
+                            <img src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge">
+                        </td>
+                        <td>
+                            <h3>{{{name}}}</h3>
+                            <p>{{{description}}}</p>
+                        </td>
+                    </tr>
                 {{/badges}}
                 </tbody>
             </table>
         </div>
     </div>
 {{/hasbadges}}
+
+{{#hasawards}}
+    <div class="row mt-4">
+        <div class="col">
+            <h2>{{#str}}myawards, local_evokegame{{/str}}</h2>
+            <table id="awardsstable" class="table">
+                <tbody>
+                {{#awards}}
+                    <tr>
+                        <td class="badge-image-column">
+                            <img src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge">
+                        </td>
+                        <td>
+                            <h3>{{{name}}}</h3>
+                            <p>{{{description}}}</p>
+                        </td>
+                    </tr>
+                {{/awards}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{{/hasawards}}
 
 {{#js}}
     require(['local_evokegame/chooseavatar', 'local_evokegame/notificationbadge'], function(ChooseAvatar, NotificationBadge) {

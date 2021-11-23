@@ -34,9 +34,9 @@ $string['deleteitem_confirm_title'] = 'Are you sure?';
 $string['deleteitem_confirm_msg'] = 'Once deleted, this item cannot be recovered!';
 $string['deleteitem_confirm_yes'] = 'Yes, delete it!';
 $string['deleteitem_confirm_no'] = 'Cancel';
-$string['createbadge_success'] = 'Superpower successfully created';
-$string['editbadge_success'] = 'Superpower successfully updated';
-$string['deletebadge_success'] = 'Superpower successfully deleted';
+$string['createbadge_success'] = 'Evoke badge successfully created';
+$string['editbadge_success'] = 'Evoke badge successfully updated';
+$string['deletebadge_success'] = 'Evoke badge successfully deleted';
 $string['editbadge'] = 'Edit badge';
 
 $string['subplugintype_evokebadgecriteria'] = 'Evoke badge criteria method';
@@ -58,3 +58,8 @@ $string['youveearnedabadge'] = 'You\'ve earned a badge!';
 $string['youjustearnedanewbadge'] = 'You just earned a new badge!';
 $string['youjustearnedanewbadge_desc'] = 'For outstanding work, you\'ve earned the <b><i>{$a}</i></b> badge';
 $string['checkyourscoreboard'] = 'Check your score board';
+
+$string['badgetype'] = 'Badge type';
+$string['badgetype_badge'] = 'Badge';
+$string['badgetype_award'] = 'Award';
+$string['myawards'] = 'My awards';

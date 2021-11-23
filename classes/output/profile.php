@@ -32,10 +32,18 @@ class profile implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         $badgeutil = new badge();
 
-        $hasbadges = $badgeutil->get_course_badges($this->course->id);
-        $badges = [];
-        if ($hasbadges) {
-            $badges = $badgeutil->get_course_badges_with_user_award($this->user->id, $this->course->id, $this->context->id);
+        $badges = $badgeutil->get_awarded_course_badges($this->user->id, $this->course->id, $this->context->id);
+
+        $hasbadges = false;
+        if ($badges) {
+            $hasbadges = true;
+        }
+
+        $awards = $badgeutil->get_awarded_course_awards($this->user->id, $this->course->id, $this->context->id);
+
+        $hasawards = false;
+        if ($awards) {
+            $hasawards = true;
         }
 
         $points = new point($this->course->id, $this->user->id);
@@ -54,7 +62,9 @@ class profile implements renderable, templatable {
             'skills' => $skills,
             'courseid' => $this->course->id,
             'hasbadges' => $hasbadges,
-            'badges' => $badges
+            'badges' => $badges,
+            'hasawards' => $hasawards,
+            'awards' => $awards
         ];
     }
 }

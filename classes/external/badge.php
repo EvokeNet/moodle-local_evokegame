@@ -128,6 +128,7 @@ class badge extends external_api {
         $evokebadge = new \stdClass();
         $evokebadge->courseid = $course;
         $evokebadge->badgeid = $mdlbadgeid;
+        $evokebadge->type = $validateddata->type;
         $evokebadge->name = $validateddata->name;
         $evokebadge->timecreated = time();
         $evokebadge->timemodified = time();
@@ -212,6 +213,7 @@ class badge extends external_api {
         $badge->id = $validateddata->id;
         $badge->name = $validateddata->name;
         $badge->badgeid = $validateddata->badgeid;
+        $badge->type = $validateddata->type;
         $badge->timemodified = time();
 
         $DB->update_record('evokegame_badges', $badge);
@@ -264,13 +266,21 @@ class badge extends external_api {
      * @throws \moodle_exception
      */
     public static function delete($badge) {
-        global $DB;
+        global $DB, $PAGE;
 
         self::validate_parameters(self::delete_parameters(), ['badge' => $badge]);
 
         $badge = (object)$badge;
 
-        $DB->delete_records('evokegame_badges', ['id' => $badge->id]);
+        $badgedb = $DB->get_record('evokegame_badges', ['id' => $badge->id], '*', MUST_EXIST);
+
+        $context = \context_course::instance($badgedb->courseid);
+        $PAGE->set_context($context);
+
+        $newbadge = new \core_badges\badge($badgedb->badgeid);
+        $newbadge->delete(false);
+
+        $DB->delete_records('evokegame_badges', ['id' => $badgedb->id]);
 
         return [
             'status' => 'ok',
