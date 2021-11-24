@@ -6,7 +6,7 @@
 
 .evokegame-scoreboard.dashboardnavbar {
     min-height: 60px;
-    margin-left: 2rem;
+    margin-left: 0.5rem;
 }
 
 .evokegame-scoreboard .awards,
@@ -65,9 +65,10 @@
 }
 
 .evokegame-scoreboard .awards .score .points {
-    background-color: #fff;
-    padding: 4px;
-    border-radius: 6px;
+    color: #fff;
+    font-family: "Bungee", cursive;
+    font-size: 24px;
+    padding: 2px;
 }
 
 .evokegame-scoreboard .awards .navigation .btn {
@@ -75,6 +76,12 @@
     border-radius: 40px;
     font-size: calc(0.9271875rem + 0.32625vw);
     padding: 12px;
+}
+
+.evokegame-scoreboard.dashboardnavbar .awards .navigation .btn {
+    padding: 8px 12px;
+    width: 48px;
+    height: 48px;
 }
 
 .evokegame-scoreboard .awards .navigation .btn .icon {
@@ -108,6 +115,7 @@
 
 #page-local-evokegame-profile .evokegame-scoreboard.dashboardnavbar .evokebadge {
     width: 32px;
+    border-radius: 50%;
 }
 
 .path-local-evokegame .evokebadge.dimmed,
@@ -155,11 +163,11 @@
     flex-direction: column;
     -webkit-align-content: space-between;
     align-content: space-between;
-    flex-flow: row wrap;
+    flex-flow: row wrap; /* stylelint-disable-line declaration-block-no-shorthand-property-overrides */
 }
 
 .path-local-evokegame .table-scoreboard {
-    font-family: "Bungee",cursive;
+    font-family: "Bungee", cursive;
 }
 
 .path-local-evokegame .table-scoreboard thead th {
@@ -194,7 +202,7 @@
 }
 
 #superpowerstable .badge-image-column,
-#awardsstable .badge-image-column {
+#achievementstable .badge-image-column {
     width: 120px;
     text-align: center;
 }
@@ -221,6 +229,42 @@
     height: 142px;
 }
 
+.evoke-game-notification-badge-modal.achievement-badge .modal-content .modal-header {
+    background-color: #140f3f;
+}
+
+.evoke-game-notification-badge-modal.achievement-badge .modal-content .modal-header .modal-title {
+    color: #00f0a6;
+}
+
+.evokegame-profile .userpicture {
+    text-align: center;
+}
+
+.evokegame-profile .userpicture img {
+    max-width: 160px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.evokegame-profile .card {
+    border: 1px solid #d7dfe3;
+}
+
+.evokegame-profile h3 {
+    font-size: 13px;
+}
+
+.evokegame-profile .table {
+    margin-bottom: 0;
+}
+
+.evokegame-profile .badge-image-column img {
+    border: 1px solid #d7dfe3;
+    border-radius: 50%;
+    padding: .25rem;
+}
+
 @media (max-width: 991.98px) {
     .evokegame-scoreboard {
         display: flex;
@@ -232,11 +276,11 @@
         flex-direction: column;
         -webkit-align-content: space-between;
         align-content: space-between;
-        flex-flow: row wrap;
+        flex-flow: row wrap; /* stylelint-disable-line declaration-block-no-shorthand-property-overrides */
     }
 
     .evokegame-scoreboard .navigation .btn {
-        padding: 12px 14px !important;
+        padding: 12px 14px !important; /* stylelint-disable-line declaration-no-important */
     }
 
     .evokegame-scoreboard .navigation .btn .icon {
@@ -255,7 +299,7 @@
 
 @media (max-width: 767px) {
     body.evokegame-navwith-dashboardnavbar #page {
-        margin-top: 120px;
+        margin-top: 140px;
     }
 
     .evokegame-scoreboard.dashboardnavbar {

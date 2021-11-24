@@ -44,6 +44,7 @@ class notification extends external_api {
         if (!$notification->should_be_notified()) {
             return [
                 'status' => false,
+                'isachievement' => null,
                 'badgename' => null,
                 'courseid' => null,
                 'badgeimage' => null
@@ -64,6 +65,7 @@ class notification extends external_api {
 
         return [
             'status' => true,
+            'isachievement' => $evokebadge->type == 2,
             'badgename' => $evokebadge->name,
             'courseid' => $evokebadge->courseid,
             'badgeimage' => $badgeimage->out(),
@@ -79,6 +81,7 @@ class notification extends external_api {
         return new external_single_structure(
             array(
                 'status' => new external_value(PARAM_BOOL, 'Operation status'),
+                'isachievement' => new external_value(PARAM_INT, 'Badge type'),
                 'badgename' => new external_value(PARAM_TEXT, 'Badge name'),
                 'courseid' => new external_value(PARAM_INT, 'Badge course id'),
                 'badgeimage' => new external_value(PARAM_RAW, 'Badge image'),

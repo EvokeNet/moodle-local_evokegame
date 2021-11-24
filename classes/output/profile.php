@@ -30,6 +30,8 @@ class profile implements renderable, templatable {
     }
 
     public function export_for_template(renderer_base $output) {
+        global $USER;
+
         $badgeutil = new badge();
 
         $badges = $badgeutil->get_awarded_course_badges($this->user->id, $this->course->id, $this->context->id);
@@ -39,11 +41,11 @@ class profile implements renderable, templatable {
             $hasbadges = true;
         }
 
-        $awards = $badgeutil->get_awarded_course_awards($this->user->id, $this->course->id, $this->context->id);
+        $achievements = $badgeutil->get_awarded_course_achievements($this->user->id, $this->course->id, $this->context->id);
 
-        $hasawards = false;
-        if ($awards) {
-            $hasawards = true;
+        $hasachievements = false;
+        if ($achievements) {
+            $hasachievements = true;
         }
 
         $points = new point($this->course->id, $this->user->id);
@@ -53,18 +55,25 @@ class profile implements renderable, templatable {
         $skillutil = new skill();
         $skills = $skillutil->get_course_skills_set($this->course->id, $this->user->id);
 
+        $itsme = $USER->id == $this->user->id;
+
         return [
+            'coursename' => $this->course->fullname,
             'contextid' => $this->context->id,
-            'points' => $points->mypoints->points,
-            'userfirstname' => $this->user->firstname,
+            'points' => (int) $points->mypoints->points,
+            'id' => $this->user->id,
+            'firstname' => $this->user->firstname,
+            'lastname' => $this->user->lastname,
+            'email' => $this->user->email,
             'useravatar' => $userutil->get_user_avatar_or_image($this->user),
             'hasskills' => $skills != false,
             'skills' => $skills,
             'courseid' => $this->course->id,
             'hasbadges' => $hasbadges,
             'badges' => $badges,
-            'hasawards' => $hasawards,
-            'awards' => $awards
+            'hasachievements' => $hasachievements,
+            'achievements' => $achievements,
+            'itsme' => $itsme
         ];
     }
 }

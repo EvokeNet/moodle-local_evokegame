@@ -30,6 +30,7 @@ define([
                 ModalFactory.create({
                     type: ModalNotificationBadge.TYPE,
                     templateContext: {
+                        isachievement: result.isachievement,
                         badgename: result.badgename,
                         badgeimage: result.badgeimage,
                         courseid: result.courseid,

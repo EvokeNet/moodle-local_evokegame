@@ -1,8 +1,15 @@
-<div class="modal moodle-has-zindex evoke-game-notification-badge-modal" data-region="modal-container" aria-hidden="true" role="dialog">
+<div class="modal moodle-has-zindex evoke-game-notification-badge-modal {{#isachievement}}achievement-badge{{/isachievement}}" data-region="modal-container" aria-hidden="true" role="dialog">
     <div class="modal-dialog {{$classes}}{{classes}}{{/classes}}" role="document" data-region="modal" aria-labelledby="{{uniqid}}-modal-title" tabindex="0">
         <div class="modal-content">
             <div class="modal-header {{$headerclasses}}{{headerclasses}}{{/headerclasses}}" data-region="header">
-                <h5 id="{{uniqid}}-modal-title" class="modal-title" data-region="title">{{#str}}youveearnedabadge, local_evokegame{{/str}}</h5>
+                <h5 id="{{uniqid}}-modal-title" class="modal-title" data-region="title">
+                    {{#isachievement}}
+                        {{#str}}youveearnedanachievement, local_evokegame{{/str}}
+                    {{/isachievement}}
+                    {{^isachievement}}
+                        {{#str}}youveearnedabadge, local_evokegame{{/str}}
+                    {{/isachievement}}
+                </h5>
 
                 <button type="button" class="close" data-action="hide" aria-label={{#quote}}{{#str}}closebuttontitle{{/str}}{{/quote}}>
                     <span aria-hidden="true">&times;</span>
@@ -13,10 +20,17 @@
                     <img src="{{badgeimage}}" alt="Badge" class="img-responsive border-radius">
                 </div>
 
-                <p class="mt-2">{{#str}}youjustearnedanewbadge_desc, local_evokegame, {{badgename}}{{/str}}</p>
+                <p class="mt-2">
+                    {{#isachievement}}
+                        {{#str}}youjustearnedanewachievement_desc, local_evokegame, {{badgename}}{{/str}}
+                    {{/isachievement}}
+                    {{^isachievement}}
+                        {{#str}}youjustearnedanewbadge_desc, local_evokegame, {{badgename}}{{/str}}
+                    {{/isachievement}}
+                </p>
 
                 <p>
-                    <a class="btn btn-primary" href="{{profileurl}}">
+                    <a class="btn {{#isachievement}}btn-dark{{/isachievement}}{{^isachievement}}btn-primary{{/isachievement}}" href="{{profileurl}}">
                         {{#str}}checkyourscoreboard, local_evokegame{{/str}}
                     </a>
                 </p>

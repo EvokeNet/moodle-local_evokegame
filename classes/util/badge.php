@@ -38,7 +38,7 @@ class badge {
         return $mybadges;
     }
 
-    public function get_awarded_course_awards($userid, $courseid, $contextid) {
+    public function get_awarded_course_achievements($userid, $courseid, $contextid) {
         $badgetype = 2;
 
         $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid, $badgetype);
@@ -47,14 +47,14 @@ class badge {
             return false;
         }
 
-        $myawards = [];
+        $myachievements = [];
         foreach ($badges as $badge) {
             if ($badge['awarded']) {
-                $myawards[] = $badge;
+                $myachievements[] = $badge;
             }
         }
 
-        return $myawards;
+        return $myachievements;
     }
 
     public function get_course_badges_with_user_award($userid, $courseid, $contextid, $type = 1) {

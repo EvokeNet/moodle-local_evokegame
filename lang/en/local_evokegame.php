@@ -55,11 +55,21 @@ $string['deletebadgecriteria_success'] = 'Criteria successfully deleted';
 $string['eventpoints_added'] = 'Points added event';
 $string['congratulations'] = 'Congratulations!';
 $string['youveearnedabadge'] = 'You\'ve earned a badge!';
+$string['youveearnedanachievement'] = 'You\'ve earned an achievement!';
 $string['youjustearnedanewbadge'] = 'You just earned a new badge!';
+$string['youjustearnedanewachievement'] = 'You just earned a new achievement!';
 $string['youjustearnedanewbadge_desc'] = 'For outstanding work, you\'ve earned the <b><i>{$a}</i></b> badge';
+$string['youjustearnedanewachievement_desc'] = 'For outstanding work, you\'ve earned the <b><i>{$a}</i></b> achievement';
 $string['checkyourscoreboard'] = 'Check your score board';
 
 $string['badgetype'] = 'Badge type';
 $string['badgetype_badge'] = 'Badge';
-$string['badgetype_award'] = 'Award';
-$string['myawards'] = 'My awards';
+$string['badgetype_achievement'] = 'Achievement';
+$string['myachievements'] = 'My achievements';
+
+$string['updateavatar'] = 'Update avatar';
+$string['editprofile'] = 'Edit profile';
+$string['aboutme'] = 'About me:';
+$string['fullname'] = 'Fullname:';
+$string['email'] = 'Fullname:';
+
