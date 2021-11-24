@@ -105,6 +105,17 @@ function local_evokegame_extend_navigation_course($navigation, $course, $context
             'badgessettings',
             new pix_icon('t/award', '')
         );
+
+        $url = new moodle_url('/local/evokegame/coursesettings.php', array('id' => $course->id));
+
+        $navigation->add(
+            get_string('coursesettings', 'local_evokegame'),
+            $url,
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'coursesettings',
+            new pix_icon('i/course', '')
+        );
     }
 }
 
