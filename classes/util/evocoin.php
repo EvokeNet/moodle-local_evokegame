@@ -17,13 +17,13 @@ use moodle_url;
 class evocoin {
     protected $user;
 
-    public function __construct($user = null) {
+    public function __construct($userid = null) {
         global $USER;
 
-        $this->user = $user;
+        $this->userid = $userid;
 
-        if (!$user) {
-            $this->user = $USER;
+        if (!$userid) {
+            $this->userid = $USER->id;
         }
     }
 
@@ -48,7 +48,7 @@ class evocoin {
 
         $data = new \stdClass();
         $data->courseid = $courseid;
-        $data->userid = $this->user->id;
+        $data->userid = $this->userid;
         $data->source = $source;
         $data->sourcetype = $sourcetype;
         $data->sourceid = $sourceid;
@@ -64,7 +64,7 @@ class evocoin {
 
         $record = $DB->get_record('evokegame_evcs_transactions', [
             'courseid' => $courseid,
-            'userid' => $this->user->id,
+            'userid' => $this->userid,
             'source' => $source,
             'sourcetype' => $sourcetype,
             'sourceid' => $sourceid,
@@ -87,7 +87,7 @@ class evocoin {
     public function get_evcs_record() {
         global $DB;
 
-        $record = $DB->get_record('evokegame_evcs', ['userid' => $this->user->id]);
+        $record = $DB->get_record('evokegame_evcs', ['userid' => $this->userid]);
 
         if ($record) {
             return $record;
@@ -102,7 +102,7 @@ class evocoin {
         $time = time();
 
         $evocoin = new \stdClass();
-        $evocoin->userid = $this->user->id;
+        $evocoin->userid = $this->userid;
         $evocoin->coins = 0;
         $evocoin->timecreated = $time;
         $evocoin->timemodified = $time;

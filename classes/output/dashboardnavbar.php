@@ -29,7 +29,7 @@ class dashboardnavbar implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $USER;
 
-        $evcs = new evocoin($USER);
+        $evcs = new evocoin($USER->id);
 
         $badgeutil = new badge();
 
