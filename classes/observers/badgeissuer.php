@@ -20,6 +20,10 @@ class badgeissuer {
     public static function observer(baseevent $event) {
         global $DB;
 
+        if (!is_enrolled($event->get_context())) {
+            return;
+        }
+
         $userid = $event->relateduserid;
 
         if (get_class($event) === 'core\event\course_viewed') {

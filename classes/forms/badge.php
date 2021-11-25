@@ -48,7 +48,7 @@ class badge extends \moodleform {
 
         $options = [
             1 => get_string('badgetype_badge', 'local_evokegame'),
-            2 => get_string('badgetype_award', 'local_evokegame'),
+            2 => get_string('badgetype_achievement', 'local_evokegame'),
         ];
         $mform->addElement('select', 'type', get_string('badgetype', 'local_evokegame'), $options);
         $mform->setDefault('type', 1);

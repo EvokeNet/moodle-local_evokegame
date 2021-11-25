@@ -5,6 +5,7 @@ namespace local_evokegame\output;
 defined('MOODLE_INTERNAL') || die();
 
 use local_evokegame\util\badge;
+use local_evokegame\util\evocoin;
 use local_evokegame\util\point;
 use renderable;
 use templatable;
@@ -28,7 +29,7 @@ class dashboardnavbar implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $USER;
 
-        $points = new point($this->course->id, $USER->id);
+        $evcs = new evocoin($USER);
 
         $badgeutil = new badge();
 
@@ -42,7 +43,7 @@ class dashboardnavbar implements renderable, templatable {
         return [
             'contextid' => $this->context->id,
             'courseid' => $this->course->id,
-            'points' => (int) $points->mypoints->points,
+            'evcs' => (int) $evcs->get_coins(),
             'hasbadges' => $hasbadges,
             'badges' => $badges
         ];

@@ -14,12 +14,40 @@ defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
 use local_evokegame\customfield\mod_handler as extrafieldshandler;
+use local_evokegame\util\evocoin;
 
 class modulecompleted {
     public static function observer(baseevent $event) {
         $handler = extrafieldshandler::create();
 
-        // TODO: Get course module id from event.
-        $data = $handler->export_instance_data_object($event->cmid);
+        $cmid = $event->contextinstanceid;
+
+        $data = $handler->export_instance_data_object($cmid);
+
+        $customfields = (array)$data;
+
+        if (!$customfields) {
+            return;
+        }
+
+        if (!array_key_exists('evocoins', $customfields)) {
+            return;
+        }
+
+        $evcs = new evocoin();
+        // First we log transaction, because this function checks if the point was added in the past.
+        // This event if fired more than one time, we need to prevent add points much times.
+        $pointsadded = $evcs->log_transaction(
+            $event->courseid,
+            'module',
+            $event->target,
+            $event->contextinstanceid,
+            $customfields['evocoins'],
+            'in'
+        );
+
+        if ($pointsadded) {
+            $evcs->add_coins($customfields['evocoins']);
+        }
     }
 }
