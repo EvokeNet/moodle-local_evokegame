@@ -41,20 +41,19 @@ class scoreboard extends table_sql {
     }
 
     public function base_sql() {
-        $fields = 'DISTINCT u.id, u.firstname, u.lastname, u.email, p.points';
+        $fields = 'DISTINCT u.id, u.firstname, u.lastname, u.email, e.coins as points';
 
         $capjoin = get_enrolled_with_capabilities_join($this->context, '', 'moodle/course:viewparticipants');
 
         $from = ' {user} u ' . $capjoin->joins;
 
-        $from .= ' INNER JOIN {evokegame_points} p ON p.userid = u.id AND p.courseid = :courseid ';
+        $from .= ' INNER JOIN {evokegame_evcs} e ON e.userid = u.id ';
 
         $params = $capjoin->params;
-        $params['courseid'] = $this->course->id;
 
         $where = $capjoin->wheres;
 
-        $where .= ' ORDER BY p.points DESC';
+        $where .= ' ORDER BY e.coins DESC';
 
         $this->set_sql($fields, $from, $where, $params);
     }

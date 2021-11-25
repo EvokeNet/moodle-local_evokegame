@@ -21,6 +21,10 @@ class badgecriteria extends base {
 
         $usercourseskills = $skillutil->get_course_skills_set($badgecriteria->courseid, $userid);
 
+        if (!$usercourseskills) {
+            return false;
+        }
+
         foreach ($usercourseskills as $usercourseskill) {
             if ($usercourseskill['skill'] == $badgecriteria->target) {
                 if ($usercourseskill['points'] >= $badgecriteria->value) {
