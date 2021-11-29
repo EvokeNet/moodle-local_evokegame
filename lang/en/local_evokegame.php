@@ -71,7 +71,7 @@ $string['updateavatar'] = 'Update avatar';
 $string['editprofile'] = 'Edit profile';
 $string['aboutme'] = 'About me:';
 $string['fullname'] = 'Fullname:';
-$string['email'] = 'Fullname:';
+$string['email'] = 'Email:';
 
 $string['coursesettings'] = 'Course settings';
 $string['coursemenuitems'] = 'Course menu items';
