@@ -7,6 +7,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir.'/tablelib.php');
 
 use local_evokegame\util\badge;
+use local_evokegame\util\user;
 use table_sql;
 use moodle_url;
 use html_writer;
@@ -62,6 +63,23 @@ class scoreboard extends table_sql {
         return $user->firstname . ' ' . $user->lastname;
     }
 
+    public function col_myteams($user) {
+        $userutil = new user();
+
+        $usergroups = $userutil->get_user_course_groups($this->course->id, $user->id);
+
+        if (!$usergroups) {
+            return '';
+        }
+
+        $output = '';
+        foreach ($usergroups as $usergroup) {
+            $output .= html_writer::tag('span', $usergroup, ['class' => 'badge badge-info']);
+        }
+
+        return $output;
+    }
+
     public function col_superpowers($user) {
         $badgeutil = new badge();
 
@@ -81,14 +99,14 @@ class scoreboard extends table_sql {
     }
 
     private function get_columns() {
-        return ['id', 'fullname', 'email', 'superpowers', 'points'];
+        return ['id', 'fullname', 'myteams', 'superpowers', 'points'];
     }
 
     private function get_headers() {
         return [
             'ID',
             get_string('fullname'),
-            'E-mail',
+            get_string('myteams', 'local_evokegame'),
             get_string('collectedsuperpowers', 'local_evokegame'),
             get_string('points', 'local_evokegame')
         ];

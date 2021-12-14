@@ -19,6 +19,7 @@ $string['backtomission'] = 'Back to mission';
 $string['totheleaderboard'] = 'To the leaderboard';
 $string['backtopersonalscore'] = 'Back to personal score';
 $string['collectedsuperpowers'] ='Collected superpowers';
+$string['myteams'] = 'My teams';
 $string['mysuperpowers'] = 'My Superpowers';
 $string['myskills'] = 'My skills';
 $string['points'] = 'Points';
