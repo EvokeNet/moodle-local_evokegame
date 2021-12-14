@@ -21,9 +21,7 @@ $urlparams = ['id' => $course->id];
 $context = context_course::instance($course->id);
 
 $user = $USER;
-if (!empty($userid) && $user->id != $userid) {
-    require_capability('moodle/course:update', $context);
-
+if (!empty($userid)) {
     $urlparams['userid'] = $userid;
 
     $user = $DB->get_record('user', ['id' => $userid], '*', MUST_EXIST);

@@ -9,6 +9,16 @@
     margin-left: 0.5rem;
 }
 
+.evokegame-scoreboard.dashboardnavbar a:hover {
+    text-decoration: none;
+}
+
+.evokegame-scoreboard.dashboardnavbar a:focus {
+    outline: none;
+    background-color: initial;
+    box-shadow: none;
+}
+
 .evokegame-scoreboard .awards,
 .evokegame-scoreboard .userinfo {
     flex-direction: row;
