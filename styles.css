@@ -76,7 +76,7 @@
 
 .evokegame-scoreboard .awards .score .points {
     color: #fff;
-    font-family: "Bungee", cursive;
+    font-family: "Bangers", cursive;
     font-size: 24px;
     padding: 2px;
 }
@@ -154,7 +154,7 @@
 
 .evokegame-scoreboard .userinfo .username {
     font-size: 28px;
-    font-family: "Bungee", cursive;
+    font-family: "Bangers", cursive;
     margin-right: 100px;
 }
 
@@ -177,7 +177,7 @@
 }
 
 .path-local-evokegame .table-scoreboard {
-    font-family: "Bungee", cursive;
+    font-family: "Bangers", cursive;
 }
 
 .path-local-evokegame .table-scoreboard thead th {
@@ -228,7 +228,7 @@
 
 .evoke-game-notification-badge-modal .modal-content .modal-body {
     text-align: center;
-    font-family: "Bungee", cursive;
+    font-family: "Bangers", cursive;
 }
 
 .evoke-game-notification-badge-modal img {
