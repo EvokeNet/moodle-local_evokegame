@@ -15,7 +15,7 @@ defined('MOODLE_INTERNAL') || die;
 use moodle_url;
 
 class evocoin {
-    protected $user;
+    protected $userid;
 
     public function __construct($userid = null) {
         global $USER;
