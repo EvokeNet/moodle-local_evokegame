@@ -22,6 +22,9 @@ class scoreboard extends table_sql {
     protected $context;
     protected $course;
 
+    public $sort_default_column = 'points';
+    public $sort_default_order  = SORT_DESC;
+
     public function __construct($uniqueid, $context, $course) {
         parent::__construct($uniqueid);
 
@@ -33,6 +36,8 @@ class scoreboard extends table_sql {
         $this->define_headers($this->get_headers());
 
         $this->no_sorting('superpowers');
+
+        $this->no_sorting('myteams');
 
         $this->define_baseurl(new moodle_url('/local/evokegame/scoreboard.php', ['id' => $this->course->id]));
 
@@ -53,8 +58,6 @@ class scoreboard extends table_sql {
         $params = $capjoin->params;
 
         $where = $capjoin->wheres;
-
-        $where .= ' ORDER BY e.coins DESC';
 
         $this->set_sql($fields, $from, $where, $params);
     }
