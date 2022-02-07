@@ -1,31 +1,33 @@
-<div class="evokegame">
-    <div class="evokegame-scoreboard dashboardnavbar">
-        <a href="{{config.wwwroot}}/local/evokegame/profile.php?id={{courseid}}">
-            <div class="awards">
-                <div class="score">
-                    <div class="icon">
-                        <img class="evocoin black" src="{{{config.wwwroot}}}/local/evokegame/pix/evocoin.svg" alt="Evocoin">
+{{#showblock}}
+    <div class="evokegame">
+        <div class="evokegame-scoreboard dashboardnavbar">
+            <a href="{{config.wwwroot}}/local/evokegame/profile.php?id={{courseid}}">
+                <div class="awards">
+                    <div class="score">
+                        <div class="icon">
+                            <img class="evocoin black" src="{{{config.wwwroot}}}/local/evokegame/pix/evocoin.svg" alt="Evocoin">
+                        </div>
+                        <div class="points">{{{evcs}}}</div>
                     </div>
-                    <div class="points">{{{evcs}}}</div>
+                    {{#hasbadges}}
+                        <div class="badges">
+                            {{#badges}}
+                                <img src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge {{^awarded}}dimmed{{/awarded}}">
+                            {{/badges}}
+                        </div>
+                    {{/hasbadges}}
                 </div>
-                {{#hasbadges}}
-                    <div class="badges">
-                        {{#badges}}
-                            <img src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge {{^awarded}}dimmed{{/awarded}}">
-                        {{/badges}}
-                    </div>
-                {{/hasbadges}}
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
-</div>
 
-{{#js}}
-    require(['jquery', 'local_evokegame/notificationbadge'], function($, NotificationBadge) {
-        NotificationBadge.init();
+    {{#js}}
+        require(['jquery', 'local_evokegame/notificationbadge'], function($, NotificationBadge) {
+            NotificationBadge.init();
 
-        $(function() {
-            $('body').addClass('evokegame-navwith-dashboardnavbar');
+            $(function() {
+                $('body').addClass('evokegame-navwith-dashboardnavbar');
+            });
         });
-    });
-{{/js}}
+    {{/js}}
+{{/showblock}}

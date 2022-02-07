@@ -29,8 +29,10 @@ class dashboardnavbar implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $USER;
 
-        if (!isloggedin() || isguestuser()) {
-            return [];
+        if (!isloggedin() || isguestuser() || $this->course->id == 1) {
+            return [
+                'showblock' => false
+            ];
         }
 
         $evcs = new evocoin($USER->id);
@@ -45,6 +47,7 @@ class dashboardnavbar implements renderable, templatable {
         }
 
         return [
+            'showblock' => true,
             'contextid' => $this->context->id,
             'courseid' => $this->course->id,
             'evcs' => (int) $evcs->get_coins(),
