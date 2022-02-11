@@ -20,6 +20,10 @@ class submissionsent {
     public static function observer(baseevent $event) {
         $handler = extrafieldshandler::create();
 
+        if (!is_enrolled($event->get_context(), $event->relateduserid)) {
+            return;
+        }
+
         $cmid = $event->contextinstanceid;
 
         $data = $handler->export_instance_data_object($cmid);

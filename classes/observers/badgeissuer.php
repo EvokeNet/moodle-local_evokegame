@@ -20,7 +20,7 @@ class badgeissuer {
     public static function observer(baseevent $event) {
         global $DB;
 
-        if (!is_enrolled($event->get_context())) {
+        if (!is_enrolled($event->get_context(), $event->relateduserid)) {
             return;
         }
 

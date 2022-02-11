@@ -20,6 +20,10 @@ class usergraded {
     public static function observer(baseevent $event) {
         $handler = extrafieldshandler::create();
 
+        if (!is_enrolled($event->get_context(), $event->relateduserid)) {
+            return;
+        }
+
         $gradeitemid = $event->other['itemid'];
 
         $gradeitem = self::get_grade_item($gradeitemid);

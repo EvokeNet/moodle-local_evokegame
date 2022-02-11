@@ -22,6 +22,10 @@ class modulecompleted {
             return;
         }
 
+        if (!is_enrolled($event->get_context(), $event->relateduserid)) {
+            return;
+        }
+
         $handler = extrafieldshandler::create();
 
         $cmid = $event->contextinstanceid;
@@ -35,6 +39,10 @@ class modulecompleted {
         }
 
         if (!array_key_exists('evocoins', $customfields)) {
+            return;
+        }
+
+        if (!$customfields['evocoins']) {
             return;
         }
 
