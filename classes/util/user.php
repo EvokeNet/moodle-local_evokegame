@@ -14,10 +14,14 @@ defined('MOODLE_INTERNAL') || die;
 
 class user {
     public function get_user_avatar_or_image($user = null) {
-        global $USER, $PAGE, $CFG;
+        global $USER, $PAGE, $CFG, $DB;
 
         if (!$user) {
             $user = $USER;
+        }
+
+        if (!is_object($user)) {
+            $user = $DB->get_record('user', ['id' => $user], '*', MUST_EXIST);
         }
 
         $useravatar = get_user_preferences('evokegame_avatarid', null, $user);
