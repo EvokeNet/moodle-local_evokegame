@@ -29,7 +29,13 @@ class dashboardnavbar implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $USER;
 
-        if (!isloggedin() || isguestuser() || $this->course->id == 1) {
+        $isgameenabledincourse = get_config('local_evokegame', 'isgameenabledincourse-' . $this->course->id);
+        $isgameenabled = false;
+        if (is_null($isgameenabledincourse) || $isgameenabledincourse == 1) {
+            $isgameenabled = true;
+        }
+
+        if (!$isgameenabled || !isloggedin() || isguestuser() || $this->course->id == 1) {
             return [
                 'showblock' => false
             ];

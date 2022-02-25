@@ -14,11 +14,16 @@ defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
 use local_evokegame\customfield\mod_handler as extrafieldshandler;
+use local_evokegame\util\game;
 use local_evokegame\util\point;
 
 class submissionsent {
     public static function observer(baseevent $event) {
         $handler = extrafieldshandler::create();
+
+        if (!game::is_enabled_in_course($event->courseid)) {
+            return;
+        }
 
         if (!is_enrolled($event->get_context(), $event->relateduserid)) {
             return;

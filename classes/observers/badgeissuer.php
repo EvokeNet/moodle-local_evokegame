@@ -15,10 +15,15 @@ defined('MOODLE_INTERNAL') || die;
 use core\event\base as baseevent;
 use core_badges\badge;
 use local_evokegame\util\badgecriteria;
+use local_evokegame\util\game;
 
 class badgeissuer {
     public static function observer(baseevent $event) {
         global $DB;
+
+        if (!game::is_enabled_in_course($event->courseid)) {
+            return;
+        }
 
         if (!is_enrolled($event->get_context(), $event->relateduserid)) {
             return;

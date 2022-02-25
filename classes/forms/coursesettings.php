@@ -13,6 +13,14 @@ class coursesettings extends \moodleform {
         $mform->addElement('hidden', 'courseid', $this->_customdata['courseid']);
         $mform->setType('courseid', PARAM_INT);
 
+        $options = [
+            1 => get_string('yes'),
+            0 => get_string('no'),
+        ];
+        $mform->addElement('select', 'isgameenabledincourse', get_string('isgameenabledincourse', 'local_evokegame'), $options);
+        $mform->setDefault('isgameenabledincourse', 1);
+        $mform->addRule('isgameenabledincourse', null, 'required', null, 'client');
+
         $mform->addElement('textarea', 'coursemenuitems', get_string('coursemenuitems', 'local_evokegame'), 'wrap="virtual" rows="10" cols="100"');
         $mform->setType('coursemenuitems', PARAM_RAW);
         $mform->addHelpButton('coursemenuitems','coursemenuitems',  'local_evokegame');

@@ -15,9 +15,14 @@ defined('MOODLE_INTERNAL') || die;
 use core\event\base as baseevent;
 use local_evokegame\customfield\mod_handler as extrafieldshandler;
 use local_evokegame\util\evocoin;
+use local_evokegame\util\game;
 
 class modulecompleted {
     public static function observer(baseevent $event) {
+        if (!game::is_enabled_in_course($event->courseid)) {
+            return;
+        }
+
         if (!self::is_completion_completed($event->objectid)) {
             return;
         }

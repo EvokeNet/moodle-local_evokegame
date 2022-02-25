@@ -8,6 +8,8 @@
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
 
+use local_evokegame\util\game;
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -17,11 +19,18 @@ defined('MOODLE_INTERNAL') || die();
  * @param MoodleQuickForm $mform The actual form object (required to modify the form).
  */
 function local_evokegame_coursemodule_standard_elements($formwrapper, $mform) {
+    $course = $formwrapper->get_course();
+
+    if (!game::is_enabled_in_course($course->id)) {
+        return;
+    }
+
     // Add custom fields to the form.
     $handler = local_evokegame\customfield\mod_handler::create();
     $handler->set_parent_context($formwrapper->get_context()); // For course handler only.
 
     $cm = $formwrapper->get_coursemodule();
+
     if (empty($cm)) {
         $cmid = 0;
     } else {

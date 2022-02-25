@@ -11,9 +11,9 @@ class coursesettings {
         unset($data['courseid']);
 
         foreach ($data as $key => $value) {
-            $settingkye = $key . '-' . $courseid;
+            $settingkey = $key . '-' . $courseid;
 
-            set_config($settingkye, $value, 'local_evokegame');
+            set_config($settingkey, $value, 'local_evokegame');
         }
     }
 }

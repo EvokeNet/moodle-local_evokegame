@@ -83,3 +83,4 @@ Team chat|/mod/chat/view.php?id=2|teamchat
 Course forum|/mod/forum/view.php?id=3|courseforum
 </pre>';
 $string['coursemenuitems_success'] = 'Course settings successfully saved.';
+$string['isgameenabledincourse'] = 'Is game enabled in this course?';
