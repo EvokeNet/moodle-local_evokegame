@@ -67,6 +67,8 @@ $string['badgetype'] = 'Badge type';
 $string['badgetype_badge'] = 'Badge';
 $string['badgetype_achievement'] = 'Achievement';
 $string['myachievements'] = 'My achievements';
+$string['progressdidnotstarted'] = 'Your progress did not start yet';
+$string['progressdidnotstarted_desc'] = 'Go back to the mission page, finish activities and interact to receive evocoins and achieve skills and badges.';
 
 $string['updateavatar'] = 'Update avatar';
 $string['editprofile'] = 'Edit profile';

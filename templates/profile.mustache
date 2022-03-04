@@ -72,6 +72,15 @@
                         </div>
                     {{/hasskills}}
 
+                    {{^hasskills}}
+                        <div class="alert alert-info mb-0" role="alert">
+                            <h3>{{#str}}progressdidnotstarted, local_evokegame{{/str}}</h3>
+
+                            <p class="mb-0">{{#str}}progressdidnotstarted_desc, local_evokegame{{/str}}</p>
+                        </div>
+                    {{/hasskills}}
+
+
                     {{#hasbadges}}
                         <div class="row mt-2">
                             <div class="col">
