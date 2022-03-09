@@ -27,6 +27,16 @@ $observers = [
         'internal' => false
     ],
     [
+        'eventname' => '\mod_evokeportfolio\event\comment_added',
+        'callback' => '\local_evokegame\observers\mentor::observer',
+        'internal' => false
+    ],
+    [
+        'eventname' => '\mod_evokeportfolio\event\like_sent',
+        'callback' => '\local_evokegame\observers\mentor::observer',
+        'internal' => false
+    ],
+    [
         'eventname' => '\local_evokegame\event\points_added',
         'callback' => '\local_evokegame\observers\badgeissuer::observer',
         'internal' => false
