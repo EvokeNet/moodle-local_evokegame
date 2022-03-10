@@ -16,11 +16,13 @@ export const init = () => {
     containers.each(function(index, item) {
         const alertdiv = $(item);
 
-        const message = alertdiv.clone().children().remove().end().text();
+        let message = alertdiv.clone().children().remove().end().text();
 
-        showToastr(alertdiv, message);
+        message = $.trim(message);
 
-        alertdiv.remove();
+        if (message) {
+            showToastr(alertdiv, message);
+        }
     });
 };
 

@@ -324,11 +324,6 @@
     }
 }
 
-/* Hide all alerts notification */
-.alert.alert-block {
-    display: none;
-}
-
 /* Toastr CSS */
 .toast {
     font-size: .9375rem !important;
