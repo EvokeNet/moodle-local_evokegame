@@ -19,8 +19,6 @@ use local_evokegame\util\point;
 
 class mentor {
     public static function observer(baseevent $event) {
-        global $DB;
-
         if (!game::is_enabled_in_course($event->courseid)) {
             return;
         }

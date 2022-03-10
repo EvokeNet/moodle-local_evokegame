@@ -86,3 +86,6 @@ Course forum|/mod/forum/view.php?id=3|courseforum
 </pre>';
 $string['coursemenuitems_success'] = 'Course settings successfully saved.';
 $string['isgameenabledincourse'] = 'Is game enabled in this course?';
+
+$string['toastr_skillpoints'] = 'You just received skill points';
+$string['toastr_evocoins'] = 'You just received evocoins';

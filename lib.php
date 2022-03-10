@@ -185,3 +185,14 @@ function local_evokegame_output_fragment_badgecriteria_form($args) {
 
     return $o;
 }
+
+/**
+ * Add callback to invoke conversion of bootstrap alert to Toastr notifications
+ *
+ * @return void
+ */
+function local_evokegame_before_footer() {
+    global $PAGE;
+
+    $PAGE->requires->js_call_amd('local_evokegame/alerttotoastr', 'init');
+}

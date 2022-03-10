@@ -20,7 +20,7 @@ class point {
     }
 
     public function add_points($pointsource, $pointsourcetype, $sourceid, $skill, $points) {
-        global $DB;
+        global $DB, $USER;
 
         if ($this->points_already_added($pointsource, $pointsourcetype, $sourceid, $skill)) {
             return;
@@ -31,6 +31,10 @@ class point {
         $DB->update_record('evokegame_points', $this->mypoints);
 
         $this->insert_log_point_entry($pointsource, $pointsourcetype, $sourceid, $skill, $points);
+
+        if ($USER->id === $this->mypoints->userid) {
+            \core\notification::success(get_string('toastr_skillpoints', 'local_evokegame'));
+        }
     }
 
     public function get_user_course_points($courseid, $userid) {
