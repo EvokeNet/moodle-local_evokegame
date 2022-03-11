@@ -22,6 +22,8 @@ export const init = () => {
 
         if (message) {
             showToastr(alertdiv, message);
+
+            alertdiv.remove();
         }
     });
 };
