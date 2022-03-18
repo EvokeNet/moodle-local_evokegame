@@ -47,7 +47,7 @@ class badgecriteria extends external_api {
      * @throws \moodle_exception
      */
     public static function create($contextid, $courseid, $jsonformdata) {
-        global $DB, $PAGE, $CFG, $USER, $SITE;
+        global $DB;
 
         // We always must pass webservice params through validate_parameters.
         $params = self::validate_parameters(self::create_parameters(),
@@ -86,6 +86,14 @@ class badgecriteria extends external_api {
 
         if ($validateddata->skilltarget && $validateddata->method == $badgecriteriautil::CRITERIA_SKILL_POINTS) {
             $badgecriteria->target = $skillutil->get_skill_string_name($courseid, $validateddata->skilltarget);
+        }
+
+        if (!empty($validateddata->skilltargetaggregation) && $validateddata->method == $badgecriteriautil::CRITERIA_SKILL_POINTS_AGGREGATION) {
+            $targets = [];
+            foreach ($validateddata->skilltargetaggregation as $item) {
+                $targets[] = $skillutil->get_skill_string_name($courseid, $item);
+            }
+            $badgecriteria->target = implode($targets,',');
         }
 
         $badgecriteriaid = $DB->insert_record('evokegame_badges_criterias', $badgecriteria);

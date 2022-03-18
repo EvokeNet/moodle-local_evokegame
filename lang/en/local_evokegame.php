@@ -50,6 +50,7 @@ $string['value'] = 'Value';
 $string['chooseanoption'] = 'Choose an option';
 $string['subplugintype_evokebadgecriteria_skillpoints'] = 'Skill points';
 $string['subplugintype_evokebadgecriteria_courseaccess'] = 'Course access';
+$string['subplugintype_evokebadgecriteria_skillpointsaggregation'] = 'Skill points aggregation';
 $string['createbadgecriteria_success'] = 'Criteria successfully created';
 $string['deletebadgecriteria_success'] = 'Criteria successfully deleted';
 

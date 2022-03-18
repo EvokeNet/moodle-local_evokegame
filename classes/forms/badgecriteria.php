@@ -47,7 +47,8 @@ class badgecriteria extends \moodleform {
         $criteriamethods = [
             0 => get_string('chooseanoption', 'local_evokegame'),
             badgecriteriautil::CRITERIA_SKILL_POINTS => get_string('subplugintype_evokebadgecriteria_skillpoints', 'local_evokegame'),
-            badgecriteriautil::CRITERIA_COURSE_ACCESS => get_string('subplugintype_evokebadgecriteria_courseaccess', 'local_evokegame')
+            badgecriteriautil::CRITERIA_COURSE_ACCESS => get_string('subplugintype_evokebadgecriteria_courseaccess', 'local_evokegame'),
+            badgecriteriautil::CRITERIA_SKILL_POINTS_AGGREGATION => get_string('subplugintype_evokebadgecriteria_skillpointsaggregation', 'local_evokegame')
         ];
 
         $mform->addElement('select', 'method', get_string('criteriamethod', 'local_evokegame'), $criteriamethods);
@@ -55,9 +56,16 @@ class badgecriteria extends \moodleform {
         $mform->addRule('method', null, 'required', null, 'client');
 
         $skillutil = new skill();
-        $mform->addElement('select', 'skilltarget', get_string('criteriavalue', 'local_evokegame'), $skillutil->get_course_skills_select($courseid));
+        $options = $skillutil->get_course_skills_select($courseid);
+        $mform->addElement('select', 'skilltarget', get_string('criteriavalue', 'local_evokegame'), $options);
         $mform->setType('skilltarget', PARAM_INT);
         $mform->hideIf('skilltarget', 'method', 'neq', '1');
+
+        $options[0] = null;
+        $mform->addElement('select', 'skilltargetaggregation', get_string('criteriavalue', 'local_evokegame'), $options);
+        $mform->setType('skilltargetaggregation', PARAM_INT);
+        $mform->hideIf('skilltargetaggregation', 'method', 'neq', '3');
+        $mform->getElement('skilltargetaggregation')->setMultiple(true);
 
         $mform->addElement('text', 'value', get_string('value', 'local_evokegame'));
         $mform->addRule('value', get_string('required'), 'required', null, 'client');
@@ -80,9 +88,25 @@ class badgecriteria extends \moodleform {
 
         $method = isset($data['method']) ? $data['method'] : null;
         $value = isset($data['value']) ? $data['value'] : null;
+        $skilltarget = isset($data['skilltarget']) ? $data['skilltarget'] : null;
+        $skilltargetaggregation = isset($data['skilltargetaggregation']) ? $data['skilltargetaggregation'] : null;
 
-        if ($this->is_submitted() && (empty($method))) {
+        if ($this->is_submitted() && empty($method)) {
             $errors['method'] = get_string('required');
+        }
+
+        if ($this->is_submitted() && empty($method)) {
+            $errors['method'] = get_string('required');
+        }
+
+        if ($this->is_submitted() && !empty($method) && $method == 1 && empty($skilltarget)) {
+            $errors['skilltarget'] = get_string('required');
+        }
+
+        if ($this->is_submitted() && !empty($method) && $method == 3) {
+            if (count($skilltargetaggregation) == 1 && $skilltargetaggregation[0] == 0) {
+                $errors['skilltargetaggregation'] = get_string('required');
+            }
         }
 
         if ($this->is_submitted() && (empty($value))) {

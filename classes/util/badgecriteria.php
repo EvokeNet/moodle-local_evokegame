@@ -14,10 +14,12 @@ defined('MOODLE_INTERNAL') || die;
 
 use local_evokegame\badgecriteria\skill\badgecriteria as skillcriteria;
 use local_evokegame\badgecriteria\courseaccess\badgecriteria as courseaccesscriteria;
+use local_evokegame\badgecriteria\skillaggregation\badgecriteria as skillaggregationcriteria;
 
 class badgecriteria {
     public const CRITERIA_SKILL_POINTS = 1;
     public const CRITERIA_COURSE_ACCESS = 2;
+    public const CRITERIA_SKILL_POINTS_AGGREGATION = 3;
 
     public function get_evoke_badge_criterias($evokebadgeid) {
         global $DB;
@@ -37,6 +39,8 @@ class badgecriteria {
                 return 'skillpoints';
             case 2:
                 return 'courseaccess';
+            case 3:
+                return 'skillpointsaggregation';
             default:
                 return '';
         }
@@ -51,6 +55,12 @@ class badgecriteria {
 
         if ($badgecriteria->method == 'courseaccess') {
             $skillcriteria = new courseaccesscriteria();
+
+            return $skillcriteria->check_if_user_achieved_criteria($userid, $badgecriteria);
+        }
+
+        if ($badgecriteria->method == 'skillpointsaggregation') {
+            $skillcriteria = new skillaggregationcriteria();
 
             return $skillcriteria->check_if_user_achieved_criteria($userid, $badgecriteria);
         }

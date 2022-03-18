@@ -44,9 +44,9 @@ class notification extends external_api {
         if (!$notification->should_be_notified()) {
             return [
                 'status' => false,
-                'isachievement' => null,
+                'isachievement' => false,
                 'badgename' => null,
-                'courseid' => null,
+                'courseid' => 0,
                 'badgeimage' => null
             ];
         }
@@ -81,7 +81,7 @@ class notification extends external_api {
         return new external_single_structure(
             array(
                 'status' => new external_value(PARAM_BOOL, 'Operation status'),
-                'isachievement' => new external_value(PARAM_INT, 'Badge type'),
+                'isachievement' => new external_value(PARAM_BOOL, 'Is achievement or badge'),
                 'badgename' => new external_value(PARAM_TEXT, 'Badge name'),
                 'courseid' => new external_value(PARAM_INT, 'Badge course id'),
                 'badgeimage' => new external_value(PARAM_RAW, 'Badge image'),
