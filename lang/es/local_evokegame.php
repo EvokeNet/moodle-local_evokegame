@@ -55,26 +55,26 @@ $string['createbadgecriteria_success'] = 'Criteria successfully created';
 $string['deletebadgecriteria_success'] = 'Criteria successfully deleted';
 
 $string['eventpoints_added'] = 'Points added event';
-$string['congratulations'] = 'Congratulations!';
-$string['youveearnedabadge'] = 'You\'ve earned a badge!';
-$string['youveearnedanachievement'] = 'You\'ve earned an achievement!';
-$string['youjustearnedanewbadge'] = 'You just earned a new badge!';
-$string['youjustearnedanewachievement'] = 'You just earned a new achievement!';
+$string['congratulations'] = '¡Felicidades!';
+$string['youveearnedabadge'] = '¡Te ganaste una insignia!';
+$string['youveearnedanachievement'] = '¡Obtuviste un logro!';
+$string['youjustearnedanewbadge'] = '¡Acabas de ganar una nueva insignia!';
+$string['youjustearnedanewachievement'] = '¡Acabas de obtener un nuevo logro!';
 $string['youjustearnedanewbadge_desc'] = 'For outstanding work, you\'ve earned the <b><i>{$a}</i></b> badge';
-$string['youjustearnedanewachievement_desc'] = 'For outstanding work, you\'ve earned the <b><i>{$a}</i></b> achievement';
-$string['checkyourscoreboard'] = 'Check your score board';
+$string['youjustearnedanewachievement_desc'] = 'Por un trabajo sobresaliente te ganaste la insignia <b><i>{$a}</i></b>';
+$string['checkyourscoreboard'] = 'Consulta tu marcador';
 
-$string['badgetype'] = 'Badge type';
+$string['badgetype'] = 'Tipo de insignia';
 $string['badgetype_badge'] = 'Insignia';
 $string['badgetype_achievement'] = 'Logro';
 $string['myachievements'] = 'Mis logros';
 $string['progressdidnotstarted'] = 'Aún no tienes progreso';
 $string['progressdidnotstarted_desc'] = 'Vuelve a la página de la misión, finaliza las actividades e interactúa para recibir monedas virtuales y conseguir habilidades e insignias.';
 
-$string['updateavatar'] = 'Update avatar';
-$string['editprofile'] = 'Edit profile';
-$string['aboutme'] = 'About me:';
-$string['fullname'] = 'Fullname:';
+$string['updateavatar'] = 'Actualizar avatar';
+$string['editprofile'] = 'Editar perfil';
+$string['aboutme'] = 'Sobre mi:';
+$string['fullname'] = 'Nombre completo:';
 $string['email'] = 'Email:';
 
 $string['coursesettings'] = 'Course settings';
