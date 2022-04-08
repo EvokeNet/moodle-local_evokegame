@@ -141,4 +141,37 @@ class badge {
 
         return array_values($records);
     }
+
+    public function get_user_course_badges_with_criterias($userid, $courseid, $contextid) {
+        $badgecriteria = new badgecriteria();
+
+        $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid);
+
+        foreach ($badges as $key => $badge) {
+            $criterias = $badgecriteria->get_evoke_badge_criterias($badge['id']);
+
+            if (!$criterias) {
+                unset($badges[$key]);
+
+                continue;
+            }
+
+            $criteriasachieved = 0;
+            foreach ($criterias as $criteria) {
+                if ($badgecriteria->check_if_user_achieved_criteria($userid, $criteria)) {
+                    $criteriasachieved++;
+                }
+            }
+
+            $badges[$key]['totalcriterias'] = count($criterias);
+            $badges[$key]['totalachieved'] = $criteriasachieved;
+            $badges[$key]['progress'] = 0;
+
+            if ($criteriasachieved > 0) {
+                $badges[$key]['progress'] = (int)($criteriasachieved * 100 / $badges[$key]['totalcriterias']);
+            }
+        }
+
+        return array_values($badges);
+    }
 }

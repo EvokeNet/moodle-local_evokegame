@@ -276,6 +276,10 @@
     padding: .25rem;
 }
 
+.evokegame-profile .progress {
+    background-color: #f0f0f0;
+}
+
 @media (max-width: 991.98px) {
     .evokegame-scoreboard {
         display: flex;

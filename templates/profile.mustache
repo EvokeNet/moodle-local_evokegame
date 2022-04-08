@@ -48,6 +48,26 @@
                 <div class="card-body">
                     <h2>{{#str}}course{{/str}}: {{coursename}}</h2>
 
+                    {{#hasbadgesprogress}}
+                        <div class="row mt-2">
+                            <div class="col">
+                                <h4>Badges progress</h4>
+                                {{#badgesprogress}}
+                                    <div class="d-flex align-items-center border p-2 my-2">
+                                        <img src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge">
+                                        <div class="info ml-2 w-100">
+                                            <h5>{{{name}}}</h5>
+                                            <p>{{{description}}}</p>
+                                            <div class="progress ml-0">
+                                                <div class="progress-bar" role="progressbar" style="width: {{{progress}}}%" aria-valuenow="{{{progress}}}" aria-valuemin="0" aria-valuemax="100">{{{progress}}}%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/badgesprogress}}
+                            </div>
+                        </div>
+                    {{/hasbadgesprogress}}
+
                     {{#hasskills}}
                         <div class="row">
                             <div class="col">
@@ -80,7 +100,6 @@
                         </div>
                     {{/hasskills}}
 
-
                     {{#hasbadges}}
                         <div class="row mt-2">
                             <div class="col">
@@ -105,7 +124,7 @@
                     {{/hasbadges}}
 
                     {{#hasachievements}}
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col">
                                 <h4>{{#str}}myachievements, local_evokegame{{/str}}</h4>
                                 <table id="achievementstable" class="table">
@@ -126,7 +145,6 @@
                             </div>
                         </div>
                     {{/hasachievements}}
-
                 </div>
             </div>
         </div>
