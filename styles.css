@@ -190,6 +190,14 @@
     color: #fff;
 }
 
+.path-local-evokegame .table-scoreboard .width-35 {
+    width: 35px;
+}
+.path-local-evokegame .table-scoreboard .width-100 {
+    width: 100px;
+}
+
+
 .chooseavatar-form {
     text-align: center;
 }

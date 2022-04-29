@@ -5,6 +5,7 @@ namespace local_evokegame\output;
 defined('MOODLE_INTERNAL') || die();
 
 use local_evokegame\table\scoreboard as scoreboardtable;
+use local_evokegame\util\course;
 use renderable;
 use templatable;
 use renderer_base;
@@ -25,22 +26,13 @@ class scoreboard implements renderable, templatable {
     }
 
     public function export_for_template(renderer_base $output) {
-        $table = new scoreboardtable(
-            'local-evokegame-scoreboard-table',
-            $this->context,
-            $this->course
-        );
-
-        $table->collapsible(false);
-
-        ob_start();
-        $table->out(30, true);
-        $scoreboard = ob_get_contents();
-        ob_end_clean();
+        $scoreboardutil = new \local_evokegame\util\scoreboard($this->course, $this->context);
+        $courseutil = new course();
 
         return [
             'courseid' => $this->course->id,
-            'scoreboard' => $scoreboard,
+            'courseimage' => $courseutil->get_summary_image_url($this->course),
+            'scoreboard' => $scoreboardutil->get_scoreboard(0, 5),
         ];
     }
 }

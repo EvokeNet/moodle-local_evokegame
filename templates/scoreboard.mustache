@@ -9,7 +9,41 @@
     </a>
 </div>
 
-{{{ scoreboard }}}
+<h3 class="text-center">Top 3 wins t-shirt and hat!</h3>
+<div class="text-center">
+    <img src="{{{courseimage}}}" alt="Scoreboard image" class="img-responsive">
+</div>
+<p class="text-center">Ends in: 04d 04h 12 min</p>
+
+<table class="table table-hover table-scoreboard">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Agent</th>
+            <th scope="col">EVC</th>
+            <th scope="col">Powers</th>
+            <th scope="col">Badges</th>
+        </tr>
+    </thead>
+    <tbody>
+    {{#scoreboard}}
+        <tr>
+            <th scope="row" class="width-100 text-center">
+                {{{position}}}
+                <img src="{{{userpicture}}}" alt="{{{fullname}}}" class="img-responsive img-rounded ml-2">
+            </th>
+            <td>{{{fullname}}}</td>
+            <td>{{{points}}}</td>
+            <td>{{{powers}}}</td>
+            <td>
+                {{#userbadges}}
+                    <img src="{{{badgeimage}}}" alt="{{{name}}}" class="img-responsive evokebadge img-rounded width-35 {{^awarded}}dimmed{{/awarded}}">
+                {{/userbadges}}
+            </td>
+        </tr>
+    {{/scoreboard}}
+    </tbody>
+</table>
 
 {{#js}}
     require(['local_evokegame/notificationbadge'], function(NotificationBadge) {
