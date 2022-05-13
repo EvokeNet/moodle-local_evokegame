@@ -197,6 +197,9 @@
     width: 100px;
 }
 
+.path-local-evokegame .text-red {
+    color: #f00;
+}
 
 .chooseavatar-form {
     text-align: center;

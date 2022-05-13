@@ -211,8 +211,8 @@ function local_evokegame_before_footer() {
  * @param bool $forcedownload Whether or not force download.
  * @param array $options Additional options affecting the file serving.
  */
-function evokegame_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $options = array()) {
-    if ($context->contextlevel != CONTEXT_MODULE) {
+function local_evokegame_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $options = array()) {
+    if ($context->contextlevel != CONTEXT_COURSE) {
         send_file_not_found();
     }
 

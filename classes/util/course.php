@@ -17,7 +17,31 @@ class course {
      *
      * @throws \moodle_exception
      */
-    public function get_summary_image_url($course) {
+    public function get_summary_image_url($course, $context) {
+        $fs = get_file_storage();
+
+        $files = $fs->get_area_files($context->id,
+            'local_evokegame',
+            'scoreboard_image',
+            $course->id,
+            'timemodified',
+            false);
+
+        if ($files) {
+            $scoreboardimage = current($files);
+            $path = [
+                '',
+                $scoreboardimage->get_contextid(),
+                $scoreboardimage->get_component(),
+                $scoreboardimage->get_filearea(),
+                $course->id . $scoreboardimage->get_filepath() . $scoreboardimage->get_filename()
+            ];
+
+            $fileurl = \moodle_url::make_file_url('/pluginfile.php', implode('/', $path), true);
+
+            return $fileurl->out();
+        }
+
         if ($course instanceof stdClass) {
             $course = new core_course_list_element($course);
         }
