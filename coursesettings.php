@@ -40,7 +40,7 @@ if ($form->is_cancelled()) {
 
     $coursesettingsutil = new \local_evokegame\util\coursesettings();
 
-    $coursesettingsutil->process_form($data);
+    $coursesettingsutil->process_form($data, $context);
 
     $url = new moodle_url('/course/view.php', ['id' => $id]);
     redirect($url, get_string('coursemenuitems_success', 'local_evokegame'), null, \core\output\notification::NOTIFY_SUCCESS);

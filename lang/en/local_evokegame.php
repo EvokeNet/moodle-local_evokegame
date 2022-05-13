@@ -90,3 +90,7 @@ $string['isgameenabledincourse'] = 'Is game enabled in this course?';
 
 $string['toastr_skillpoints'] = 'You just received skill points';
 $string['toastr_evocoins'] = 'You just received evocoins';
+
+$string['scoreboard_finishdate'] = 'Scoreboard finish date';
+$string['scoreboard_finishdate_help'] = 'Before this date, scoreboard will be closed.';
+$string['scoreboard_image'] = 'Scoreboard image';
