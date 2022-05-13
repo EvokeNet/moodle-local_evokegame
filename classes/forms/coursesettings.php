@@ -28,6 +28,10 @@ class coursesettings extends \moodleform {
 
         $mform->addElement('html', '<div class="row"><div class="col-md-3"></div><div class="col-md-9">'.get_string('coursemenuitems_help', 'local_evokegame').'</div></div>');
 
+        $mform->addElement('text', 'scoreboard_prize', get_string('scoreboard_prize', 'local_evokegame'), ['style' => 'width: 100%;']);
+        $mform->setType('scoreboard_prize', PARAM_TEXT);
+        $this->fill_field_with_database_value('scoreboard_prize');
+
         $mform->addElement('date_time_selector', 'scoreboard_finishdate', get_string('scoreboard_finishdate', 'local_evokegame'));
         $mform->addHelpButton('scoreboard_finishdate', 'scoreboard_finishdate', 'local_evokegame');
         $this->fill_field_with_database_value('scoreboard_finishdate');

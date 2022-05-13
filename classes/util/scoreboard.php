@@ -14,13 +14,17 @@ class scoreboard {
     public function get_scoreboard($limitfrom = 0, $limitnum = 10) {
         global $DB;
 
-        $sql = 'SELECT u.*, p.points
-                FROM {evokegame_points} p
-                INNER JOIN {user} u ON u.id = p.userid
-                WHERE p.courseid = :courseid
-                ORDER BY p.points DESC';
+        $capjoin = get_enrolled_with_capabilities_join($this->context, '', 'moodle/course:viewparticipants');
 
-        $records = $DB->get_records_sql($sql, ['courseid' => $this->course->id], $limitfrom, $limitnum);
+        $sql = "SELECT DISTINCT u.*, evc.coins
+                FROM {user} u
+                $capjoin->joins
+                INNER JOIN {evokegame_evcs} evc ON u.id = evc.userid
+                ORDER BY evc.coins DESC";
+
+        $params = $capjoin->params;
+
+        $records = $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
 
         if (!$records) {
             return false;
@@ -31,6 +35,8 @@ class scoreboard {
         $this->fill_with_userinfo($records);
 
         $this->fill_with_position($records);
+
+        $this->fill_with_powers($records);
 
         return $records;
     }
@@ -45,7 +51,7 @@ class scoreboard {
 
             $user->userpicture = $userpicture->get_url($PAGE);
 
-            $user->points = (int) $user->points;
+            $user->coins = (int) $user->coins;
 
             $badgeutil = new badge();
 
@@ -64,14 +70,38 @@ class scoreboard {
      */
     protected function fill_with_position($data) {
         $lastpos = 1;
-        $lastpoints = current($data)->points;
+        $lastpoints = current($data)->coins;
         for ($i = 0; $i < count($data); $i++) {
-            if ($lastpoints > $data[$i]->points) {
+            if ($lastpoints > $data[$i]->coins) {
                 $lastpos++;
-                $lastpoints = $data[$i]->points;
+                $lastpoints = $data[$i]->coins;
             }
 
             $data[$i]->position = $lastpos;
+        }
+    }
+
+    protected function fill_with_powers($data) {
+        $skillutil = new skill();
+
+        foreach ($data as $user) {
+            $skills = $skillutil->get_course_skills_set($this->course->id, $user->id);
+
+            $user->powers = 0;
+            if (!$skills) {
+                continue;
+            }
+
+            $totalpoints = 0;
+            $userpoints = 0;
+            foreach ($skills as $skill) {
+                $totalpoints += $skill['totalpoints'];
+                $userpoints += $skill['points'];
+            }
+
+            if ($userpoints != 0) {
+                $user->powers = (int)(($userpoints * 100) / $totalpoints);
+            }
         }
     }
 }

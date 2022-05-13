@@ -29,14 +29,17 @@ class scoreboard implements renderable, templatable {
         $scoreboardutil = new \local_evokegame\util\scoreboard($this->course, $this->context);
         $courseutil = new course();
 
+        $scoreboardprize = get_config('local_evokegame', 'scoreboard_prize-' . $this->course->id);
         $scoreboardfinishdate = get_config('local_evokegame', 'scoreboard_finishdate-' . $this->course->id);
         $timeremaining = $scoreboardfinishdate - time();
+
 
         return [
             'courseid' => $this->course->id,
             'courseimage' => $courseutil->get_summary_image_url($this->course, $this->context),
             'scoreboard' => $scoreboardutil->get_scoreboard(0, 5),
-            'scoreboardfinishdate' => $timeremaining > 0 ? userdate($scoreboardfinishdate) : false
+            'scoreboardfinishdate' => $timeremaining > 0 ? userdate($scoreboardfinishdate) : false,
+            'scoreboardprize' => $scoreboardprize
         ];
     }
 }
