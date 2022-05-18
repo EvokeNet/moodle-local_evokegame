@@ -37,7 +37,7 @@ class scoreboard implements renderable, templatable {
         return [
             'courseid' => $this->course->id,
             'courseimage' => $courseutil->get_summary_image_url($this->course, $this->context),
-            'scoreboard' => $scoreboardutil->get_scoreboard(0, 5),
+            'scoreboard' => $scoreboardutil->get_scoreboard(0, 10),
             'scoreboardfinishdate' => $timeremaining > 0 ? userdate($scoreboardfinishdate) : false,
             'scoreboardprize' => $scoreboardprize
         ];

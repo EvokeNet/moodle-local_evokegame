@@ -9,44 +9,57 @@
     </a>
 </div>
 
-{{#scoreboardprize}}
-    <h3 class="text-center">{{{scoreboardprize}}}</h3>
-{{/scoreboardprize}}
-<div class="text-center">
-    <img src="{{{courseimage}}}" alt="Scoreboard image" class="img-responsive">
+<ul class="nav nav-tabs mb-2">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Top 10</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{{config.wwwroot}}}/local/evokegame/scoreboardall.php?id={{{courseid}}}">All</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="top" role="tabpanel" aria-labelledby="top-tab">
+        {{#scoreboardprize}}
+            <h3 class="text-center">{{{scoreboardprize}}}</h3>
+        {{/scoreboardprize}}
+        <div class="text-center">
+            <img src="{{{courseimage}}}" alt="Scoreboard image" class="img-responsive">
+        </div>
+
+        <p class="text-center text-red">{{#str}}scoreboard_endsin, local_evokegame{{/str}}{{{scoreboardfinishdate}}}</p>
+
+        <table class="table table-hover table-scoreboard">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">{{#str}}scoreboard_agent, local_evokegame{{/str}}</th>
+                <th scope="col">{{#str}}scoreboard_evc, local_evokegame{{/str}}</th>
+                <th scope="col">{{#str}}scoreboard_powers, local_evokegame{{/str}}</th>
+                <th scope="col">{{#str}}scoreboard_badges, local_evokegame{{/str}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#scoreboard}}
+                <tr>
+                    <th scope="row" class="width-100 text-center">
+                        {{{position}}}
+                        <img src="{{{userpicture}}}" alt="{{{fullname}}}" class="img-responsive img-rounded ml-2">
+                    </th>
+                    <td>{{{fullname}}}</td>
+                    <td>{{{coins}}}</td>
+                    <td>{{{powers}}}%</td>
+                    <td>
+                        {{#userbadges}}
+                            <img src="{{{badgeimage}}}" alt="{{{name}}}" class="img-responsive evokebadge img-rounded width-35 {{^awarded}}dimmed{{/awarded}}">
+                        {{/userbadges}}
+                    </td>
+                </tr>
+            {{/scoreboard}}
+            </tbody>
+        </table>
+    </div>
 </div>
-
-<p class="text-center text-red">{{#str}}scoreboard_endsin, local_evokegame{{/str}}{{{scoreboardfinishdate}}}</p>
-
-<table class="table table-hover table-scoreboard">
-    <thead>
-        <tr>
-            <th scope="col"></th>
-            <th scope="col">{{#str}}scoreboard_agent, local_evokegame{{/str}}</th>
-            <th scope="col">{{#str}}scoreboard_evc, local_evokegame{{/str}}</th>
-            <th scope="col">{{#str}}scoreboard_powers, local_evokegame{{/str}}</th>
-            <th scope="col">{{#str}}scoreboard_badges, local_evokegame{{/str}}</th>
-        </tr>
-    </thead>
-    <tbody>
-    {{#scoreboard}}
-        <tr>
-            <th scope="row" class="width-100 text-center">
-                {{{position}}}
-                <img src="{{{userpicture}}}" alt="{{{fullname}}}" class="img-responsive img-rounded ml-2">
-            </th>
-            <td>{{{fullname}}}</td>
-            <td>{{{coins}}}</td>
-            <td>{{{powers}}}%</td>
-            <td>
-                {{#userbadges}}
-                    <img src="{{{badgeimage}}}" alt="{{{name}}}" class="img-responsive evokebadge img-rounded width-35 {{^awarded}}dimmed{{/awarded}}">
-                {{/userbadges}}
-            </td>
-        </tr>
-    {{/scoreboard}}
-    </tbody>
-</table>
 
 {{#js}}
     require(['local_evokegame/notificationbadge'], function(NotificationBadge) {

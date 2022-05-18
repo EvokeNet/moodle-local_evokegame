@@ -7,6 +7,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir.'/tablelib.php');
 
 use local_evokegame\util\badge;
+use local_evokegame\util\skill;
 use local_evokegame\util\user;
 use table_sql;
 use moodle_url;
@@ -22,7 +23,7 @@ class scoreboard extends table_sql {
     protected $context;
     protected $course;
 
-    public $sort_default_column = 'points';
+    public $sort_default_column = 'evc';
     public $sort_default_order  = SORT_DESC;
 
     public function __construct($uniqueid, $context, $course) {
@@ -35,11 +36,11 @@ class scoreboard extends table_sql {
 
         $this->define_headers($this->get_headers());
 
-        $this->no_sorting('superpowers');
+        $this->no_sorting('powers');
 
-        $this->no_sorting('myteams');
+        $this->no_sorting('badges');
 
-        $this->define_baseurl(new moodle_url('/local/evokegame/scoreboard.php', ['id' => $this->course->id]));
+        $this->define_baseurl(new moodle_url('/local/evokegame/scoreboardall.php', ['id' => $this->course->id]));
 
         $this->base_sql();
 
@@ -47,7 +48,7 @@ class scoreboard extends table_sql {
     }
 
     public function base_sql() {
-        $fields = 'DISTINCT u.id, u.firstname, u.lastname, u.email, e.coins as points';
+        $fields = 'DISTINCT u.id, u.firstname, u.lastname, u.email, e.coins as evc';
 
         $capjoin = get_enrolled_with_capabilities_join($this->context, '', 'moodle/course:viewparticipants');
 
@@ -62,28 +63,35 @@ class scoreboard extends table_sql {
         $this->set_sql($fields, $from, $where, $params);
     }
 
-    public function col_fullname($user) {
+    public function col_agent($user) {
         return $user->firstname . ' ' . $user->lastname;
     }
 
-    public function col_myteams($user) {
-        $userutil = new user();
+    public function col_powers($user) {
+        $skillutil = new skill();
 
-        $usergroups = $userutil->get_user_course_groups($this->course->id, $user->id);
+        $skills = $skillutil->get_course_skills_set($this->course->id, $user->id);
 
-        if (!$usergroups) {
-            return '';
+        $user->powers = 0;
+        if (!$skills) {
+            return '0%';
         }
 
-        $output = '';
-        foreach ($usergroups as $usergroup) {
-            $output .= html_writer::tag('span', $usergroup, ['class' => 'badge badge-info']);
+        $totalpoints = 0;
+        $userpoints = 0;
+        foreach ($skills as $skill) {
+            $totalpoints += $skill['totalpoints'];
+            $userpoints += $skill['points'];
         }
 
-        return $output;
+        if ($userpoints != 0) {
+            return (int)(($userpoints * 100) / $totalpoints) . '%';
+        }
+
+        return '-';
     }
 
-    public function col_superpowers($user) {
+    public function col_badges($user) {
         $badgeutil = new badge();
 
         $userbadges = $badgeutil->get_course_badges_with_user_award($user->id, $this->course->id, $this->context->id);
@@ -102,16 +110,15 @@ class scoreboard extends table_sql {
     }
 
     private function get_columns() {
-        return ['id', 'fullname', 'myteams', 'superpowers', 'points'];
+        return ['agent', 'evc', 'powers', 'badges'];
     }
 
     private function get_headers() {
         return [
-            'ID',
-            get_string('fullname'),
-            get_string('myteams', 'local_evokegame'),
-            get_string('collectedsuperpowers', 'local_evokegame'),
-            get_string('points', 'local_evokegame')
+            get_string('scoreboard_agent', 'local_evokegame'),
+            get_string('scoreboard_evc', 'local_evokegame'),
+            get_string('scoreboard_powers', 'local_evokegame'),
+            get_string('scoreboard_badges', 'local_evokegame')
         ];
     }
 }
