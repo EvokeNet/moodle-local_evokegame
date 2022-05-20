@@ -69,15 +69,8 @@ class scoreboard {
      * @throws \coding_exception
      */
     protected function fill_with_position($data) {
-        $lastpos = 1;
-        $lastpoints = current($data)->coins;
         for ($i = 0; $i < count($data); $i++) {
-            if ($lastpoints > $data[$i]->coins) {
-                $lastpos++;
-                $lastpoints = $data[$i]->coins;
-            }
-
-            $data[$i]->position = $lastpos;
+            $data[$i]->position = $i + 1;
         }
     }
 
