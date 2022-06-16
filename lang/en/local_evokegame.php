@@ -39,6 +39,16 @@ $string['createbadge_success'] = 'Evoke badge successfully created';
 $string['editbadge_success'] = 'Evoke badge successfully updated';
 $string['deletebadge_success'] = 'Evoke badge successfully deleted';
 $string['editbadge'] = 'Edit badge';
+$string['deletebadge'] = 'Delete badge';
+$string['badgedeliver'] = 'Deliver badges';
+$string['badgecriteria'] = 'Badge criterias';
+$string['badgedeliver'] = 'Deliver badges';
+$string['deliverbadge_confirm_title'] = 'Are you sure?';
+$string['deliverbadge_confirm_msg'] = 'You are about to deliver this badge to all users that achieved all its criterias. Once delivered, the badge cannot be revoked!';
+$string['deliverbadge_confirm_yes'] = 'Yes, deliver it!';
+$string['deliverbadge_confirm_no'] = 'Cancel';
+$string['deliverbadge_success'] = 'Evoke Badge successfully delivered for {$a} users.';
+$string['deliverbadge_badgenocriterias'] = 'It is not possible to deliver this badge because it doesn\'t has a delivery criteria';
 
 $string['subplugintype_evokebadgecriteria'] = 'Evoke badge criteria method';
 $string['subplugintype_evokebadgecriteria_plural'] = 'Evoke badge criterias methods';

@@ -58,13 +58,13 @@ class badgeissuer {
         }
     }
 
-    private static function user_already_have_badge($userid, $badgerid) {
+    public static function user_already_have_badge($userid, $badgerid) {
         $badge = new \core_badges\badge($badgerid);
 
         return $badge->is_issued($userid);
     }
 
-    private static function check_if_user_can_receive_badge($userid, $badgecriterias) {
+    public static function check_if_user_can_receive_badge($userid, $badgecriterias) {
         $badgecriteriautil = new badgecriteria();
 
         foreach ($badgecriterias as $badgecriteria) {
@@ -78,7 +78,7 @@ class badgeissuer {
         return true;
     }
 
-    private static function deliver_badge($userid, $evokebadge) {
+    public static function deliver_badge($userid, $evokebadge) {
         global $CFG;
 
         require_once($CFG->libdir . '/badgeslib.php');

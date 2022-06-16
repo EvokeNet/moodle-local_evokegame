@@ -8,6 +8,7 @@ use external_value;
 use external_single_structure;
 use external_function_parameters;
 use local_evokegame\forms\badge as badgeform;
+use local_evokegame\observers\badgeissuer;
 
 /**
  * Badge external api class.
@@ -294,6 +295,94 @@ class badge extends external_api {
      * @return external_single_structure
      */
     public static function delete_returns() {
+        return new external_single_structure(
+            array(
+                'status' => new external_value(PARAM_TEXT, 'Operation status'),
+                'message' => new external_value(PARAM_TEXT, 'Return message')
+            )
+        );
+    }
+
+    /**
+     * Deliver badge parameters
+     *
+     * @return external_function_parameters
+     */
+    public static function deliver_parameters() {
+        return new external_function_parameters([
+            'badge' => new external_single_structure([
+                'id' => new external_value(PARAM_INT, 'The badge id', VALUE_REQUIRED)
+            ])
+        ]);
+    }
+
+    /**
+     * Deliver badge method
+     *
+     * @param array $badge
+     *
+     * @return array
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \invalid_parameter_exception
+     * @throws \moodle_exception
+     */
+    public static function deliver($badge) {
+        global $DB, $PAGE;
+
+        self::validate_parameters(self::delete_parameters(), ['badge' => $badge]);
+
+        $badge = (object)$badge;
+
+        $evokebadge = $DB->get_record('evokegame_badges', ['id' => $badge->id], '*', MUST_EXIST);
+
+        $badgecriterias = $DB->get_records('evokegame_badges_criterias', ['evokebadgeid' => $evokebadge->id]);
+
+        if (!$badgecriterias) {
+            throw new \Exception(get_string('deliverbadge_badgenocriterias', 'local_evokegame'));
+        }
+
+        $context = \context_course::instance($evokebadge->courseid);
+        $PAGE->set_context($context);
+
+        $sql = 'SELECT DISTINCT u.id';
+
+        $capjoin = get_enrolled_with_capabilities_join($context, '', 'moodle/course:viewparticipants');
+
+        $sql .= ' FROM {user} u ' . $capjoin->joins . ' WHERE ' . $capjoin->wheres;
+
+        $params = $capjoin->params;
+
+        $users = $DB->get_records_sql($sql, $params);
+
+        $counter = 0;
+        foreach ($users as $user) {
+            if (badgeissuer::user_already_have_badge($user->id, $evokebadge->badgeid)) {
+                continue;
+            }
+
+            if (!badgeissuer::check_if_user_can_receive_badge($user->id, $badgecriterias)) {
+                continue;
+            }
+
+            badgeissuer::deliver_badge($user->id, $evokebadge);
+
+            $counter++;
+        }
+
+        return [
+            'status' => 'ok',
+            'message' => get_string('deliverbadge_success', 'local_evokegame', $counter)
+        ];
+    }
+
+    /**
+     * Deliver badge return fields
+     *
+     * @return external_single_structure
+     */
+    public static function deliver_returns() {
         return new external_single_structure(
             array(
                 'status' => new external_value(PARAM_TEXT, 'Operation status'),

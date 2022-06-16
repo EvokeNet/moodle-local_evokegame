@@ -19,11 +19,18 @@
             <th scope="row">{{{id}}}</th>
             <td>{{{name}}}</td>
             <td style="width: 160px; text-align: center;">
-                <a href="{{{config.wwwroot}}}/local/evokegame/badgecriterias.php?id={{id}}" data-id="{{id}}" class="btn btn-primary btn-sm"><i class="fa fa-cog"></i></a>
-                <a href="#" data-id="{{id}}" data-name="{{name}}" data-courseid="{{courseid}}" data-badgeid="{{badgeid}}" class="btn btn-warning btn-sm edit-evokegame-badge">
+                <a href="#" data-id="{{id}}" class="btn btn-info btn-sm deliver-evokegame-badge" title="{{#str}}badgedeliver, local_evokegame{{/str}}">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a href="{{{config.wwwroot}}}/local/evokegame/badgecriterias.php?id={{id}}" data-id="{{id}}" class="btn btn-primary btn-sm" title="{{#str}}badgecriteria, local_evokegame{{/str}}">
+                    <i class="fa fa-cog"></i>
+                </a>
+                <a href="#" data-id="{{id}}" data-name="{{name}}" data-courseid="{{courseid}}" data-badgeid="{{badgeid}}" class="btn btn-warning btn-sm edit-evokegame-badge" title="{{#str}}editbadge, local_evokegame{{/str}}">
                     <i class="fa fa-pencil-square-o text-white"></i>
                 </a>
-                <a href="#" data-id="{{id}}" class="btn btn-danger btn-sm delete-evokegame-badge"><i class="fa fa-trash-o"></i></a>
+                <a href="#" data-id="{{id}}" class="btn btn-danger btn-sm delete-evokegame-badge" title="{{#str}}deletebadge, local_evokegame{{/str}}">
+                    <i class="fa fa-trash-o"></i>
+                </a>
             </td>
         </tr>
     {{/badges}}
@@ -31,11 +38,13 @@
 </table>
 
 {{#js}}
-    require(['local_evokegame/createbadge', 'local_evokegame/editbadge', 'local_evokegame/deletebadge'], function(CreateBadge, EditBadge, DeleteBadge) {
+    require(['local_evokegame/createbadge', 'local_evokegame/editbadge', 'local_evokegame/deletebadge', 'local_evokegame/deliverbadge'], function(CreateBadge, EditBadge, DeleteBadge, DeliverBadge) {
         CreateBadge.init('[data-action=create-badge-modal]', {{{contextid}}}, {{{courseid}}});
 
         EditBadge.init({{{contextid}}});
 
         DeleteBadge.init();
+
+        DeliverBadge.init();
     });
 {{/js}}
