@@ -46,4 +46,19 @@ $observers = [
         'callback' => '\local_evokegame\observers\badgeissuer::observer',
         'internal' => false
     ],
+    [
+        'eventname' => '\core\event\user_loggedin',
+        'callback' => '\local_evokegame\observers\redirect::observer',
+        'internal' => false
+    ],
+    [
+        'eventname' => '\core\event\dashboard_viewed',
+        'callback' => '\local_evokegame\observers\redirect::observer',
+        'internal' => false
+    ],
+    [
+        'eventname' => '\core\event\course_viewed',
+        'callback' => '\local_evokegame\observers\redirect::observer',
+        'internal' => false
+    ],
 ];

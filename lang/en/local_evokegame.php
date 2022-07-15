@@ -88,14 +88,7 @@ $string['fullname'] = 'Fullname:';
 $string['email'] = 'Email:';
 
 $string['coursesettings'] = 'Course settings';
-$string['coursemenuitems'] = 'Course menu items';
-$string['coursemenuitems_help'] = 'A custom menu may be configured here. Enter each menu item on a new line with format: menu text, a link URL, and a uniquekey(only letter). For example:
-<pre>
-Announcements|/course/|announcements
-Team chat|/mod/chat/view.php?id=2|teamchat
-Course forum|/mod/forum/view.php?id=3|courseforum
-</pre>';
-$string['coursemenuitems_success'] = 'Course settings successfully saved.';
+$string['coursesettings_success'] = 'Course settings successfully saved.';
 $string['isgameenabledincourse'] = 'Is game enabled in this course?';
 
 $string['toastr_skillpoints'] = 'You just received skill points';
