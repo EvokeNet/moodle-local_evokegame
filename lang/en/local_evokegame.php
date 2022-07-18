@@ -77,6 +77,7 @@ $string['checkyourscoreboard'] = 'Check your score board';
 $string['badgetype'] = 'Badge type';
 $string['badgetype_badge'] = 'Badge';
 $string['badgetype_achievement'] = 'Achievement';
+$string['highlight'] = 'Highlight this badge?';
 $string['myachievements'] = 'My achievements';
 $string['progressdidnotstarted'] = 'Your progress did not start yet';
 $string['progressdidnotstarted_desc'] = 'Go back to the mission page, finish activities and interact to receive evocoins and achieve skills and badges.';

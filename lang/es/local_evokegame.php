@@ -67,6 +67,7 @@ $string['checkyourscoreboard'] = 'Consulta tu marcador';
 $string['badgetype'] = 'Tipo de insignia';
 $string['badgetype_badge'] = 'Insignia';
 $string['badgetype_achievement'] = 'Logro';
+$string['highlight'] = 'Resaltar este emblema?';
 $string['myachievements'] = 'Mis logros';
 $string['progressdidnotstarted'] = 'Aún no tienes progreso';
 $string['progressdidnotstarted_desc'] = 'Vuelve a la página de la misión, finaliza las actividades e interactúa para recibir monedas virtuales y conseguir habilidades e insignias.';

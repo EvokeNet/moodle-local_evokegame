@@ -94,7 +94,7 @@ class scoreboard extends table_sql {
     public function col_badges($user) {
         $badgeutil = new badge();
 
-        $userbadges = $badgeutil->get_course_badges_with_user_award($user->id, $this->course->id, $this->context->id);
+        $userbadges = $badgeutil->get_course_highlight_badges_with_user_award($user->id, $this->course->id, $this->context->id);
         $userbadgescolumncontent = '';
         if ($userbadges) {
             foreach ($userbadges as $userbadge) {

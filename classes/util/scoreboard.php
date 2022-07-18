@@ -55,7 +55,7 @@ class scoreboard {
 
             $badgeutil = new badge();
 
-            $user->userbadges = $badgeutil->get_course_badges_with_user_award($user->id, $this->course->id, $this->context->id);
+            $user->userbadges = $badgeutil->get_course_highlight_badges_with_user_award($user->id, $this->course->id, $this->context->id);
         }
     }
 

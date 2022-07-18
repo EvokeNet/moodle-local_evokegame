@@ -45,11 +45,12 @@ class dashboardnavbar implements renderable, templatable {
 
         $badgeutil = new badge();
 
-        $hasbadges = $badgeutil->get_course_badges($this->course->id);
+        $hasbadges = $badgeutil->get_course_highlight_badges_with_user_award($USER->id, $this->course->id, $this->context->id);
         $badges = [];
         if ($hasbadges) {
+            $badges = $hasbadges;
+
             $hasbadges = true;
-            $badges = $badgeutil->get_course_badges_with_user_award($USER->id, $this->course->id, $this->context->id);
         }
 
         return [

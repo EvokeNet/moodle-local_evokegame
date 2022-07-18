@@ -131,6 +131,7 @@ class badge extends external_api {
         $evokebadge->badgeid = $mdlbadgeid;
         $evokebadge->type = $validateddata->type;
         $evokebadge->name = $validateddata->name;
+        $evokebadge->highlight = $validateddata->highlight;
         $evokebadge->timecreated = time();
         $evokebadge->timemodified = time();
 

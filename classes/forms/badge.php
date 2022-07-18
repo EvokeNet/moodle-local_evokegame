@@ -54,6 +54,14 @@ class badge extends \moodleform {
         $mform->setDefault('type', 1);
         $mform->addRule('type', null, 'required', null, 'client');
 
+        $options = [
+            0 => get_string('no'),
+            1 => get_string('yes'),
+        ];
+        $mform->addElement('select', 'highlight', get_string('highlight', 'local_evokegame'), $options);
+        $mform->setDefault('highlight', 0);
+        $mform->addRule('highlight', null, 'required', null, 'client');
+
         $mform->addElement('text', 'name', get_string('name', 'local_evokegame'));
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');

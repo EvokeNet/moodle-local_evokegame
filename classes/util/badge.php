@@ -57,8 +57,8 @@ class badge {
         return $myachievements;
     }
 
-    public function get_course_badges_with_user_award($userid, $courseid, $contextid, $type = 1) {
-        $coursebadges = $this->get_course_badges($courseid, $type);
+    public function get_course_badges_with_user_award($userid, $courseid, $contextid, $type = 1, $highlight = null) {
+        $coursebadges = $this->get_course_badges($courseid, $type, $highlight);
 
         if (!$coursebadges) {
             return false;
@@ -94,7 +94,44 @@ class badge {
         return $badges;
     }
 
-    public function get_course_badges($courseid, $type = 1) {
+    public function get_course_highlight_badges_with_user_award($userid, $courseid, $contextid) {
+        $coursebadges = $this->get_course_badges($courseid, 1, 1);
+
+        if (!$coursebadges) {
+            return false;
+        }
+
+        $badges = [];
+        foreach ($coursebadges as $coursebadge) {
+            $badges[] = [
+                'id' => $coursebadge->id,
+                'badgeid' => $coursebadge->badgeid,
+                'name' => $coursebadge->name,
+                'description' => $coursebadge->description,
+                'badgeimage' => $this->get_badge_image_url($contextid, $coursebadge->badgeid),
+                'awarded' => false
+            ];
+        }
+
+        $userbadges = $this->get_user_course_badges($userid, $courseid);
+
+        if (!$userbadges) {
+            return $badges;
+        }
+
+        foreach ($badges as $key => $badge) {
+            foreach ($userbadges as $userbadge) {
+                if ($badge['badgeid'] == $userbadge->id) {
+                    $badges[$key]['awarded'] = true;
+                    continue 2;
+                }
+            }
+        }
+
+        return $badges;
+    }
+
+    public function get_course_badges($courseid, $type = 1, $highlight = null) {
         global $DB;
 
         $sql = 'SELECT eb.*, b.description
@@ -102,7 +139,14 @@ class badge {
                 INNER JOIN {badge} b ON b.id = eb.badgeid
                 WHERE b.courseid = :courseid AND eb.type = :type';
 
-        $records = $DB->get_records_sql($sql, ['courseid' => $courseid, 'type' => $type]);
+        $params = ['courseid' => $courseid, 'type' => $type];
+
+        if ($highlight !== null) {
+            $sql .= ' AND eb.highlight = :highlight';
+            $params['highlight'] = $highlight;
+        }
+
+        $records = $DB->get_records_sql($sql, $params);
 
         if (!$records) {
             return false;

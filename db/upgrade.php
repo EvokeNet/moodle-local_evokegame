@@ -128,5 +128,19 @@ function xmldb_local_evokegame_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2021112200, 'local', 'evokegame');
     }
 
+    if ($oldversion < 2022071700) {
+        $dbman = $DB->get_manager();
+
+        $table = new xmldb_table('evokegame_badges');
+
+        if ($dbman->table_exists($table)) {
+                $field = new xmldb_field('highlight', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'name');
+
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_plugin_savepoint(true, 2022071700, 'local', 'evokegame');
+    }
+
     return true;
 }
