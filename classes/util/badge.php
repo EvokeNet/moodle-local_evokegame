@@ -21,8 +21,8 @@ class badge {
         require_once($CFG->libdir . '/badgeslib.php');
     }
 
-    public function get_awarded_course_badges($userid, $courseid, $contextid) {
-        $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid);
+    public function get_awarded_course_badges($userid, $courseid, $contextid, $type = 1, $highlight = null) {
+        $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid, $type, $highlight);
 
         if (!$badges) {
             return false;
@@ -186,10 +186,10 @@ class badge {
         return array_values($records);
     }
 
-    public function get_user_course_badges_with_criterias($userid, $courseid, $contextid) {
+    public function get_user_course_badges_with_criterias($userid, $courseid, $contextid, $highlight = null) {
         $badgecriteria = new badgecriteria();
 
-        $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid);
+        $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid, 1, $highlight);
 
         foreach ($badges as $key => $badge) {
             $criterias = $badgecriteria->get_evoke_badge_criterias($badge['id']);
