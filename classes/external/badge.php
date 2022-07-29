@@ -203,7 +203,7 @@ class badge extends external_api {
         $data = [];
         parse_str($serialiseddata, $data);
 
-        $mform = new badgeform($data);
+        $mform = new badgeform($data, $data);
 
         $validateddata = $mform->get_data();
 
@@ -214,8 +214,8 @@ class badge extends external_api {
         $badge = new \stdClass();
         $badge->id = $validateddata->id;
         $badge->name = $validateddata->name;
-        $badge->badgeid = $validateddata->badgeid;
         $badge->type = $validateddata->type;
+        $badge->highlight = $validateddata->highlight;
         $badge->timemodified = time();
 
         $DB->update_record('evokegame_badges', $badge);

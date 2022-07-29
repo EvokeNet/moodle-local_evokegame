@@ -1,7 +1,6 @@
 /**
  * Edit badge js logic.
  *
- * @package    local_evokegame
  * @copyright  2021 World Bank Group <https://worldbank.org>
  * @author     Willian Mano <willianmanoaraujo@gmail.com>
  */
@@ -17,12 +16,7 @@ define([
         'local_evokegame/sweetalert',
         'core/yui'],
     function($, Config, Str, ModalFactory, ModalEvents, Fragment, Ajax, Swal, Y) {
-        /**
-         * Constructor for the EditBadge.
-         *
-         * @param selector The selector to open the modal
-         * @param contextid The course module contextid
-         */
+
         var EditBadge = function(contextid) {
             this.contextid = contextid;
 
@@ -57,6 +51,10 @@ define([
                         body: this.getBody({
                             id: this.eventtarget.data('id'),
                             name: this.eventtarget.data('name'),
+                            description: this.eventtarget.data('description'),
+                            type: this.eventtarget.data('type'),
+                            highlight: this.eventtarget.data('highlight'),
+                            courseid: this.eventtarget.data('courseid'),
                             badgeid: this.eventtarget.data('badgeid')
                         })
                     });
@@ -69,6 +67,10 @@ define([
                         this.modal.setBody(this.getBody({
                             id: this.eventtarget.data('id'),
                             name: this.eventtarget.data('name'),
+                            description: this.eventtarget.data('description'),
+                            type: this.eventtarget.data('type'),
+                            highlight: this.eventtarget.data('highlight'),
+                            courseid: this.eventtarget.data('courseid'),
                             badgeid: this.eventtarget.data('badgeid')
                         }));
                     }.bind(this));
@@ -90,13 +92,6 @@ define([
             }.bind(this));
         };
 
-        /**
-         * @method getBody
-         *
-         * @private
-         *
-         * @return {Promise}
-         */
         EditBadge.prototype.getBody = function(formdata) {
             if (typeof formdata === "undefined") {
                 formdata = {};
@@ -108,13 +103,6 @@ define([
             return Fragment.loadFragment('local_evokegame', 'badge_form', this.contextid, params);
         };
 
-        /**
-         * @method handleFormSubmissionResponse
-         *
-         * @private
-         *
-         * @return {Promise}
-         */
         EditBadge.prototype.handleFormSubmissionResponse = function(data) {
             this.modal.hide();
             // We could trigger an event instead.
@@ -152,13 +140,6 @@ define([
             });
         };
 
-        /**
-         * @method handleFormSubmissionFailure
-         *
-         * @private
-         *
-         * @return {Promise}
-         */
         EditBadge.prototype.handleFormSubmissionFailure = function(data) {
             // Oh noes! Epic fail :(
             // Ah wait - this is normal. We need to re-display the form with errors!

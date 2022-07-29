@@ -135,14 +135,17 @@ function local_evokegame_output_fragment_badge_form($args) {
     $formdata = [];
     if (!empty($args->jsonformdata)) {
         $serialiseddata = json_decode($args->jsonformdata);
-        parse_str($serialiseddata, $formdata);
+        $formdata = (array) $serialiseddata;
     }
 
     $mform = new \local_evokegame\forms\badge($formdata, [
         'id' => $serialiseddata->id,
+        'name' => $serialiseddata->name,
+        'description' => $serialiseddata->description,
+        'type' => $serialiseddata->type,
+        'highlight' => $serialiseddata->highlight,
         'courseid' => $serialiseddata->courseid,
         'badgeid' => $serialiseddata->badgeid,
-        'name' => $serialiseddata->name
     ]);
 
     if (!empty($args->jsonformdata)) {
