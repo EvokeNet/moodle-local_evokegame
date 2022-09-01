@@ -239,7 +239,7 @@ function local_evokegame_pluginfile($course, $cm, $context, $filearea, $args, $f
 }
 
 function local_evokegame_moove_additional_header() {
-    global $PAGE, $OUTPUT;
+    global $PAGE;
 
     if (isguestuser() || !isloggedin()) {
         return false;

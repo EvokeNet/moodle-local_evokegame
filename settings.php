@@ -10,11 +10,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-if ($hassiteconfig) { // Needs this condition or there is error on login page.
-    $ADMIN->add('localplugins',
-        new admin_externalpage('local_evokegame', new lang_string('customfields', 'local_evokegame'),
-            $CFG->wwwroot . '/local/evokegame/customfield.php',
-            array('moodle/course:configurecustomfields')
-        )
-    );
-}
+$ADMIN->add('root', new admin_category('evoke_core', 'Evoke'));
+$ADMIN->add('evoke_core', new admin_externalpage('local_evokegame', new lang_string('customfields', 'local_evokegame'),
+    $CFG->wwwroot . '/local/evokegame/customfield.php',
+    array('moodle/course:configurecustomfields')));
