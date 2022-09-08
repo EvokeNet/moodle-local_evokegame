@@ -48,7 +48,33 @@ class badgecriteria extends \local_evokegame\badgecriteria {
         return false;
     }
 
-    public function get_user_criteria_progress(): bool {
-        return 0;
+    public function get_user_criteria_progress(): int {
+        $skillutil = new skill();
+
+        $usercourseskills = $skillutil->get_course_skills_set($this->badgecriteria->courseid, $this->userid);
+
+        if (!$usercourseskills) {
+            return 0;
+        }
+
+        $criteriaskills = explode(',', $this->badgecriteria->target);
+        $totalpoints = 0;
+        foreach ($usercourseskills as $usercourseskill) {
+            foreach ($criteriaskills as $skill) {
+                if ($usercourseskill['skill'] == $skill) {
+                    $totalpoints += $usercourseskill['points'];
+                }
+            }
+        }
+
+        if ($totalpoints == 0) {
+            return 0;
+        }
+
+        if ($totalpoints >= $this->badgecriteria->value) {
+            return 100;
+        }
+
+        return (int)($totalpoints * 100 / $this->badgecriteria->value);
     }
 }

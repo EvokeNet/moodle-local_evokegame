@@ -50,7 +50,7 @@ class profile implements renderable, templatable {
 
         $itsme = $USER->id == $this->user->id;
 
-        $badgesprogress = $badgeutil->get_user_course_badges_with_criterias($this->user->id, $this->course->id, $this->context->id, 1);
+        $badges = $badgeutil->get_user_course_badges_with_criterias($this->user->id, $this->course->id, $this->context->id, 1);
 
         return [
             'coursename' => $this->course->fullname,
@@ -67,8 +67,8 @@ class profile implements renderable, templatable {
             'hasachievements' => $hasachievements,
             'achievements' => $achievements,
             'itsme' => $itsme,
-            'hasbadgesprogress' => !empty($badgesprogress),
-            'badgesprogress' => $badgesprogress
+            'hasbadges' => !empty($badges),
+            'badges' => $badges
         ];
     }
 }

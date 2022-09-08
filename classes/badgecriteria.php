@@ -12,5 +12,5 @@ abstract class badgecriteria {
     }
 
     public abstract function user_achieved_criteria(): bool;
-    public abstract function get_user_criteria_progress(): bool;
+    public abstract function get_user_criteria_progress(): int;
 }

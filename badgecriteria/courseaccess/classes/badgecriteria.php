@@ -33,8 +33,19 @@ class badgecriteria extends \local_evokegame\badgecriteria {
         return false;
     }
 
-    public function get_user_criteria_progress(): bool {
-        return 0;
+    public function get_user_criteria_progress(): int {
+        $totalaccessdays = $this->count_course_access_days();
+
+        if ($totalaccessdays == 0) {
+            return 0;
+        }
+
+        $requireddays = (int) $this->badgecriteria->value;
+        if ($totalaccessdays >= $requireddays) {
+            return 100;
+        }
+
+        return (int)($totalaccessdays * 100 / $this->badgecriteria->value);
     }
 
     private function count_course_access_days() {

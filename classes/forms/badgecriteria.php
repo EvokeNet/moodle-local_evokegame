@@ -45,26 +45,30 @@ class badgecriteria extends \moodleform {
         $mform->addElement('hidden', 'badgeid', $badgeid);
 
         $criteriamethods = [
-            0 => get_string('chooseanoption', 'local_evokegame'),
-            badgecriteriautil::CRITERIA_SKILL_POINTS => get_string('subplugintype_evokebadgecriteria_skillpoints', 'local_evokegame'),
-            badgecriteriautil::CRITERIA_COURSE_ACCESS => get_string('subplugintype_evokebadgecriteria_courseaccess', 'local_evokegame'),
-            badgecriteriautil::CRITERIA_SKILL_POINTS_AGGREGATION => get_string('subplugintype_evokebadgecriteria_skillpointsaggregation', 'local_evokegame')
+            null => get_string('chooseanoption', 'local_evokegame')
         ];
 
+        $installedcriterias = \core_plugin_manager::instance()->get_plugins_of_type('evokegamebadgecriteria');
+        if ($installedcriterias) {
+            foreach ($installedcriterias as $criteria) {
+                $criteriamethods[$criteria->name] = $criteria->displayname;
+            }
+        }
+
         $mform->addElement('select', 'method', get_string('criteriamethod', 'local_evokegame'), $criteriamethods);
-        $mform->setType('method', PARAM_INT);
+        $mform->setType('method', PARAM_ALPHANUM);
         $mform->addRule('method', null, 'required', null, 'client');
 
         $skillutil = new skill();
         $options = $skillutil->get_course_skills_select($courseid);
         $mform->addElement('select', 'skilltarget', get_string('criteriavalue', 'local_evokegame'), $options);
         $mform->setType('skilltarget', PARAM_INT);
-        $mform->hideIf('skilltarget', 'method', 'neq', '1');
+        $mform->hideIf('skilltarget', 'method', 'neq', 'skillpoints');
 
         $options[0] = null;
         $mform->addElement('select', 'skilltargetaggregation', get_string('criteriavalue', 'local_evokegame'), $options);
         $mform->setType('skilltargetaggregation', PARAM_INT);
-        $mform->hideIf('skilltargetaggregation', 'method', 'neq', '3');
+        $mform->hideIf('skilltargetaggregation', 'method', 'neq', 'skillpointsaggregation');
         $mform->getElement('skilltargetaggregation')->setMultiple(true);
 
         $mform->addElement('text', 'value', get_string('value', 'local_evokegame'));
@@ -99,11 +103,11 @@ class badgecriteria extends \moodleform {
             $errors['method'] = get_string('required');
         }
 
-        if ($this->is_submitted() && !empty($method) && $method == 1 && empty($skilltarget)) {
+        if ($this->is_submitted() && !empty($method) && $method == 'skillpoints' && empty($skilltarget)) {
             $errors['skilltarget'] = get_string('required');
         }
 
-        if ($this->is_submitted() && !empty($method) && $method == 3) {
+        if ($this->is_submitted() && !empty($method) && $method == 'skillpointsaggregation') {
             if (count($skilltargetaggregation) == 1 && $skilltargetaggregation[0] == 0) {
                 $errors['skilltargetaggregation'] = get_string('required');
             }

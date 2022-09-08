@@ -63,7 +63,7 @@ class badgecriteria extends external_api {
         $data = [];
         parse_str($serialiseddata, $data);
 
-        $mform = new badgecriteriaform($data, ['courseid' => $courseid]);
+        $mform = new badgecriteriaform($data, $data);
 
         $validateddata = $mform->get_data();
 
@@ -74,21 +74,20 @@ class badgecriteria extends external_api {
         $now = time();
 
         $skillutil = new skill();
-        $badgecriteriautil = new badgecriteriautil();
 
         $badgecriteria = new \stdClass();
         $badgecriteria->courseid = $courseid;
         $badgecriteria->evokebadgeid = $validateddata->badgeid;
-        $badgecriteria->method = $badgecriteriautil->get_criteria_method_name($validateddata->method);
+        $badgecriteria->method = $validateddata->method;
         $badgecriteria->value = $validateddata->value;
         $badgecriteria->timecreated = $now;
         $badgecriteria->timemodified = $now;
 
-        if ($validateddata->skilltarget && $validateddata->method == $badgecriteriautil::CRITERIA_SKILL_POINTS) {
+        if ($validateddata->skilltarget && $validateddata->method == 'skillpoints') {
             $badgecriteria->target = $skillutil->get_skill_string_name($courseid, $validateddata->skilltarget);
         }
 
-        if (!empty($validateddata->skilltargetaggregation) && $validateddata->method == $badgecriteriautil::CRITERIA_SKILL_POINTS_AGGREGATION) {
+        if (!empty($validateddata->skilltargetaggregation) && $validateddata->method == 'skillpointsaggregation') {
             $targets = [];
             foreach ($validateddata->skilltargetaggregation as $item) {
                 $targets[] = $skillutil->get_skill_string_name($courseid, $item);

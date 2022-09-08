@@ -44,6 +44,7 @@ class skill {
                 $percentpoints = (int)(($points * 100) / $totalpoints);
             }
 
+            // TODO: Return renderable data returned by each criteria subplugin
             $data[] = [
                 'skill' => $record->skill,
                 'points' => $points,

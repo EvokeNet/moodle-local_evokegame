@@ -192,16 +192,16 @@ class badge {
         $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid, 1, $highlight);
 
         foreach ($badges as $key => $badge) {
-            $criterias = $badgecriteria->get_evoke_badge_criterias($badge['id']);
+            $badgecriterias = $badgecriteria->get_evoke_badge_criterias($badge['id']);
 
-            if (!$criterias) {
+            if (!$badgecriterias) {
                 unset($badges[$key]);
 
                 continue;
             }
 
-            $criteriasachieved = 0;
-            foreach ($criterias as $criteria) {
+            $criterias = [];
+            foreach ($badgecriterias as $criteria) {
                 $criteriaclass = '\evokegamebadgecriteria_' . $criteria->method . '\badgecriteria';
 
                 if (!class_exists($criteriaclass)) {
@@ -210,18 +210,15 @@ class badge {
 
                 $criteriamethod = new $criteriaclass($userid, $criteria);
 
-                if ($criteriamethod->user_achieved_criteria()) {
-                    $criteriasachieved++;
-                }
+                $criterias[] = [
+                    'method' => $criteria->method,
+                    'target' => $criteria->target,
+                    'value' => $criteria->value,
+                    'progress' => $criteriamethod->get_user_criteria_progress()
+                ];
             }
 
-            $badges[$key]['totalcriterias'] = count($criterias);
-            $badges[$key]['totalachieved'] = $criteriasachieved;
-            $badges[$key]['progress'] = 0;
-
-            if ($criteriasachieved > 0) {
-                $badges[$key]['progress'] = (int)($criteriasachieved * 100 / $badges[$key]['totalcriterias']);
-            }
+            $badges[$key]['criterias'] = $criterias;
         }
 
         return array_values($badges);
