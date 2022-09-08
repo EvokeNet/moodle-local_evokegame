@@ -1,27 +1,27 @@
 <?php
 
 /**
- * This file contains the evokegame element skill's core interaction API.
+ * This file contains the evokegame element skillpointsaggregation's core interaction API.
  *
  * @package     local_evokegame
  * @copyright   2022 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
 
-namespace evokegamebadgecriteria_skill;
+namespace evokegamebadgecriteria_skillpointsaggregation;
 
 use local_evokegame\util\skill;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The evokegame element skill's core interaction API.
+ * The evokegame element skillpointsaggregation's core interaction API.
  *
  * @package     local_evokegame
  * @copyright   2022 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
-class badgecriteria extends \evokegamebadgecriteria\badgecriteria {
+class badgecriteria extends \local_evokegame\badgecriteria {
     public function user_achieved_criteria(): bool {
         $skillutil = new skill();
 
@@ -31,14 +31,18 @@ class badgecriteria extends \evokegamebadgecriteria\badgecriteria {
             return false;
         }
 
+        $criteriaskills = explode(',', $this->badgecriteria->target);
+        $totalpoints = 0;
         foreach ($usercourseskills as $usercourseskill) {
-            if ($usercourseskill['skill'] == $this->badgecriteria->target) {
-                if ($usercourseskill['points'] >= $this->badgecriteria->value) {
-                    return true;
+            foreach ($criteriaskills as $skill) {
+                if ($usercourseskill['skill'] == $skill) {
+                    $totalpoints += $usercourseskill['points'];
                 }
-
-                break;
             }
+        }
+
+        if ($totalpoints >= $this->badgecriteria->value) {
+            return true;
         }
 
         return false;

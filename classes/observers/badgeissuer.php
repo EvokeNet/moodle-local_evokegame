@@ -13,8 +13,6 @@ namespace local_evokegame\observers;
 defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
-use core_badges\badge;
-use local_evokegame\util\badgecriteria;
 use local_evokegame\util\game;
 
 class badgeissuer {
@@ -64,13 +62,17 @@ class badgeissuer {
         return $badge->is_issued($userid);
     }
 
-    public static function check_if_user_can_receive_badge($userid, $badgecriterias) {
-        $badgecriteriautil = new badgecriteria();
-
+    public static function check_if_user_can_receive_badge($userid, $badgecriterias): bool {
         foreach ($badgecriterias as $badgecriteria) {
-            $hascriteria = $badgecriteriautil->check_if_user_achieved_criteria($userid, $badgecriteria);
+            $criteriaclass = '\evokegamebadgecriteria_' . $badgecriteria->method . '\badgecriteria';
 
-            if (!$hascriteria) {
+            if (!class_exists($criteriaclass)) {
+                return false;
+            }
+
+            $criteria = new $criteriaclass($userid, $badgecriteria);
+
+            if (!$criteria->user_achieved_criteria()) {
                 return false;
             }
         }

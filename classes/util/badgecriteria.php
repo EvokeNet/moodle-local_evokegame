@@ -45,26 +45,4 @@ class badgecriteria {
                 return '';
         }
     }
-
-    public function check_if_user_achieved_criteria($userid, $badgecriteria) {
-        if ($badgecriteria->method == 'skillpoints') {
-            $skillcriteria = new skillcriteria();
-
-            return $skillcriteria->check_if_user_achieved_criteria($userid, $badgecriteria);
-        }
-
-        if ($badgecriteria->method == 'courseaccess') {
-            $skillcriteria = new courseaccesscriteria();
-
-            return $skillcriteria->check_if_user_achieved_criteria($userid, $badgecriteria);
-        }
-
-        if ($badgecriteria->method == 'skillpointsaggregation') {
-            $skillcriteria = new skillaggregationcriteria();
-
-            return $skillcriteria->check_if_user_achieved_criteria($userid, $badgecriteria);
-        }
-
-        return false;
-    }
 }

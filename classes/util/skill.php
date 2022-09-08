@@ -59,38 +59,55 @@ class skill {
     protected function get_course_skills_points_data($courseid) {
         global $DB;
 
-        $sql = 'SELECT d.id, f.shortname, sum(value) as points
+        $sql = 'SELECT d.id, f.shortname, f.configdata, d.value
                 FROM {customfield_category} c
                 INNER JOIN {customfield_field} f ON f.categoryid = c.id
                 INNER JOIN {customfield_data} d ON d.fieldid = f.id
                 INNER JOIN {course_modules} cm ON cm.id = d.instanceid
-                WHERE c.component = "local_evokegame" AND c.area = "mod" AND cm.course = :courseid
-                GROUP BY f.shortname';
+                WHERE c.component = "local_evokegame" AND c.area = "mod" AND cm.course = :courseid';
 
-        $records = $DB->get_records_sql($sql, ['courseid' => $courseid]);
+        $records = $DB->get_records_sql($sql, ['courseid' => 8]);
 
         if (!$records) {
             return false;
         }
 
-        $data = [];
+        $fields = [];
         foreach ($records as $record) {
-            $skillname = $record->shortname;
+            $config = json_decode($record->configdata);
 
-            if (strpos($skillname, 'submission_') === false && strpos($skillname, 'grading_') === false) {
+            $options = explode("\r\n", $config->options);
+
+            $points = $options[$record->value - 1];
+
+            if ($points) {
+                $fields[$record->shortname] = $points;
+            }
+        }
+
+        if (!$fields) {
+            return false;
+        }
+
+        $data = [];
+        foreach ($fields as $skillname => $points) {
+
+            if (strpos($skillname, 'submission_') === false &&
+                strpos($skillname, 'grading_') === false &&
+                strpos($skillname, 'like_') === false) {
                 continue;
             }
 
-            $evaluations = ['submission_', 'grading_'];
+            $evaluations = ['submission_', 'grading_', 'like_'];
             $skillname = str_replace($evaluations, "", $skillname);
 
             if (!empty($data[$skillname])) {
-                $data[$skillname] += $record->points;
+                $data[$skillname] += $points;
 
                 continue;
             }
 
-            $data[$skillname] = $record->points;
+            $data[$skillname] = $points;
         }
 
         return $data;

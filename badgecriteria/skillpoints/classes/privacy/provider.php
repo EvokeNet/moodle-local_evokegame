@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Privacy Subsystem implementation for evokegamebadgecriteria_skill.
+ * Privacy Subsystem implementation for evokegamebadgecriteria_skillpoints.
  *
  * @package     local_evokegame
  * @copyright   2022 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
 
-namespace evokegamebadgecriteria_skill\privacy;
+namespace evokegamebadgecriteria_skillpoints\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Privacy Subsystem for evokegamebadgecriteria_skill implementing null_provider.
+ * Privacy Subsystem for evokegamebadgecriteria_skillpoints implementing null_provider.
  *
  * @copyright   2022 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>

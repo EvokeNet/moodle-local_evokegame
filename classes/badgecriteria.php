@@ -1,6 +1,6 @@
 <?php
 
-namespace evokegamebadgecriteria;
+namespace local_evokegame;
 
 abstract class badgecriteria {
     protected $userid;

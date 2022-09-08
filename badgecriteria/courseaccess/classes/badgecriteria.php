@@ -21,7 +21,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright   2022 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
-class badgecriteria extends \evokegamebadgecriteria\badgecriteria {
+class badgecriteria extends \local_evokegame\badgecriteria {
     public function user_achieved_criteria(): bool {
         $totalaccessdays = $this->count_course_access_days();
 

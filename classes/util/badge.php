@@ -202,7 +202,15 @@ class badge {
 
             $criteriasachieved = 0;
             foreach ($criterias as $criteria) {
-                if ($badgecriteria->check_if_user_achieved_criteria($userid, $criteria)) {
+                $criteriaclass = '\evokegamebadgecriteria_' . $criteria->method . '\badgecriteria';
+
+                if (!class_exists($criteriaclass)) {
+                    continue;
+                }
+
+                $criteriamethod = new $criteriaclass($userid, $criteria);
+
+                if ($criteriamethod->user_achieved_criteria()) {
                     $criteriasachieved++;
                 }
             }
