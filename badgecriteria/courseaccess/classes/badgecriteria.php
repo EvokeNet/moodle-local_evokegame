@@ -68,4 +68,29 @@ class badgecriteria extends \local_evokegame\badgecriteria {
 
         return count($records);
     }
+
+    public function get_user_criteria_progress_html(): string {
+        $pluginname = get_string('pluginname', 'evokegamebadgecriteria_courseaccess');
+
+        $progress = $this->get_user_criteria_progress();
+
+        $criteriaprogresdesc = get_string('criteriaprogresdesc', 'evokegamebadgecriteria_courseaccess', $this->badgecriteria->value);
+
+        return '<p class="mb-0">'.$pluginname.'
+                        <a class="btn btn-link p-0"
+                           role="button"
+                           data-container="body"
+                           data-toggle="popover"
+                           data-placement="right"
+                           data-html="true"
+                           tabindex="0"
+                           data-trigger="focus"
+                           data-content="<div class=\'no-overflow\'><p>'.$criteriaprogresdesc.'</p></div>">
+                            <i class="icon fa fa-info-circle text-info fa-fw " title="'.$pluginname.'" role="img" aria-label="'.$pluginname.'"></i>
+                        </a>
+                    </p>
+                    <div class="progress ml-0">
+                        <div class="progress-bar" role="progressbar" style="width: '.$progress.'%" aria-valuenow="'.$progress.'" aria-valuemin="0" aria-valuemax="100">'.$progress.'%</div>
+                    </div>';
+    }
 }

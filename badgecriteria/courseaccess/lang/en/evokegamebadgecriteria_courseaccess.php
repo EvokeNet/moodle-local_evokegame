@@ -10,3 +10,4 @@
 
 $string['pluginname'] = 'Course access';
 $string['privacy:metadata'] = 'The Course access plugin does not store any personal data.';
+$string['criteriaprogresdesc'] = 'To complete this criteria you need to access the course <b>{$a}</b> days.';

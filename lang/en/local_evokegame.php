@@ -43,6 +43,7 @@ $string['deletebadge'] = 'Delete badge';
 $string['badgedeliver'] = 'Deliver badges';
 $string['badgecriteria'] = 'Badge criterias';
 $string['badgedeliver'] = 'Deliver badges';
+$string['badgecriterias'] = 'Criterias to achieve this badge:';
 $string['deliverbadge_confirm_title'] = 'Are you sure?';
 $string['deliverbadge_confirm_msg'] = 'You are about to deliver this badge to all users that achieved all its criterias. Once delivered, the badge cannot be revoked!';
 $string['deliverbadge_confirm_yes'] = 'Yes, deliver it!';

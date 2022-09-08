@@ -200,7 +200,7 @@ class badge {
                 continue;
             }
 
-            $criterias = [];
+            $criteriasprogress = [];
             foreach ($badgecriterias as $criteria) {
                 $criteriaclass = '\evokegamebadgecriteria_' . $criteria->method . '\badgecriteria';
 
@@ -210,15 +210,10 @@ class badge {
 
                 $criteriamethod = new $criteriaclass($userid, $criteria);
 
-                $criterias[] = [
-                    'method' => $criteria->method,
-                    'target' => $criteria->target,
-                    'value' => $criteria->value,
-                    'progress' => $criteriamethod->get_user_criteria_progress()
-                ];
+                $criteriasprogress[] = $criteriamethod->get_user_criteria_progress_html();
             }
 
-            $badges[$key]['criterias'] = $criterias;
+            $badges[$key]['criteriasprogress'] = $criteriasprogress;
         }
 
         return array_values($badges);

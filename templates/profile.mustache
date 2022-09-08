@@ -58,14 +58,12 @@
                                         <div class="info ml-2 w-100">
                                             <h5>{{{name}}}</h5>
                                             <p>{{{description}}}</p>
-                                            {{#criterias}}
-                                                <h6>{{method}}</h6>
-                                                <p class="mb-0">{{target}}</p>
-                                                <p class="mb-0">{{value}}</p>
-                                                <div class="progress ml-0">
-                                                    <div class="progress-bar" role="progressbar" style="width: {{{progress}}}%" aria-valuenow="{{{progress}}}" aria-valuemin="0" aria-valuemax="100">{{{progress}}}%</div>
-                                                </div>
-                                            {{/criterias}}
+                                            <p class="border-bottom mb-0">
+                                                <b>{{#str}}badgecriterias, local_evokegame{{/str}}</b>
+                                            </p>
+                                            {{#criteriasprogress}}
+                                                {{{.}}}
+                                            {{/criteriasprogress}}
                                         </div>
                                     </div>
                                 {{/badges}}
