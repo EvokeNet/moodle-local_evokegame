@@ -17,7 +17,7 @@ $string['customfields'] = 'Evoke Game - Activity custom fields';
 $string['scoreboard'] = 'Scoreboard';
 $string['backtomission'] = 'Back to mission';
 $string['totheleaderboard'] = 'To the leaderboard';
-$string['backtopersonalscore'] = 'Back to personal score';
+$string['backtopersonalscore'] = 'Back to your personal score';
 $string['collectedsuperpowers'] ='Collected superpowers';
 $string['myteams'] = 'My teams';
 $string['mysuperpowers'] = 'My Superpowers';
@@ -91,7 +91,7 @@ $string['email'] = 'Email:';
 
 $string['coursesettings'] = 'Course settings';
 $string['coursesettings_success'] = 'Course settings successfully saved.';
-$string['isgameenabledincourse'] = 'Is game enabled in this course?';
+$string['isgameenabledincourse'] = 'Is the Evoke Game plugin enabled in this course?';
 
 $string['toastr_skillpoints'] = 'You just received skill points';
 $string['toastr_evocoins'] = 'You just received evocoins';
