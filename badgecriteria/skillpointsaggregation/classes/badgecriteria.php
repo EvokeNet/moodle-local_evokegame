@@ -124,6 +124,31 @@ class badgecriteria extends \local_evokegame\badgecriteria {
 
         $criteriaprogresdesc = get_string('criteriaprogresdesc', 'evokegamebadgecriteria_skillpointsaggregation', $langdata);
 
+        $total = array_reduce($skillsprogress, function($carry, $item) {
+            $carry += $item;
+
+            return $carry;
+        });
+
+        if ($total >= 100) {
+            return '<p class="mb-0">'.$pluginname.'
+                        <a class="btn btn-link p-0"
+                           role="button"
+                           data-container="body"
+                           data-toggle="popover"
+                           data-placement="right"
+                           data-html="true"
+                           tabindex="0"
+                           data-trigger="focus"
+                           data-content="<div class=\'no-overflow\'><p>'.$criteriaprogresdesc.'</p></div>">
+                            <i class="icon fa fa-info-circle text-info fa-fw " title="'.$pluginname.'" role="img" aria-label="'.$pluginname.'"></i>
+                        </a>
+                    </p>
+                    <div class="progress ml-0">
+                        <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                    </div>';
+        }
+
         $output = '<p class="mb-0">'.$pluginname.'
                         <a class="btn btn-link p-0"
                            role="button"
