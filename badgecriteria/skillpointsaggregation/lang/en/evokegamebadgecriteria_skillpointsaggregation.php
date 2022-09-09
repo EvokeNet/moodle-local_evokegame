@@ -10,4 +10,4 @@
 
 $string['pluginname'] = 'Skill points aggregation';
 $string['privacy:metadata'] = 'The Skill points aggregation plugin does not store any personal data.';
-$string['criteriaprogresdesc'] = 'To complete this criteria you need to have an amount of the <b>{$a->value}</b> points of skills <b>{$a->name}</b>.';
+$string['criteriaprogresdesc'] = 'To complete this criteria you need to have a total of <b>{$a->value}</b> points of the <b>{$a->name}</b> skills.';

@@ -10,4 +10,4 @@
 
 $string['pluginname'] = 'Skill points';
 $string['privacy:metadata'] = 'The Skill points plugin does not store any personal data.';
-$string['criteriaprogresdesc'] = 'To complete this criteria you need to have <b>{$a->value}</b> points of the skill <b>{$a->name}</b>.';
+$string['criteriaprogresdesc'] = 'To complete this criteria you need to have <b>{$a->value}</b> points awarded for the <b>{$a->name}</b> skill.';
