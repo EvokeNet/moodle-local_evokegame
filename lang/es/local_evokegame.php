@@ -12,7 +12,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Evoke Game';
 
-$string['customfields'] = 'Evoke Game - Activity custom fields';
+$string['customfields'] = 'Evoke Game - Campos personalizados de actividad';
 
 $string['scoreboard'] = 'Marcador';
 $string['backtomission'] = 'Volver a las misiones';
@@ -26,41 +26,45 @@ $string['points'] = 'Puntos';
 $string['viewscoreboard'] = 'Ver marcador';
 $string['chooseavatar'] = 'Elige tu avatar';
 $string['chooseavatar_success'] = 'Avatar actualizada con éxito.';
-$string['badgessettings'] = 'Evoke badges settings';
-$string['createbadge'] = 'Create badge';
-$string['name'] = 'Name';
-$string['actions'] = 'Actions';
-$string['relatedbadge'] = 'Related badge';
-$string['deleteitem_confirm_title'] = 'Are you sure?';
-$string['deleteitem_confirm_msg'] = 'Once deleted, this item cannot be recovered!';
-$string['deleteitem_confirm_yes'] = 'Yes, delete it!';
-$string['deleteitem_confirm_no'] = 'Cancel';
-$string['createbadge_success'] = 'Evoke badge successfully created';
-$string['editbadge_success'] = 'Evoke badge successfully updated';
-$string['deletebadge_success'] = 'Evoke badge successfully deleted';
-$string['editbadge'] = 'Edit badge';
+$string['badgessettings'] = 'Configuración de las insignias de Evoke';
+$string['createbadge'] = '	Crear insignia';
+$string['name'] = 'Nombre';
+$string['actions'] = 'Acciones';
+$string['deleteitem_confirm_title'] = '¿Está seguro?';
+$string['deleteitem_confirm_msg'] = '¡Una vez eliminado, este elemento no se puede recuperar!';
+$string['deleteitem_confirm_yes'] = '¡Sí, elimitar!';
+$string['deleteitem_confirm_no'] = 'Cancelar';
+$string['createbadge_success'] = 'Insignia creada con éxito';
+$string['editbadge_success'] = 'Insignia actualizada con éxito';
+$string['deletebadge_success'] = 'Insignia eliminada con éxito';
+$string['editbadge'] = 'Editar insignia';
 
-$string['subplugintype_evokebadgecriteria'] = 'Evoke badge criteria method';
-$string['subplugintype_evokebadgecriteria_plural'] = 'Evoke badge criterias methods';
-$string['createbadgecriteria'] = 'Create badge criteria';
-$string['criteriamethod'] = 'Criteria method';
-$string['criteriatarget'] = 'Criteria target';
-$string['criteriavalue'] = 'Criteria value';
-$string['value'] = 'Value';
-$string['chooseanoption'] = 'Choose an option';
-$string['subplugintype_evokebadgecriteria_skillpoints'] = 'Skill points';
-$string['subplugintype_evokebadgecriteria_courseaccess'] = 'Course access';
-$string['subplugintype_evokebadgecriteria_skillpointsaggregation'] = 'Skill points aggregation';
-$string['createbadgecriteria_success'] = 'Criteria successfully created';
-$string['deletebadgecriteria_success'] = 'Criteria successfully deleted';
+$string['badgedeliver'] = 'Entregar insignias';
+$string['badgecriteria'] = 'Criterios para las insignias';
+$string['badgecriterias'] = 'Criterios para lograr esta insignia:';
+$string['deliverbadge_confirm_title'] = '¿Está seguro?';
+$string['deliverbadge_confirm_msg'] = 'Está a punto de entregar una insignia a todos los usuarios que hayan cumplido con estos criterios. Una vez entregada, la insignia no puede ser revocada!';
+$string['deliverbadge_confirm_yes'] = 'Sí, entrégala!';
+$string['deliverbadge_confirm_no'] = 'Cancelar';
+$string['deliverbadge_success'] = 'Insignia de Evoke entregada correctamente a {$a} usuarios.';
+$string['deliverbadge_badgenocriterias'] = 'No es possible entregar esta insignia porque no tiene un criterio establecido.';
 
-$string['eventpoints_added'] = 'Points added event';
+$string['createbadgecriteria'] = 'Crear criterio para insignia';
+$string['criteriamethod'] = 'Método para el criterio';
+$string['criteriatarget'] = 'Objetivo del criterio';
+$string['criteriavalue'] = 'Valor del criterio';
+$string['value'] = 'Valor';
+$string['chooseanoption'] = 'Elija una opción';
+$string['createbadgecriteria_success'] = 'Criterio creado correctamente';
+$string['deletebadgecriteria_success'] = 'Criterio eliminado correctamente';
+
+$string['eventpoints_added'] = 'Evento de puntos añadidos';
 $string['congratulations'] = '¡Felicidades!';
 $string['youveearnedabadge'] = '¡Te ganaste una insignia!';
 $string['youveearnedanachievement'] = '¡Obtuviste un logro!';
 $string['youjustearnedanewbadge'] = '¡Acabas de ganar una nueva insignia!';
 $string['youjustearnedanewachievement'] = '¡Acabas de obtener un nuevo logro!';
-$string['youjustearnedanewbadge_desc'] = 'For outstanding work, you\'ve earned the <b><i>{$a}</i></b> badge';
+$string['youjustearnedanewbadge_desc'] = 'Por un trabajo sobresaliente te ganaste la insignia <b><i>{$a}</i></b>';
 $string['youjustearnedanewachievement_desc'] = 'Por un trabajo sobresaliente te ganaste la insignia <b><i>{$a}</i></b>';
 $string['checkyourscoreboard'] = 'Consulta tu marcador';
 
@@ -78,16 +82,19 @@ $string['aboutme'] = 'Sobre mi:';
 $string['fullname'] = 'Nombre completo:';
 $string['email'] = 'Email:';
 
-$string['coursesettings'] = 'Course settings';
-$string['coursemenuitems'] = 'Course menu items';
-$string['coursemenuitems_help'] = 'A custom menu may be configured here. Enter each menu item on a new line with format: menu text, a link URL, and a uniquekey(only letter). For example:
-<pre>
-Announcements|/course/|announcements
-Team chat|/mod/chat/view.php?id=2|teamchat
-Course forum|/mod/forum/view.php?id=3|courseforum
-</pre>';
-$string['coursemenuitems_success'] = 'Course settings successfully saved.';
-$string['isgameenabledincourse'] = 'Is game enabled in this course?';
+$string['coursesettings'] = 'Configuración del curso';
+$string['coursesettings_success'] = 'Configuración del curso guardada con éxito.';
+$string['isgameenabledincourse'] = '¿Está "game" activado en este curso?';
 
 $string['toastr_skillpoints'] = 'Acabas de recibir puntos de habilidad';
 $string['toastr_evocoins'] = 'Acabas de recibir evocoins';
+
+$string['scoreboard_finishdate'] = 'Fecha para cerrar el scoreboard';
+$string['scoreboard_finishdate_help'] = 'Después de esta fecha, el scoreboard estará cerrado';
+$string['scoreboard_image'] = 'Imagen del scoreboard';
+$string['scoreboard_prize'] = 'Título del premio para el premio del scoreboard';
+$string['scoreboard_endsin'] = 'Acaba en: ';
+$string['scoreboard_agent'] = 'Agente';
+$string['scoreboard_evc'] = 'EVC';
+$string['scoreboard_powers'] = 'Poderes';
+$string['scoreboard_badges'] = 'Insiginias';

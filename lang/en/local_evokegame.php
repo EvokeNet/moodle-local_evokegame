@@ -30,7 +30,6 @@ $string['badgessettings'] = 'Evoke badges settings';
 $string['createbadge'] = 'Create badge';
 $string['name'] = 'Name';
 $string['actions'] = 'Actions';
-$string['relatedbadge'] = 'Related badge';
 $string['deleteitem_confirm_title'] = 'Are you sure?';
 $string['deleteitem_confirm_msg'] = 'Once deleted, this item cannot be recovered!';
 $string['deleteitem_confirm_yes'] = 'Yes, delete it!';
@@ -39,10 +38,9 @@ $string['createbadge_success'] = 'Evoke badge successfully created';
 $string['editbadge_success'] = 'Evoke badge successfully updated';
 $string['deletebadge_success'] = 'Evoke badge successfully deleted';
 $string['editbadge'] = 'Edit badge';
-$string['deletebadge'] = 'Delete badge';
+
 $string['badgedeliver'] = 'Deliver badges';
 $string['badgecriteria'] = 'Badge criterias';
-$string['badgedeliver'] = 'Deliver badges';
 $string['badgecriterias'] = 'Criterias to achieve this badge:';
 $string['deliverbadge_confirm_title'] = 'Are you sure?';
 $string['deliverbadge_confirm_msg'] = 'You are about to deliver this badge to all users that achieved all its criterias. Once delivered, the badge cannot be revoked!';
@@ -51,17 +49,12 @@ $string['deliverbadge_confirm_no'] = 'Cancel';
 $string['deliverbadge_success'] = 'Evoke Badge successfully delivered for {$a} users.';
 $string['deliverbadge_badgenocriterias'] = 'It is not possible to deliver this badge because it doesn\'t has a delivery criteria';
 
-$string['subplugintype_evokebadgecriteria'] = 'Evoke badge criteria method';
-$string['subplugintype_evokebadgecriteria_plural'] = 'Evoke badge criterias methods';
 $string['createbadgecriteria'] = 'Create badge criteria';
 $string['criteriamethod'] = 'Criteria method';
 $string['criteriatarget'] = 'Criteria target';
 $string['criteriavalue'] = 'Criteria value';
 $string['value'] = 'Value';
 $string['chooseanoption'] = 'Choose an option';
-$string['subplugintype_evokebadgecriteria_skillpoints'] = 'Skill points';
-$string['subplugintype_evokebadgecriteria_courseaccess'] = 'Course access';
-$string['subplugintype_evokebadgecriteria_skillpointsaggregation'] = 'Skill points aggregation';
 $string['createbadgecriteria_success'] = 'Criteria successfully created';
 $string['deletebadgecriteria_success'] = 'Criteria successfully deleted';
 
@@ -97,7 +90,7 @@ $string['toastr_skillpoints'] = 'You just received skill points';
 $string['toastr_evocoins'] = 'You just received evocoins';
 
 $string['scoreboard_finishdate'] = 'Scoreboard finish date';
-$string['scoreboard_finishdate_help'] = 'Before this date, scoreboard will be closed.';
+$string['scoreboard_finishdate_help'] = 'After this date, scoreboard will be closed.';
 $string['scoreboard_image'] = 'Scoreboard image';
 $string['scoreboard_prize'] = 'Scoreboard prize title';
 $string['scoreboard_endsin'] = 'Ends in: ';
