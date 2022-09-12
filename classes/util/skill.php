@@ -34,23 +34,35 @@ class skill {
         $courseskillspoints = $this->get_course_skills_points_data($courseid);
 
         $data = [];
-        foreach ($records as $record) {
-            $points = (int) $record->points;
+        foreach ($courseskillspoints as $skill => $totalpoints) {
+            foreach ($records as $record) {
+                if ($record->skill == $skill) {
+                    $points = (int) $record->points;
 
-            $percentpoints = 0;
-            $totalpoints = 0;
-            if ($points != 0 && !empty($courseskillspoints[$record->skill])) {
-                $totalpoints = $courseskillspoints[$record->skill];
-                $percentpoints = (int)(($points * 100) / $totalpoints);
+                    $percentpoints = 0;
+                    if ($points != 0) {
+                        $percentpoints = (int)(($points * 100) / $totalpoints);
+                    }
+
+                    // TODO: Return renderable data returned by each criteria subplugin
+                    $data[] = [
+                        'skill' => $skill,
+                        'points' => $points,
+                        'percentpoints' => $percentpoints,
+                        'totalpoints' => $totalpoints,
+                        'progressbg' => $this->get_skill_progress_bg($percentpoints)
+                    ];
+
+                    continue 2;
+                }
             }
 
-            // TODO: Return renderable data returned by each criteria subplugin
             $data[] = [
-                'skill' => $record->skill,
-                'points' => $points,
-                'percentpoints' => $percentpoints,
+                'skill' => $skill,
+                'points' => 0,
+                'percentpoints' => 0,
                 'totalpoints' => $totalpoints,
-                'progressbg' => $this->get_skill_progress_bg($percentpoints)
+                'progressbg' => $this->get_skill_progress_bg(0)
             ];
         }
 
@@ -67,7 +79,7 @@ class skill {
                 INNER JOIN {course_modules} cm ON cm.id = d.instanceid
                 WHERE c.component = "local_evokegame" AND c.area = "mod" AND cm.course = :courseid';
 
-        $records = $DB->get_records_sql($sql, ['courseid' => 8]);
+        $records = $DB->get_records_sql($sql, ['courseid' => $courseid]);
 
         if (!$records) {
             return false;
@@ -82,7 +94,7 @@ class skill {
             $points = $options[$record->value - 1];
 
             if ($points) {
-                $fields[$record->shortname] = $points;
+                $fields[$record->shortname] = !isset($fields[$record->shortname]) ? (int)$points : $fields[$record->shortname] + (int)$points;
             }
         }
 
@@ -103,12 +115,12 @@ class skill {
             $skillname = str_replace($evaluations, "", $skillname);
 
             if (!empty($data[$skillname])) {
-                $data[$skillname] += $points;
+                $data[$skillname] += (int) $points;
 
                 continue;
             }
 
-            $data[$skillname] = $points;
+            $data[$skillname] = (int) $points;
         }
 
         return $data;

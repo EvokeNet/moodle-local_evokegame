@@ -83,11 +83,29 @@ class usergraded {
                 continue;
             }
 
-            // String submission_ length == 8.
+            // String grading_ length == 8.
             $submissionskill = substr($skill, 8);
 
-//            $pointstoadd = $event->get_grade()->finalgrade * $value;
             $pointstoadd = $value;
+
+            $grade = $event->get_grade();
+            if ($grade->rawscaleid && (((int) $grade->rawgrademax) == 4)) {
+                $multiplier = 1;
+                if ((int)$grade->finalgrade == 1) {
+                    $multiplier = 0.5;
+                }
+                if ((int)$grade->finalgrade == 2) {
+                    $multiplier = 0.75;
+                }
+                if ((int)$grade->finalgrade == 3) {
+                    $multiplier = 1;
+                }
+                if ((int)$grade->finalgrade == 4) {
+                    $multiplier = 1.5;
+                }
+
+                $pointstoadd = ceil($value * $multiplier);
+            }
 
             $points->add_points('module', 'grading', $cm->id, $submissionskill, $pointstoadd);
 
