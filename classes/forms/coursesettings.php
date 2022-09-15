@@ -32,6 +32,13 @@ class coursesettings extends \moodleform {
         $mform->addElement('filepicker', 'scoreboard_image', get_string('scoreboard_image', 'local_evokegame'), null,
             ['maxbytes' => 1, 'accepted_types' => 'optimised_image']);
 
+        $mform->addElement('textarea', 'coursemenuitems', get_string('coursemenuitems', 'local_evokegame'), 'wrap="virtual" rows="10" cols="100"');
+        $mform->setType('coursemenuitems', PARAM_RAW);
+        $mform->addHelpButton('coursemenuitems','coursemenuitems',  'local_evokegame');
+        $this->fill_field_with_database_value('coursemenuitems');
+
+        $mform->addElement('html', '<div class="row"><div class="col-md-3"></div><div class="col-md-9">'.get_string('coursemenuitems_help', 'local_evokegame').'</div></div>');
+
         $this->add_action_buttons(true);
     }
 
