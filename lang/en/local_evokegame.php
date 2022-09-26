@@ -38,6 +38,7 @@ $string['createbadge_success'] = 'Evoke badge successfully created';
 $string['editbadge_success'] = 'Evoke badge successfully updated';
 $string['deletebadge_success'] = 'Evoke badge successfully deleted';
 $string['editbadge'] = 'Edit badge';
+$string['deletebadge'] = 'Delete badge';
 
 $string['badgedeliver'] = 'Deliver badges';
 $string['badgecriteria'] = 'Badge criterias';
@@ -59,6 +60,7 @@ $string['createbadgecriteria_success'] = 'Criteria successfully created';
 $string['deletebadgecriteria_success'] = 'Criteria successfully deleted';
 
 $string['eventpoints_added'] = 'Points added event';
+$string['eventevocoins_added'] = 'Evocoins added event';
 $string['congratulations'] = 'Congratulations!';
 $string['youveearnedabadge'] = 'You\'ve earned a badge!';
 $string['youveearnedanachievement'] = 'You\'ve earned an achievement!';

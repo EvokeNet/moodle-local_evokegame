@@ -168,7 +168,7 @@ function local_evokegame_output_fragment_badgecriteria_form($args) {
     $formdata = [];
     if (!empty($args->jsonformdata)) {
         $serialiseddata = json_decode($args->jsonformdata);
-        parse_str($serialiseddata, $formdata);
+        $formdata = (array)$serialiseddata;
     }
 
     $mform = new \local_evokegame\forms\badgecriteria($formdata, [

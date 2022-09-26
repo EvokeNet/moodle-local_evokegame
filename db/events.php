@@ -42,6 +42,11 @@ $observers = [
         'internal' => false
     ],
     [
+        'eventname' => '\local_evokegame\event\evocoins_added',
+        'callback' => '\local_evokegame\observers\badgeissuer::observer',
+        'internal' => false
+    ],
+    [
         'eventname' => '\core\event\course_viewed',
         'callback' => '\local_evokegame\observers\badgeissuer::observer',
         'internal' => false

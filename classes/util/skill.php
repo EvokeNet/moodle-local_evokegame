@@ -91,7 +91,7 @@ class skill {
 
             $options = explode("\r\n", $config->options);
 
-            $points = $options[$record->value - 1];
+            $points = $record->value == 0 ? 0 : $options[$record->value -1];
 
             if ($points) {
                 $fields[$record->shortname] = !isset($fields[$record->shortname]) ? (int)$points : $fields[$record->shortname] + (int)$points;
@@ -104,7 +104,6 @@ class skill {
 
         $data = [];
         foreach ($fields as $skillname => $points) {
-
             if (strpos($skillname, 'submission_') === false &&
                 strpos($skillname, 'grading_') === false &&
                 strpos($skillname, 'like_') === false) {

@@ -38,6 +38,7 @@ $string['createbadge_success'] = 'Insignia creada con éxito';
 $string['editbadge_success'] = 'Insignia actualizada con éxito';
 $string['deletebadge_success'] = 'Insignia eliminada con éxito';
 $string['editbadge'] = 'Editar insignia';
+$string['deletebadge'] = 'Eliminar insignia';
 
 $string['badgedeliver'] = 'Entregar insignias';
 $string['badgecriteria'] = 'Criterios para las insignias';
@@ -59,6 +60,7 @@ $string['createbadgecriteria_success'] = 'Criterio creado correctamente';
 $string['deletebadgecriteria_success'] = 'Criterio eliminado correctamente';
 
 $string['eventpoints_added'] = 'Evento de puntos añadidos';
+$string['eventevocoins_added'] = 'Evento de evocoins añadidos';
 $string['congratulations'] = '¡Felicidades!';
 $string['youveearnedabadge'] = '¡Te ganaste una insignia!';
 $string['youveearnedanachievement'] = '¡Obtuviste un logro!';

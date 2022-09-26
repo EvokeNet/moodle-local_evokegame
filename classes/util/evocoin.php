@@ -27,7 +27,7 @@ class evocoin {
         }
     }
 
-    public function add_coins($coins) {
+    public function add_coins($coins, $courseid) {
         global $DB, $USER;
 
         $evcrecord = $this->get_evcs_record();
@@ -37,6 +37,18 @@ class evocoin {
         $evcrecord->timemodified = time();
 
         $DB->update_record('evokegame_evcs', $evcrecord);
+
+        $context = \context_course::instance($courseid);
+
+        $params = array(
+            'context' => $context,
+            'objectid' => $evcrecord->id,
+            'courseid' => $courseid,
+            'relateduserid' => $this->userid
+        );
+        $event = \local_evokegame\event\evocoins_added::create($params);
+        $event->add_record_snapshot('evokegame_evcs', $evcrecord);
+        $event->trigger();
 
         if ($USER->id === $this->userid) {
             \core\notification::success(get_string('toastr_evocoins', 'local_evokegame'));

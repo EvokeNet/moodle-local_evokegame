@@ -64,7 +64,7 @@ class modulecompleted {
         );
 
         if ($pointsadded) {
-            $evcs->add_coins($customfields['evocoins']);
+            $evcs->add_coins($customfields['evocoins'], $event->courseid);
         }
     }
 
