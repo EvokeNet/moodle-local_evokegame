@@ -11,11 +11,11 @@
 
                     {{#itsme}}
                         <div class="actions text-center">
-                            <button type="button" class="btn btn-primary btn-sm" data-action="choose-avatar-modal">
+                            <button type="button" class="btn btn-primary btn-sm mt-1" data-action="choose-avatar-modal">
                                 <i class="fa fa-user-circle-o"></i> {{#str}}updateavatar, local_evokegame{{/str}}
                             </button>
 
-                            <a type="button" class="btn btn-secondary btn-sm" href="{{config.wwwroot}}/user/edit.php?id={{id}}&returnto=profile">
+                            <a type="button" class="btn btn-secondary btn-sm mt-1" href="{{config.wwwroot}}/user/edit.php?id={{id}}&returnto=profile">
                                 <i class="fa fa-pencil-square-o"></i> {{#str}}editprofile, local_evokegame{{/str}}
                             </a>
                         </div>
@@ -33,10 +33,10 @@
                     <hr>
 
                     <div class="navigation text-center">
-                        <a href="{{{config.wwwroot}}}/course/view.php?id={{{courseid}}}" class="btn btn-primary btn-sm">
+                        <a href="{{{config.wwwroot}}}/course/view.php?id={{{courseid}}}" class="btn btn-primary btn-sm mt-1">
                             {{#str}}backtomission, local_evokegame{{/str}}
                         </a>
-                        <a href="{{{config.wwwroot}}}/local/evokegame/scoreboard.php?id={{{courseid}}}" class="btn btn-primary btn-sm">
+                        <a href="{{{config.wwwroot}}}/local/evokegame/scoreboard.php?id={{{courseid}}}" class="btn btn-primary btn-sm mt-1">
                             {{#str}}totheleaderboard, local_evokegame{{/str}}
                         </a>
                     </div>
