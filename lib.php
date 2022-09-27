@@ -122,7 +122,7 @@ function local_evokegame_extend_navigation_course($navigation, $course, $context
             $url,
             navigation_node::TYPE_CUSTOM,
             null,
-            'coursesettings',
+            'evokegamecoursesettings',
             new pix_icon('i/course', '')
         );
     }

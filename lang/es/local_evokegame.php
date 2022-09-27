@@ -84,14 +84,7 @@ $string['aboutme'] = 'Sobre mi:';
 $string['fullname'] = 'Nombre completo:';
 $string['email'] = 'Email:';
 
-$string['coursesettings'] = 'Configuración del curso Evoke';
-$string['coursemenuitems'] = 'Course menu items';
-$string['coursemenuitems_help'] = 'Additional menu items be added here. Enter each menu item on a new line with format: menu text, a link URL, and a uniquekey(only letter). For example:
-<pre>
-Announcements|/course/|announcements
-Team chat|/mod/chat/view.php?id=2|teamchat
-Course forum|/mod/forum/view.php?id=3|courseforum
-</pre>';
+$string['coursesettings'] = 'Configuración del evoke game';
 $string['coursesettings_success'] = 'Configuración del curso guardada con éxito.';
 $string['isgameenabledincourse'] = '¿Está "game" activado en este curso?';
 
