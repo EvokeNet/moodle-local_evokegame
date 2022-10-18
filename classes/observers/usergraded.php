@@ -52,7 +52,11 @@ class usergraded {
             return;
         }
 
-        $evokeportfolio = $DB->get_record('evokeportfolio', ['id' => $cm->instance], '*', MUST_EXIST);
+        $evokeportfolio = $DB->get_record('evokeportfolio', ['id' => $cm->instance]);
+
+        if (!$evokeportfolio) {
+            return;
+        }
 
         $groupmembersids = [];
         if ($evokeportfolio->groupactivity) {
