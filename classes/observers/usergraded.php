@@ -31,6 +31,11 @@ class usergraded {
             return;
         }
 
+        // Avoid add points for teachers, admins, anyone who can edit course.
+        if (has_capability('moodle/course:update', $event->get_context(), $event->relateduserid)) {
+            return;
+        }
+
         $gradeitemid = $event->other['itemid'];
 
         $gradeitem = self::get_grade_item($gradeitemid);

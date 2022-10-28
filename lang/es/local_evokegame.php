@@ -89,7 +89,7 @@ $string['coursesettings_success'] = 'Configuración del curso guardada con éxit
 $string['isgameenabledincourse'] = '¿Está "game" activado en este curso?';
 
 $string['toastr_skillpoints'] = 'Acabas de recibir puntos de habilidad';
-$string['toastr_evocoins'] = 'Acabas de recibir evocoins';
+$string['toastr_evocoins'] = 'Acabas de recibir {$a} evocoins';
 
 $string['scoreboard_finishdate'] = 'Fecha para cerrar el scoreboard';
 $string['scoreboard_finishdate_help'] = 'Después de esta fecha, el scoreboard estará cerrado';

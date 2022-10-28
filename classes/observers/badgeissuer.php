@@ -27,6 +27,11 @@ class badgeissuer {
             return;
         }
 
+        // Avoid add points for teachers, admins, anyone who can edit course.
+        if (has_capability('moodle/course:update', $event->get_context(), $event->relateduserid)) {
+            return;
+        }
+
         $userid = $event->relateduserid;
 
         if (get_class($event) === 'core\event\course_viewed') {

@@ -31,6 +31,11 @@ class modulecompleted {
             return;
         }
 
+        // Avoid add points for teachers, admins, anyone who can edit course.
+        if (has_capability('moodle/course:update', $event->get_context(), $event->relateduserid)) {
+            return;
+        }
+
         $handler = extrafieldshandler::create();
 
         $cmid = $event->contextinstanceid;

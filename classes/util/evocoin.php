@@ -51,7 +51,7 @@ class evocoin {
         $event->trigger();
 
         if ($USER->id === $this->userid) {
-            \core\notification::success(get_string('toastr_evocoins', 'local_evokegame'));
+            \core\notification::success(get_string('toastr_evocoins', 'local_evokegame', $coins));
         }
     }
 

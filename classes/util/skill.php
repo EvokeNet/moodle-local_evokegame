@@ -35,6 +35,8 @@ class skill {
 
         $data = [];
         foreach ($courseskillspoints as $skill => $totalpoints) {
+            $skillname = ucfirst(str_replace('_', ' ', $skill));
+
             foreach ($records as $record) {
                 if ($record->skill == $skill) {
                     $points = (int) $record->points;
@@ -46,7 +48,7 @@ class skill {
 
                     // TODO: Return renderable data returned by each criteria subplugin
                     $data[] = [
-                        'skill' => $skill,
+                        'skill' => $skillname,
                         'points' => $points,
                         'percentpoints' => $percentpoints,
                         'totalpoints' => $totalpoints,
@@ -58,7 +60,7 @@ class skill {
             }
 
             $data[] = [
-                'skill' => $skill,
+                'skill' => $skillname,
                 'points' => 0,
                 'percentpoints' => 0,
                 'totalpoints' => $totalpoints,

@@ -89,7 +89,7 @@ $string['coursesettings_success'] = 'Course settings successfully saved.';
 $string['isgameenabledincourse'] = 'Is game enabled in this course?';
 
 $string['toastr_skillpoints'] = 'You just received skill points';
-$string['toastr_evocoins'] = 'You just received evocoins';
+$string['toastr_evocoins'] = 'You just received {$a} evocoins';
 
 $string['scoreboard_finishdate'] = 'Scoreboard finish date';
 $string['scoreboard_finishdate_help'] = 'After this date, scoreboard will be closed.';

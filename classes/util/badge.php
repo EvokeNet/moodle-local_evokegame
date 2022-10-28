@@ -191,6 +191,10 @@ class badge {
 
         $badges = $this->get_course_badges_with_user_award($userid, $courseid, $contextid, 1, $highlight);
 
+        if (!$badges) {
+            return [];
+        }
+
         foreach ($badges as $key => $badge) {
             $badgecriterias = $badgecriteria->get_evoke_badge_criterias($badge['id']);
 
