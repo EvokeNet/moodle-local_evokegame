@@ -197,7 +197,7 @@ function local_evokegame_output_fragment_badgecriteria_form($args) {
 function local_evokegame_before_footer() {
     global $PAGE;
 
-    //$PAGE->requires->js_call_amd('local_evokegame/alerttotoastr', 'init');
+    $PAGE->requires->js_call_amd('local_evokegame/alerttotoastr', 'init');
 }
 
 /**
