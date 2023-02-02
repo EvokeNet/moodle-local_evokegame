@@ -249,4 +249,58 @@ class mod_handler extends \core_customfield\handler {
         }
         return $fields;
     }
+
+    /**
+     * Adds custom fields to instance editing form
+     *
+     * Example:
+     *   public function definition() {
+     *     // ... normal instance definition, including hidden 'id' field.
+     *     $handler->instance_form_definition($this->_form, $instanceid);
+     *     $this->add_action_buttons();
+     *   }
+     *
+     * @param \MoodleQuickForm $mform
+     * @param int $instanceid id of the instance, can be null when instance is being created
+     * @param string $headerlangidentifier If specified, a lang string will be used for field category headings
+     * @param string $headerlangcomponent
+     */
+    public function instance_form_definition(\MoodleQuickForm $mform, int $instanceid = 0,
+                                             ?string $headerlangidentifier = null, ?string $headerlangcomponent = null) {
+
+        $editablefields = $this->get_editable_fields($instanceid);
+        $fieldswithdata = api::get_instance_fields_data($editablefields, $instanceid);
+        $lastcategoryid = null;
+        foreach ($fieldswithdata as $data) {
+            $categoryname = $data->get_field()->get_category()->get('name');
+            $evokemodules = ['mod_evokeportfolio_mod_form', 'mod_portfoliobuilder_mod_form', 'mod_portfoliogroup_mod_form'];
+
+            if (!in_array($mform->_formName, $evokemodules) && (strtolower($categoryname) != 'evocoins')) {
+                continue;
+            }
+
+            $categoryid = $data->get_field()->get_category()->get('id');
+            if ($categoryid != $lastcategoryid) {
+                $categoryname = format_string($data->get_field()->get_category()->get('name'));
+
+                // Load category header lang string if specified.
+                if (!empty($headerlangidentifier)) {
+                    $categoryname = get_string($headerlangidentifier, $headerlangcomponent, $categoryname);
+                }
+
+                $mform->addElement('header', 'category_' . $categoryid, $categoryname);
+                $lastcategoryid = $categoryid;
+            }
+            $data->instance_form_definition($mform);
+            $field = $data->get_field()->to_record();
+            if (strlen($field->description)) {
+                // Add field description.
+                $context = $this->get_configuration_context();
+                $value = file_rewrite_pluginfile_urls($field->description, 'pluginfile.php',
+                    $context->id, 'core_customfield', 'description', $field->id);
+                $value = format_text($value, $field->descriptionformat, ['context' => $context]);
+                $mform->addElement('static', 'customfield_' . $field->shortname . '_static', '', $value);
+            }
+        }
+    }
 }

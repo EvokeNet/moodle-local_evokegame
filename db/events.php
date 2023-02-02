@@ -18,17 +18,17 @@ $observers = [
     ],
     [
         'eventname' => '\mod_evokeportfolio\event\submission_sent',
-        'callback' => '\local_evokegame\observers\submissionsent::observer',
+        'callback' => '\local_evokegame\observers\evokeportfolio\submissionsent::observer',
         'internal' => false
     ],
     [
         'eventname' => '\mod_portfoliobuilder\event\entry_added',
-        'callback' => '\local_evokegame\observers\submissionsent::mod_portfoliobuilder',
+        'callback' => '\local_evokegame\observers\portfoliobuilder\entryadded::observer',
         'internal' => false
     ],
     [
         'eventname' => '\mod_portfoliogroup\event\entry_added',
-        'callback' => '\local_evokegame\observers\submissionsent::mod_portfoliogroup',
+        'callback' => '\local_evokegame\observers\portfoliogroup\entryadded::observer',
         'internal' => false
     ],
     [
@@ -38,12 +38,32 @@ $observers = [
     ],
     [
         'eventname' => '\mod_evokeportfolio\event\comment_added',
-        'callback' => '\local_evokegame\observers\mentor::observer',
+        'callback' => '\local_evokegame\observers\evokeportfolio\mentor::observer',
+        'internal' => false
+    ],
+    [
+        'eventname' => '\mod_portfoliobuilder\event\comment_added',
+        'callback' => '\local_evokegame\observers\portfoliobuilder\commentadded::observer',
+        'internal' => false
+    ],
+    [
+        'eventname' => '\mod_portfoliogroup\event\comment_added',
+        'callback' => '\local_evokegame\observers\portfoliogroup\commentadded::observer',
         'internal' => false
     ],
     [
         'eventname' => '\mod_evokeportfolio\event\like_sent',
-        'callback' => '\local_evokegame\observers\mentor::observer',
+        'callback' => '\local_evokegame\observers\evokeportfolio\mentor::observer',
+        'internal' => false
+    ],
+    [
+        'eventname' => '\mod_portfoliobuilder\event\like_sent',
+        'callback' => '\local_evokegame\observers\portfoliobuilder\likesent::observer',
+        'internal' => false
+    ],
+    [
+        'eventname' => '\mod_portfoliogroup\event\like_sent',
+        'callback' => '\local_evokegame\observers\portfoliogroup\likesent::observer',
         'internal' => false
     ],
     [

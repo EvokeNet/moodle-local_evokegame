@@ -8,7 +8,7 @@
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
 
-namespace local_evokegame\observers;
+namespace local_evokegame\observers\evokeportfolio;
 
 defined('MOODLE_INTERNAL') || die;
 

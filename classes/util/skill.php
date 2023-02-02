@@ -108,11 +108,12 @@ class skill {
         foreach ($fields as $skillname => $points) {
             if (strpos($skillname, 'submission_') === false &&
                 strpos($skillname, 'grading_') === false &&
-                strpos($skillname, 'like_') === false) {
+                strpos($skillname, 'like_') === false &&
+                strpos($skillname, 'comment_') === false) {
                 continue;
             }
 
-            $evaluations = ['submission_', 'grading_', 'like_'];
+            $evaluations = ['submission_', 'grading_', 'like_', 'comment_'];
             $skillname = str_replace($evaluations, "", $skillname);
 
             if (!empty($data[$skillname])) {
