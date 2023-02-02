@@ -22,6 +22,16 @@ $observers = [
         'internal' => false
     ],
     [
+        'eventname' => '\mod_portfoliobuilder\event\entry_added',
+        'callback' => '\local_evokegame\observers\submissionsent::mod_portfoliobuilder',
+        'internal' => false
+    ],
+    [
+        'eventname' => '\mod_portfoliogroup\event\entry_added',
+        'callback' => '\local_evokegame\observers\submissionsent::mod_portfoliogroup',
+        'internal' => false
+    ],
+    [
         'eventname' => '\core\event\user_graded',
         'callback' => '\local_evokegame\observers\usergraded::observer',
         'internal' => false
