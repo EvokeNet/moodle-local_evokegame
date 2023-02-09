@@ -34,20 +34,14 @@ class entryadded {
             return;
         }
 
-        $sql = 'SELECT cm.*
-                FROM {course_modules} cm
-                INNER JOIN {modules} m ON m.id = cm.module AND m.name = "portfoliogroup"
-                WHERE course = :course AND completion <> 0 LIMIT 1';
+        $cmid = $event->contextinstanceid;
 
-        $coursemodulewithcompletion = $DB->get_record_sql($sql, ['course' => $event->courseid]);
-
-        if (!$coursemodulewithcompletion) {
-            return;
-        }
+        list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'portfoliogroup');
+        $portfoliogroup = $DB->get_record('portfoliogroup', ['id' => $cm->instance], '*', MUST_EXIST);
 
         $handler = extrafieldshandler::create();
 
-        $data = $handler->export_instance_data_object($coursemodulewithcompletion->id);
+        $data = $handler->export_instance_data_object($cmid);
 
         if (!preg_grep('/^submission_/', array_keys((array)$data))) {
             // For performance.
@@ -79,7 +73,7 @@ class entryadded {
             foreach ($groupmembers as $groupmember) {
                 $groupmemberpoints = new point($event->courseid, $groupmember->id);
 
-                $groupmemberpoints->add_points('module', 'submission', $coursemodulewithcompletion->id, $submissionskill, $value);
+                $groupmemberpoints->add_points('module', 'submission', $cmid, $submissionskill, $value);
 
                 unset($groupmemberpoints);
             }

@@ -42,20 +42,14 @@ class likesent {
             return;
         }
 
-        $sql = 'SELECT cm.*
-                FROM {course_modules} cm
-                INNER JOIN {modules} m ON m.id = cm.module AND m.name = "portfoliobuilder"
-                WHERE course = :course AND completion <> 0 LIMIT 1';
+        $cmid = $event->contextinstanceid;
 
-        $coursemodulewithcompletion = $DB->get_record_sql($sql, ['course' => $event->courseid]);
-
-        if (!$coursemodulewithcompletion) {
-            return;
-        }
+        list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'portfoliobuilder');
+        $portfoliobuilder = $DB->get_record('portfoliobuilder', ['id' => $cm->instance], '*', MUST_EXIST);
 
         $handler = extrafieldshandler::create();
 
-        $data = $handler->export_instance_data_object($coursemodulewithcompletion->id);
+        $data = $handler->export_instance_data_object($cmid);
 
         $customfields = (array)$data;
 
@@ -84,7 +78,7 @@ class likesent {
             // String like_ length == 5.
             $likeskill = substr($skill, $prefixlen);
 
-            $points->add_points('module', 'like', $coursemodulewithcompletion->id, $likeskill, $value);
+            $points->add_points('module', 'like', $cmid, $likeskill, $value);
         }
     }
 }
