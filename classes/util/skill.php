@@ -158,9 +158,7 @@ class skill {
             return false;
         }
 
-        $data = [
-            get_string('chooseanoption', 'local_evokegame')
-        ];
+        $data = [];
         foreach ($records as $record) {
             $skillname = $record->shortname;
 
@@ -177,6 +175,10 @@ class skill {
 
             $data[] = $skillname;
         }
+
+        asort($data);
+
+        array_unshift($data, get_string('chooseanoption', 'local_evokegame'));
 
         return $data;
     }
