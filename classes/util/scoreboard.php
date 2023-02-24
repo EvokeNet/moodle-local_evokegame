@@ -16,11 +16,12 @@ class scoreboard {
 
         $capjoin = get_enrolled_with_capabilities_join($this->context, '', 'moodle/course:viewparticipants');
 
-        $sql = "SELECT DISTINCT u.*, evc.coins
+        $sql = "SELECT DISTINCT u.*, evc.coins, p.points, (evc.coins + p.points) as score
                 FROM {user} u
                 $capjoin->joins
                 INNER JOIN {evokegame_evcs} evc ON u.id = evc.userid
-                ORDER BY evc.coins DESC";
+                LEFT JOIN {evokegame_points} p ON u.id = p.userid AND p.courseid = 3
+                ORDER BY score DESC";
 
         $params = $capjoin->params;
 

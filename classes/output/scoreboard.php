@@ -33,7 +33,6 @@ class scoreboard implements renderable, templatable {
         $scoreboardfinishdate = get_config('local_evokegame', 'scoreboard_finishdate-' . $this->course->id);
         $timeremaining = $scoreboardfinishdate - time();
 
-
         return [
             'courseid' => $this->course->id,
             'courseimage' => $courseutil->get_summary_image_url($this->course, $this->context),
