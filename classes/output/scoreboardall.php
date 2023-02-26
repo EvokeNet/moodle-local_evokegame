@@ -35,10 +35,9 @@ class scoreboardall implements renderable, templatable {
         $table->collapsible(false);
 
         ob_start();
-        $table->out(5, true);
+        $table->out(30, true);
         $scoreboard = ob_get_contents();
         ob_end_clean();
-
 
         return [
             'courseid' => $this->course->id,

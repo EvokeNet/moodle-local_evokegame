@@ -23,9 +23,6 @@ class scoreboard extends table_sql {
     protected $context;
     protected $course;
 
-    public $sort_default_column = 'evc';
-    public $sort_default_order  = SORT_DESC;
-
     public function __construct($uniqueid, $context, $course) {
         parent::__construct($uniqueid);
 
@@ -36,9 +33,9 @@ class scoreboard extends table_sql {
 
         $this->define_headers($this->get_headers());
 
+        $this->no_sorting('agent');
+        $this->no_sorting('evc');
         $this->no_sorting('powers');
-
-        $this->no_sorting('badges');
 
         $this->define_baseurl(new moodle_url('/local/evokegame/scoreboardall.php', ['id' => $this->course->id]));
 
@@ -48,19 +45,26 @@ class scoreboard extends table_sql {
     }
 
     public function base_sql() {
-        $fields = 'DISTINCT u.id, u.firstname, u.lastname, u.email, e.coins as evc';
+        $fields = 'DISTINCT u.id, u.firstname, u.lastname, u.email, e.coins as evc, p.points, (e.coins + p.points) as score';
 
         $capjoin = get_enrolled_with_capabilities_join($this->context, '', 'moodle/course:viewparticipants');
 
         $from = ' {user} u ' . $capjoin->joins;
 
-        $from .= ' INNER JOIN {evokegame_evcs} e ON e.userid = u.id ';
+        $from .= ' INNER JOIN {evokegame_evcs} e ON e.userid = u.id
+                   LEFT JOIN {evokegame_points} p ON u.id = p.userid AND p.courseid = :courseid ';
 
         $params = $capjoin->params;
+
+        $params['courseid'] = $this->course->id;
 
         $where = $capjoin->wheres;
 
         $this->set_sql($fields, $from, $where, $params);
+    }
+
+    public function get_sql_sort() {
+        return 'score DESC, evc DESC, firstname ASC';
     }
 
     public function col_agent($user) {
@@ -91,34 +95,15 @@ class scoreboard extends table_sql {
         return '-';
     }
 
-    public function col_badges($user) {
-        $badgeutil = new badge();
-
-        $userbadges = $badgeutil->get_course_highlight_badges_with_user_award($user->id, $this->course->id, $this->context->id);
-        $userbadgescolumncontent = '';
-        if ($userbadges) {
-            foreach ($userbadges as $userbadge) {
-                $badgeclasses = 'evokebadge';
-                if (!$userbadge['awarded']) {
-                    $badgeclasses .= ' dimmed';
-                }
-                $userbadgescolumncontent .= '<img src="'.$userbadge['badgeimage'].'" alt="'.$userbadge['name'].'" class="'.$badgeclasses.'">';
-            }
-        }
-
-        return $userbadgescolumncontent;
-    }
-
     private function get_columns() {
-        return ['agent', 'evc', 'powers', 'badges'];
+        return ['agent', 'evc', 'powers'];
     }
 
     private function get_headers() {
         return [
             get_string('scoreboard_agent', 'local_evokegame'),
             get_string('scoreboard_evc', 'local_evokegame'),
-            get_string('scoreboard_powers', 'local_evokegame'),
-            get_string('scoreboard_badges', 'local_evokegame')
+            get_string('scoreboard_powers', 'local_evokegame')
         ];
     }
 }

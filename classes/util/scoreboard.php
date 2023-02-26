@@ -20,10 +20,12 @@ class scoreboard {
                 FROM {user} u
                 $capjoin->joins
                 INNER JOIN {evokegame_evcs} evc ON u.id = evc.userid
-                LEFT JOIN {evokegame_points} p ON u.id = p.userid AND p.courseid = 3
-                ORDER BY score DESC";
+                LEFT JOIN {evokegame_points} p ON u.id = p.userid AND p.courseid = :courseid
+                ORDER BY score DESC, evc.coins DESC, u.firstname ASC";
 
         $params = $capjoin->params;
+
+        $params['courseid'] = $this->course->id;
 
         $records = $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
 
