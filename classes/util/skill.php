@@ -13,7 +13,7 @@ namespace local_evokegame\util;
 defined('MOODLE_INTERNAL') || die;
 
 class skill {
-    public function get_course_skills_set($courseid, $userid = null) {
+    public function get_course_skills_set($courseid, $userid = null, $ignoreusernopoints = false) {
         global $DB, $USER;
 
         if (!$userid) {
@@ -27,7 +27,7 @@ class skill {
 
         $records = $DB->get_records_sql($sql, ['courseid' => $courseid, 'userid' => $userid]);
 
-        if (!$records) {
+        if (!$records && !$ignoreusernopoints) {
             return false;
         }
 
