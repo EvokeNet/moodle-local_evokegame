@@ -81,7 +81,7 @@ class badgecriteria extends \local_evokegame\badgecriteria {
     public function get_user_criteria_progress_by_skill(): array {
         $skillutil = new skill();
 
-        $usercourseskills = $skillutil->get_course_skills_set($this->badgecriteria->courseid, $this->userid);
+        $usercourseskills = $skillutil->get_course_skills_set($this->badgecriteria->courseid, $this->userid, true);
 
         if (!$usercourseskills) {
             return [];

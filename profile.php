@@ -10,7 +10,7 @@
 
 require(__DIR__.'/../../config.php');
 
-// Course module id.
+// Course id.
 $id = required_param('id', PARAM_INT);
 $userid = optional_param('userid', null, PARAM_INT);
 
