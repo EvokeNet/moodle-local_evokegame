@@ -18,6 +18,8 @@ require_course_login($course, true);
 
 $context = context_course::instance($course->id);
 
+require_capability('moodle/course:update', $context);
+
 $url = new moodle_url('/local/evokegame/coursesettings.php', ['id' => $course->id]);
 
 $PAGE->set_url($url);

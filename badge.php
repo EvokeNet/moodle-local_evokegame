@@ -18,6 +18,8 @@ require_course_login($course, true);
 
 $context = context_course::instance($course->id);
 
+require_capability('moodle/course:update', $context);
+
 $PAGE->set_url('/local/evokegame/badge.php', ['id' => $course->id]);
 $PAGE->set_title(format_string($course->fullname));
 $PAGE->set_heading(format_string($course->fullname));
