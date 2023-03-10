@@ -32,7 +32,7 @@ class badgecriteria extends \local_evokegame\badgecriteria {
         }
 
         foreach ($usercourseskills as $usercourseskill) {
-            if ($usercourseskill['skill'] == $this->badgecriteria->target) {
+            if (strtolower($usercourseskill['skill']) == $this->badgecriteria->target) {
                 if ($usercourseskill['points'] >= $this->badgecriteria->value) {
                     return true;
                 }
@@ -54,7 +54,7 @@ class badgecriteria extends \local_evokegame\badgecriteria {
         }
 
         foreach ($usercourseskills as $usercourseskill) {
-            if ($usercourseskill['skill'] == $this->badgecriteria->target) {
+            if (strtolower($usercourseskill['skill']) == $this->badgecriteria->target) {
                 if ($usercourseskill['points'] == 0) {
                     return 0;
                 }

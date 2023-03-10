@@ -35,7 +35,7 @@ class badgecriteria extends \local_evokegame\badgecriteria {
         $totalpoints = 0;
         foreach ($usercourseskills as $usercourseskill) {
             foreach ($criteriaskills as $skill) {
-                if ($usercourseskill['skill'] == $skill) {
+                if (strtolower($usercourseskill['skill']) == $skill) {
                     $totalpoints += $usercourseskill['points'];
                 }
             }

@@ -92,7 +92,7 @@ class badgecriteria extends external_api {
             foreach ($validateddata->skilltargetaggregation as $item) {
                 $targets[] = $skillutil->get_skill_string_name($courseid, $item);
             }
-            $badgecriteria->target = implode($targets,',');
+            $badgecriteria->target = implode(',', $targets);
         }
 
         $badgecriteriaid = $DB->insert_record('evokegame_badges_criterias', $badgecriteria);
