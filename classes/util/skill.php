@@ -48,7 +48,8 @@ class skill {
 
                     // TODO: Return renderable data returned by each criteria subplugin
                     $data[] = [
-                        'skill' => $skillname,
+                        'skill' => $skill,
+                        'skillname' => $skillname,
                         'points' => $points,
                         'percentpoints' => $percentpoints,
                         'totalpoints' => $totalpoints,
@@ -60,7 +61,8 @@ class skill {
             }
 
             $data[] = [
-                'skill' => $skillname,
+                'skill' => $skill,
+                'skillname' => $skillname,
                 'points' => 0,
                 'percentpoints' => 0,
                 'totalpoints' => $totalpoints,
