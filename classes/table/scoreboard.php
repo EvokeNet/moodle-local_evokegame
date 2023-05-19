@@ -68,7 +68,7 @@ class scoreboard extends table_sql {
     }
 
     public function col_agent($user) {
-        return $user->firstname . ' ' . $user->lastname;
+        return html_writer::link(new moodle_url('/local/evokegame/profile.php', ['id' => $this->course->id, 'userid' => $user->id]), $user->firstname . ' ' . $user->lastname);
     }
 
     public function col_powers($user) {
