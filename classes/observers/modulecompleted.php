@@ -13,8 +13,8 @@ namespace local_evokegame\observers;
 defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
-use local_evokegame\customfield\mod_handler as extrafieldshandler;
 use local_evokegame\util\evocoin;
+use local_evokegame\util\evocoinmodule;
 use local_evokegame\util\game;
 
 class modulecompleted {
@@ -36,23 +36,8 @@ class modulecompleted {
             return;
         }
 
-        $handler = extrafieldshandler::create();
-
-        $cmid = $event->contextinstanceid;
-
-        $data = $handler->export_instance_data_object($cmid);
-
-        $customfields = (array)$data;
-
-        if (!$customfields) {
-            return;
-        }
-
-        if (!array_key_exists('evocoins', $customfields)) {
-            return;
-        }
-
-        if (!$customfields['evocoins']) {
+        $educoinmoduleutil = new evocoinmodule();
+        if (!$modulecoins = $educoinmoduleutil->get_module_coins($event->contextinstanceid)) {
             return;
         }
 
@@ -64,12 +49,12 @@ class modulecompleted {
             'module',
             $event->target,
             $event->contextinstanceid,
-            $customfields['evocoins'],
+            $modulecoins,
             'in'
         );
 
         if ($pointsadded) {
-            $evcs->add_coins($customfields['evocoins'], $event->courseid);
+            $evcs->add_coins($modulecoins, $event->courseid);
         }
     }
 

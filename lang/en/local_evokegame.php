@@ -100,3 +100,6 @@ $string['scoreboard_agent'] = 'Agent';
 $string['scoreboard_evc'] = 'EVC';
 $string['scoreboard_powers'] = 'Powers';
 $string['scoreboard_badges'] = 'Badges';
+
+$string['chooseavalue'] = 'Choose a value';
+$string['evocoins'] = 'Evocoins';

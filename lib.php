@@ -25,43 +25,20 @@ function local_evokegame_coursemodule_standard_elements($formwrapper, $mform) {
         return;
     }
 
-    // Add custom fields to the form.
-    $handler = local_evokegame\customfield\mod_handler::create();
-    $handler->set_parent_context($formwrapper->get_context()); // For course handler only.
-
-    $cm = $formwrapper->get_coursemodule();
-
-    if (empty($cm)) {
-        $cmid = 0;
-    } else {
-        $cmid = $cm->id;
+    // Evocoins.
+    $options = [0 => get_string('chooseavalue', 'local_evokegame')];
+    foreach (range(1, 100) as $option) {
+        $options[$option] = $option;
     }
+    $mform->addElement('header', 'evocoinheader', get_string('evocoins', 'local_evokegame'));
+    $mform->addElement('select', 'evocoins', get_string('evocoins', 'local_evokegame'), $options);
+    $mform->setType('evocoins', PARAM_INT);
+    $mform->disabledIf('evocoins', 'completion', 'eq', 0);
 
-    $handler->instance_form_definition($mform, $cmid);
-
-    // Prepare custom fields data.
-    $data = $formwrapper->get_current();
-
-    $oldid = $data->id;
-
-    $data->id = $cmid;
-
-    $handler->instance_form_before_set_data($data);
-
-    $data->id = $oldid;
-}
-
-/**
- * Validates the custom fields elements of all moodle module settings forms.
- *
- * @param moodleform $formwrapper The moodle quickforms wrapper object.
- * @param \stdClass $data The form data.
- */
-function local_evokegame_coursemodule_validation($formwrapper, $data) {
-    // Add the custom fields validation.
-    $handler = local_evokegame\customfield\mod_handler::create();
-
-    return $handler->instance_form_validation($data, []);
+    $evocoinutil = new \local_evokegame\util\evocoinmodule();
+    if ($formwrapper->get_coursemodule() && $evocoins = $evocoinutil->get_module_coins($formwrapper->get_coursemodule()->id)) {
+        $mform->setDefault('evocoins', $evocoins);
+    }
 }
 
 /**
@@ -71,16 +48,10 @@ function local_evokegame_coursemodule_validation($formwrapper, $data) {
  * @param object $course the course of the module
  */
 function local_evokegame_coursemodule_edit_post_actions($moduleinfo, $course) {
-    // Save custom fields if there are any of them in the form.
-    $handler = local_evokegame\customfield\mod_handler::create();
+    $evocoins = $moduleinfo->evocoins ?? null;
 
-    // Make sure to set the handler's parent context first.
-    $context = context_module::instance($moduleinfo->coursemodule);
-    $handler->set_parent_context($context);
-
-    // Save the custom field data.
-    $moduleinfo->id = $moduleinfo->coursemodule;
-    $handler->instance_form_save($moduleinfo, true);
+    $evocoinutil = new \local_evokegame\util\evocoinmodule();
+    $evocoinutil->sync_module_coins($moduleinfo->coursemodule, $evocoins);
 
     return $moduleinfo;
 }

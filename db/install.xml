@@ -72,6 +72,19 @@
         <KEY NAME="fk_evokebadgeid" TYPE="foreign" FIELDS="evokebadgeid" REFTABLE="evokegame_badges" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
+    <TABLE NAME="evokegame_evcs_modules" COMMENT="Stores course evocoins">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="value" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Evocoins for a module"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Timestamp of when the instance was added"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Timestamp of when the instance was last modified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="fk_cmid" TYPE="foreign" FIELDS="cmid" REFTABLE="course_modules" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
     <TABLE NAME="evokegame_evcs" COMMENT="Stores the evoke coins">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
