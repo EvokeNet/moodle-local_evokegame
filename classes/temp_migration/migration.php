@@ -3,16 +3,43 @@
 namespace local_evokegame\temp_migration;
 
 class migration {
-    public function migrate_courses() {
+    public function migrate_courses($type = 'evocoins') {
         global $DB;
 
-        $courses = $DB->get_records_sql('SELECT * FROM {course} WHERE id > 1');
+//        $courses = $DB->get_records_sql('SELECT * FROM {course} WHERE id > 1');
+        $courses = $DB->get_records_sql('SELECT * FROM {course} WHERE id = 42');
 
         foreach ($courses as $course) {
             $coursemoduleswithskills = $this->get_coursemodules_customfields($course);
 
-            $this->migrate_evocoins($coursemoduleswithskills);
+            if ($type == 'evocoins') {
+                $this->migrate_evocoins($coursemoduleswithskills);
+            }
+
+            if ($type == 'submission') {
+                $this->migrate_submission_skills($coursemoduleswithskills);
+
+//                if ($submissionskills) {
+//                    $this->insert_evokegame_evcs_modules($submissionskills);
+//                }
+            }
         }
+    }
+
+    private function migrate_submission_skills($coursemoduleswithskills) {
+        $submissionskills = $this->extract_submission_skills($coursemoduleswithskills);
+    }
+
+    public function extract_submission_skills($coursemoduleswithskills) {
+        $data = [];
+
+        foreach ($coursemoduleswithskills as $key => $coursemodule) {
+            if (array_key_exists('evocoins', $coursemodule)) {
+                $data[$key] = $coursemodule['evocoins'];
+            }
+        }
+
+        return $data;
     }
 
     private function migrate_evocoins($coursemoduleswithskills) {
@@ -21,6 +48,18 @@ class migration {
         if ($onlyevocoins) {
             $this->insert_evokegame_evcs_modules($onlyevocoins);
         }
+    }
+
+    private function extract_evocoins_fields($coursemoduleswithskills) {
+        $data = [];
+
+        foreach ($coursemoduleswithskills as $key => $coursemodule) {
+            if (array_key_exists('evocoins', $coursemodule)) {
+                $data[$key] = $coursemodule['evocoins'];
+            }
+        }
+
+        return $data;
     }
 
     private function insert_evokegame_evcs_modules($onlyevocoins) {
@@ -38,18 +77,6 @@ class migration {
         }
 
         $DB->insert_records('evokegame_evcs_modules', $data);
-    }
-
-    private function extract_evocoins_fields($coursemoduleswithskills) {
-        $data = [];
-
-        foreach ($coursemoduleswithskills as $key => $coursemodule) {
-            if (array_key_exists('evocoins', $coursemodule)) {
-                $data[$key] = $coursemodule['evocoins'];
-            }
-        }
-
-        return $data;
     }
 
     private function get_coursemodules_customfields($course) {
