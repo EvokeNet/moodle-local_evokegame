@@ -7,6 +7,7 @@ defined('MOODLE_INTERNAL') || die();
 use local_evokegame\util\badge;
 use local_evokegame\util\point;
 use local_evokegame\util\skill;
+use local_evokegame\util\skilluser;
 use local_evokegame\util\user;
 use renderable;
 use templatable;

@@ -27,10 +27,8 @@ if (!$options['migration']) {
     exit(0);
 }
 
-if ($options['migration'] == 'evocoins') {
-    $migration = new \local_evokegame\temp_migration\migration();
+$migration = new \local_evokegame\temp_migration\migration();
 
-    $migration->migrate_courses();
-}
+$migration->migrate_courses($options['migration']);
 
 exit(0);

@@ -75,5 +75,20 @@ $functions = [
         'type' => 'write',
         'ajax' => true
     ],
-
+    'local_evokegame_createskill' => [
+        'classname' => 'local_evokegame\external\skill',
+        'classpath' => 'local/evokegame/classes/external/skill.php',
+        'methodname' => 'create',
+        'description' => 'Creates a new skill',
+        'type' => 'write',
+        'ajax' => true
+    ],
+    'local_evokegame_deleteskill' => [
+        'classname' => 'local_evokegame\external\skill',
+        'classpath' => 'local/evokegame/classes/external/skill.php',
+        'methodname' => 'delete',
+        'description' => 'Delete a skill',
+        'type' => 'write',
+        'ajax' => true
+    ],
 ];

@@ -4,13 +4,14 @@
  * This file contains the evokegame element skillpoints's core interaction API.
  *
  * @package     local_evokegame
- * @copyright   2022 World Bank Group <https://worldbank.org>
+ * @copyright   2023 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
 
 namespace evokegamebadgecriteria_skillpoints;
 
 use local_evokegame\util\skill;
+use local_evokegame\util\skilluser;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -18,30 +19,20 @@ defined('MOODLE_INTERNAL') || die();
  * The evokegame element skillpoints's core interaction API.
  *
  * @package     local_evokegame
- * @copyright   2022 World Bank Group <https://worldbank.org>
+ * @copyright   2023 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
 class badgecriteria extends \local_evokegame\badgecriteria {
+    protected $targetname = '';
+
     public function user_achieved_criteria(): bool {
-        $skillutil = new skill();
+        $skillutil = new skilluser($this->userid);
 
-        $usercourseskills = $skillutil->get_course_skills_set($this->badgecriteria->courseid, $this->userid);
-
-        if (!$usercourseskills) {
+        if (!$skillpoints = $skillutil->get_total_skill_points($this->badgecriteria->target)) {
             return false;
         }
 
-        foreach ($usercourseskills as $usercourseskill) {
-            if (strtolower($usercourseskill['skill']) == $this->badgecriteria->target) {
-                if ($usercourseskill['points'] >= $this->badgecriteria->value) {
-                    return true;
-                }
-
-                break;
-            }
-        }
-
-        return false;
+        return $skillpoints >= ((int) $this->badgecriteria->value);
     }
 
     public function get_user_criteria_progress(): int {
@@ -53,17 +44,21 @@ class badgecriteria extends \local_evokegame\badgecriteria {
             return 0;
         }
 
+        $this->targetname = $this->badgecriteria->target;
+
         foreach ($usercourseskills as $usercourseskill) {
-            if (strtolower($usercourseskill['skill']) == $this->badgecriteria->target) {
-                if ($usercourseskill['points'] == 0) {
+            if ($usercourseskill['id'] == $this->badgecriteria->target) {
+                $this->targetname = $usercourseskill['skill'];
+
+                if ($usercourseskill['userpoints'] == 0) {
                     return 0;
                 }
 
-                if ($usercourseskill['points'] >= $this->badgecriteria->value) {
+                if ($usercourseskill['userpoints'] >= $this->badgecriteria->value) {
                     return 100;
                 }
 
-                return (int)($usercourseskill['points'] * 100 / $this->badgecriteria->value);
+                return (int)($usercourseskill['userpoints'] * 100 / $this->badgecriteria->value);
             }
         }
 
@@ -76,7 +71,7 @@ class badgecriteria extends \local_evokegame\badgecriteria {
         $progress = $this->get_user_criteria_progress();
 
         $langdata = new \stdClass();
-        $langdata->name = $this->badgecriteria->target;
+        $langdata->name = $this->targetname;
         $langdata->value = $this->badgecriteria->value;
 
         $criteriaprogresdesc = get_string('criteriaprogresdesc', 'evokegamebadgecriteria_skillpoints', $langdata);

@@ -24,4 +24,34 @@ class badgecriteria {
 
         return array_values($records);
     }
+
+    public function get_evoke_badge_criterias_with_skill_name($badge) {
+        global $DB;
+
+        $criterias = $this->get_evoke_badge_criterias($badge->id);
+
+        if (!$criterias) {
+            return false;
+        }
+
+        $courseskills = $DB->get_records('evokegame_skills', ['courseid' => $badge->courseid]);
+
+        foreach ($criterias as $criteria) {
+            if ($criteria->method == 'skillpoints') {
+                $criteria->target = $courseskills[$criteria->target]->name;
+            }
+
+            if ($criteria->method == 'skillpointsaggregation') {
+                $skills = explode(',', $criteria->target);
+
+                $skillnames = array_map(function($skillid) use ($courseskills) {
+                    return $courseskills[$skillid]->name;
+                }, $skills);
+
+                $criteria->target = implode(', ', $skillnames);
+            }
+        }
+
+        return array_values($criterias);
+    }
 }

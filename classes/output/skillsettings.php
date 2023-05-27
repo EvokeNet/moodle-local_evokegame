@@ -4,6 +4,7 @@ namespace local_evokegame\output;
 
 defined('MOODLE_INTERNAL') || die();
 
+use local_evokegame\util\skill;
 use renderable;
 use templatable;
 use renderer_base;
@@ -11,28 +12,26 @@ use renderer_base;
 /**
  * Ranking renderable class.
  *
- * @copyright   2021 World Bank Group <https://worldbank.org>
+ * @package     local_evokegame
+ * @copyright   2023 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
-class badgecriterias implements renderable, templatable {
+class skillsettings implements renderable, templatable {
     protected $course;
     protected $context;
-    protected $evokebadge;
 
-    public function __construct($course, $context, $evokebadge) {
+    public function __construct($course, $context) {
         $this->course = $course;
         $this->context = $context;
-        $this->evokebadge = $evokebadge;
     }
 
     public function export_for_template(renderer_base $output) {
-        $badgecriteriautil = new \local_evokegame\util\badgecriteria();
+        $skillutil = new skill();
 
         return [
             'contextid' => $this->context->id,
             'courseid' => $this->course->id,
-            'badgeid' => $this->evokebadge->id,
-            'criterias' => $badgecriteriautil->get_evoke_badge_criterias_with_skill_name($this->evokebadge)
+            'skills' => $skillutil->get_course_skills($this->course->id)
         ];
     }
 }

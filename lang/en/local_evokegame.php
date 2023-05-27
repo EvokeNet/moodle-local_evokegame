@@ -103,3 +103,17 @@ $string['scoreboard_badges'] = 'Badges';
 
 $string['chooseavalue'] = 'Choose a value';
 $string['evocoins'] = 'Evocoins';
+
+$string['skills_create'] = 'Create skill';
+$string['skills_nameinuse'] = 'This course already have a skill with this name';
+$string['skills_create_success'] = 'Skill successfully created';
+$string['skills_delete_success'] = 'Skill successfully deleted';
+$string['skills_manage'] = 'Manage course skills';
+$string['skills_submission'] = 'Submission skills';
+$string['skills_submission_desc'] = 'Submissions skill points are given to students after they submit their work.';
+$string['skills_comment'] = 'Comment skills';
+$string['skills_comment_desc'] = 'Comment skill points are given to students when a mentor comments on their work.';
+$string['skills_like'] = 'Like skills';
+$string['skills_like_desc'] = 'Like skill points are given to students when a mentor likes their work.';
+$string['skills_grade'] = 'Grade skills';
+$string['skills_grade_desc'] = 'Grade skill points are given to students when a mentor add a grade to their work.';

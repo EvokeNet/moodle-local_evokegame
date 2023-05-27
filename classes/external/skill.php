@@ -7,20 +7,18 @@ use external_api;
 use external_value;
 use external_single_structure;
 use external_function_parameters;
-use local_evokegame\forms\badgecriteria as badgecriteriaform;
-use local_evokegame\util\skill;
-use local_evokegame\util\badgecriteria as badgecriteriautil;
+use local_evokegame\forms\skill as skillform;
 
 /**
- * Badge criteria external api class.
+ * Skill external api class.
  *
  * @package     local_evokegame
- * @copyright   2021 World Bank Group <https://worldbank.org>
+ * @copyright   2023 World Bank Group <https://worldbank.org>
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
-class badgecriteria extends external_api {
+class skill extends external_api {
     /**
-     * Create badge parameters
+     * Create skill parameters
      *
      * @return external_function_parameters
      */
@@ -28,12 +26,12 @@ class badgecriteria extends external_api {
         return new external_function_parameters([
             'contextid' => new external_value(PARAM_INT, 'The context id for the course module'),
             'courseid' => new external_value(PARAM_INT, 'The course id'),
-            'jsonformdata' => new external_value(PARAM_RAW, 'The data from the badge form, encoded as a json array')
+            'jsonformdata' => new external_value(PARAM_RAW, 'The data from the skill form, encoded as a json array')
         ]);
     }
 
     /**
-     * Create badge method
+     * Create skill method
      *
      * @param int $contextid
      * @param int $course
@@ -63,7 +61,7 @@ class badgecriteria extends external_api {
         $data = [];
         parse_str($serialiseddata, $data);
 
-        $mform = new badgecriteriaform($data, $data);
+        $mform = new skillform($data, $data);
 
         $validateddata = $mform->get_data();
 
@@ -71,39 +69,23 @@ class badgecriteria extends external_api {
             throw new \moodle_exception('invalidformdata');
         }
 
-        $now = time();
+        $skillutil = new \local_evokegame\util\skill();
 
-        $skillutil = new skill();
-
-        $badgecriteria = new \stdClass();
-        $badgecriteria->courseid = $courseid;
-        $badgecriteria->evokebadgeid = $validateddata->badgeid;
-        $badgecriteria->method = $validateddata->method;
-        $badgecriteria->value = $validateddata->value;
-        $badgecriteria->timecreated = $now;
-        $badgecriteria->timemodified = $now;
-
-        if ($validateddata->skilltarget && $validateddata->method == 'skillpoints') {
-            $badgecriteria->target = $validateddata->skilltarget;
+        if ($skillutil->skill_exists($courseid, $validateddata->name)) {
+            throw new \Exception('Duplicated entry');
         }
 
-        if (!empty($validateddata->skilltargetaggregation) && $validateddata->method == 'skillpointsaggregation') {
-            $badgecriteria->target = implode(',', $validateddata->skilltargetaggregation);
-        }
-
-        $badgecriteriaid = $DB->insert_record('evokegame_badges_criterias', $badgecriteria);
-
-        $badgecriteria->id = $badgecriteriaid;
+        $skill = $skillutil->create($courseid, $validateddata->name);
 
         return [
             'status' => 'ok',
-            'message' => get_string('createbadgecriteria_success', 'local_evokegame'),
-            'data' => json_encode($badgecriteria)
+            'message' => get_string('skills_create_success', 'local_evokegame'),
+            'data' => json_encode($skill)
         ];
     }
 
     /**
-     * Create badge return fields
+     * Create skill return fields
      *
      * @return external_single_structure
      */
@@ -118,22 +100,20 @@ class badgecriteria extends external_api {
     }
 
     /**
-     * Delete badge parameters
+     * Delete skill parameters
      *
      * @return external_function_parameters
      */
     public static function delete_parameters() {
         return new external_function_parameters([
-            'badgecriteria' => new external_single_structure([
-                'id' => new external_value(PARAM_INT, 'The badge id', VALUE_REQUIRED)
-            ])
+            'id' => new external_value(PARAM_INT, 'The skill id', VALUE_REQUIRED)
         ]);
     }
 
     /**
-     * Delete badge method
+     * Delete skill method
      *
-     * @param array $badge
+     * @param array $skill
      *
      * @return array
      *
@@ -142,23 +122,21 @@ class badgecriteria extends external_api {
      * @throws \invalid_parameter_exception
      * @throws \moodle_exception
      */
-    public static function delete($badgecriteria) {
-        global $DB;
+    public static function delete($id) {
+        self::validate_parameters(self::delete_parameters(), ['id' => $id]);
 
-        self::validate_parameters(self::delete_parameters(), ['badgecriteria' => $badgecriteria]);
+        $skillutil = new \local_evokegame\util\skill();
 
-        $badgecriteria = (object)$badgecriteria;
-
-        $DB->delete_records('evokegame_badges_criterias', ['id' => $badgecriteria->id]);
+        $skillutil->delete($id);
 
         return [
             'status' => 'ok',
-            'message' => get_string('deletebadgecriteria_success', 'local_evokegame')
+            'message' => get_string('skills_delete_success', 'local_evokegame')
         ];
     }
 
     /**
-     * Delete badge return fields
+     * Delete skill return fields
      *
      * @return external_single_structure
      */

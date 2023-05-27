@@ -171,7 +171,6 @@ function xmldb_local_evokegame_upgrade($oldversion) {
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE);
         $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
         $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL);
-        $table->add_field('points', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL);
         $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
         $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
 
@@ -188,7 +187,8 @@ function xmldb_local_evokegame_upgrade($oldversion) {
         $table->add_field('skillid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
         $table->add_field('cmid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
         $table->add_field('value', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
-        $table->add_field('trigger', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL);
+        $table->add_field('action', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL);
+        $table->add_field('skillslug', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL);
         $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
         $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
 
@@ -203,14 +203,14 @@ function xmldb_local_evokegame_upgrade($oldversion) {
         $table = new xmldb_table('evokegame_skills_users');
 
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE);
-        $table->add_field('skillid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
+        $table->add_field('skillmoduleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
         $table->add_field('value', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
         $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
         $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
 
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id'], null, null);
-        $table->add_key('fk_skillid', XMLDB_KEY_FOREIGN, ['skillid'], 'evokegame_skills', ['id']);
+        $table->add_key('fk_skillmoduleid', XMLDB_KEY_FOREIGN, ['skillmoduleid'], 'evokegame_skills', ['id']);
         $table->add_key('fk_userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
 
         if (!$dbman->table_exists($table)) {

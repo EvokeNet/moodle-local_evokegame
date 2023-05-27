@@ -22,6 +22,8 @@ defined('MOODLE_INTERNAL') || die();
  * @author      Willian Mano <willianmanoaraujo@gmail.com>
  */
 class badgecriteria extends \local_evokegame\badgecriteria {
+    protected $targetname = [];
+
     public function user_achieved_criteria(): bool {
         $skillutil = new skill();
 
