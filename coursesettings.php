@@ -18,7 +18,9 @@ require_course_login($course, true);
 
 $context = context_course::instance($course->id);
 
-require_capability('moodle/course:update', $context);
+if (!has_capability('moodle/course:update', $context)) {
+    redirect(new moodle_url('/course/view.php', ['id' => $id]), \core\notification::error('Illegal access!'));
+}
 
 $url = new moodle_url('/local/evokegame/coursesettings.php', ['id' => $course->id]);
 

@@ -104,6 +104,7 @@ $string['scoreboard_badges'] = 'Badges';
 $string['chooseavalue'] = 'Choose a value';
 $string['evocoins'] = 'Evocoins';
 
+$string['skills_settings'] = 'Evoke game skills management';
 $string['skills_create'] = 'Create skill';
 $string['skills_nameinuse'] = 'This course already have a skill with this name';
 $string['skills_create_success'] = 'Skill successfully created';
@@ -117,3 +118,11 @@ $string['skills_like'] = 'Like skills';
 $string['skills_like_desc'] = 'Like skill points are given to students when a mentor likes their work.';
 $string['skills_grade'] = 'Grade skills';
 $string['skills_grade_desc'] = 'Grade skill points are given to students when a mentor add a grade to their work.';
+
+$string['game_report'] = 'View game report';
+$string['game_report_courseevocoins'] = 'Total evocoins';
+$string['game_report_coursestudents'] = 'Total students';
+$string['game_report_coursesskillspoints'] = 'Total skills points';
+$string['game_report_courseskillstable'] = 'Course skills table';
+$string['game_report_totaldeliveredvocoins'] = 'Total delivered evocoins';
+$string['game_report_skillspointsdistributed'] = 'Total distributed points';

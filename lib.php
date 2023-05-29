@@ -60,7 +60,7 @@ function local_evokegame_coursemodule_standard_elements($formwrapper, $mform) {
         $dbskillssubmission = $skillmodule->get_module_skills($cmid, 'submission');
         $dbskillscomment = $skillmodule->get_module_skills($cmid, 'comment');
         $dbskillslike = $skillmodule->get_module_skills($cmid, 'like');
-        $dbskillsgrade = $skillmodule->get_module_skills($cmid, 'grade');
+        $dbskillsgrade = $skillmodule->get_module_skills($cmid, 'grading');
     }
 
     // Skills submission.
@@ -194,7 +194,7 @@ function local_evokegame_coursemodule_edit_post_actions($moduleinfo, $course) {
     $educoinutil->sync_module_skills($moduleinfo->coursemodule, 'submission', $skillssubmission);
     $educoinutil->sync_module_skills($moduleinfo->coursemodule, 'comment', $skillscomments);
     $educoinutil->sync_module_skills($moduleinfo->coursemodule, 'like', $skillslikes);
-    $educoinutil->sync_module_skills($moduleinfo->coursemodule, 'grade', $skillsgrade);
+    $educoinutil->sync_module_skills($moduleinfo->coursemodule, 'grading', $skillsgrade);
 
     return $moduleinfo;
 }
@@ -218,6 +218,17 @@ function local_evokegame_output_fragment_chooseavatar_form($args) {
 
 function local_evokegame_extend_navigation_course($navigation, $course, $context) {
     if (has_capability('moodle/course:update', $context)) {
+        $url = new moodle_url('/local/evokegame/skillsettings.php', array('id' => $course->id));
+
+        $navigation->add(
+            get_string('skills_settings', 'local_evokegame'),
+            $url,
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'skillsettings',
+            new pix_icon('i/course', '')
+        );
+
         $url = new moodle_url('/local/evokegame/badge.php', array('id' => $course->id));
 
         $navigation->add(

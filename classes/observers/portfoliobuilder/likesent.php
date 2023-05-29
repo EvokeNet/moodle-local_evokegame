@@ -13,9 +13,9 @@ namespace local_evokegame\observers\portfoliobuilder;
 defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
-use local_evokegame\customfield\mod_handler as extrafieldshandler;
 use local_evokegame\util\game;
 use local_evokegame\util\point;
+use local_evokegame\util\skillmodule;
 
 class likesent {
     public static function observer(baseevent $event) {
@@ -47,38 +47,18 @@ class likesent {
         list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'portfoliobuilder');
         $portfoliobuilder = $DB->get_record('portfoliobuilder', ['id' => $cm->instance], '*', MUST_EXIST);
 
-        $handler = extrafieldshandler::create();
+        $skillmodule = new skillmodule();
 
-        $data = $handler->export_instance_data_object($cmid);
+        $skillslike = $skillmodule->get_module_skills($cmid, 'like');
 
-        $customfields = (array)$data;
-
-        if (!$customfields) {
-            return;
-        }
-
-        if (!preg_grep('/^like_/', array_keys($customfields))) {
-            // For performance.
+        if (!$skillslike) {
             return;
         }
 
         $points = new point($event->courseid, $event->relateduserid);
 
-        foreach ($data as $skill => $value) {
-            if (!$value || empty($value) || $value == 0) {
-                continue;
-            }
-
-            $prefixlen = strlen('like_');
-
-            if (substr($skill, 0, $prefixlen) != 'like_') {
-                continue;
-            }
-
-            // String like_ length == 5.
-            $likeskill = substr($skill, $prefixlen);
-
-            $points->add_points('module', 'like', $cmid, $likeskill, $value);
+        foreach ($skillslike as $skillpointobject) {
+            $points->add_points('module', 'like', $cmid, $skillpointobject);
         }
     }
 }

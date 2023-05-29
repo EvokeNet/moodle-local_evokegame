@@ -64,7 +64,7 @@ class skilluser {
         $records = $DB->get_records_sql($sql, ['courseid' => $courseid, 'userid' => $this->userid]);
 
         if (!$records) {
-            return false;
+            return [];
         }
 
         return $records;

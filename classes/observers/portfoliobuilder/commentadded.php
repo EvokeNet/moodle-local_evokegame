@@ -13,9 +13,9 @@ namespace local_evokegame\observers\portfoliobuilder;
 defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
-use local_evokegame\customfield\mod_handler as extrafieldshandler;
 use local_evokegame\util\game;
 use local_evokegame\util\point;
+use local_evokegame\util\skillmodule;
 
 class commentadded {
     public static function observer(baseevent $event) {
@@ -47,38 +47,18 @@ class commentadded {
         list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'portfoliobuilder');
         $portfoliobuilder = $DB->get_record('portfoliobuilder', ['id' => $cm->instance], '*', MUST_EXIST);
 
-        $handler = extrafieldshandler::create();
+        $skillmodule = new skillmodule();
 
-        $data = $handler->export_instance_data_object($cmid);
+        $skillscomment = $skillmodule->get_module_skills($cmid, 'comment');
 
-        $customfields = (array)$data;
-
-        if (!$customfields) {
-            return;
-        }
-
-        if (!preg_grep('/^comment_/', array_keys($customfields))) {
-            // For performance.
+        if (!$skillscomment) {
             return;
         }
 
         $points = new point($event->courseid, $event->relateduserid);
 
-        foreach ($data as $skill => $value) {
-            if (!$value || empty($value) || $value == 0) {
-                continue;
-            }
-
-            $prefixlen = strlen('comment_');
-
-            if (substr($skill, 0, $prefixlen) != 'comment_') {
-                continue;
-            }
-
-            // String comment_ length == 8.
-            $commentskill = substr($skill, $prefixlen);
-
-            $points->add_points('module', 'comment', $cmid, $commentskill, $value);
+        foreach ($skillscomment as $skillpointobject) {
+            $points->add_points('module', 'comment', $cmid, $skillpointobject);
         }
     }
 }

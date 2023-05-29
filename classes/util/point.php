@@ -19,18 +19,21 @@ class point {
         $this->mypoints = $this->get_user_course_points($courseid, $userid);
     }
 
-    public function add_points($pointsource, $pointsourcetype, $sourceid, $skill, $points) {
+    public function add_points($pointsource, $pointsourcetype, $sourceid, $skillpointobject) {
         global $DB, $USER;
 
-        if ($this->points_already_added($pointsource, $pointsourcetype, $sourceid, $skill)) {
+        if ($this->points_already_added($pointsource, $pointsourcetype, $sourceid, $skillpointobject->id)) {
             return;
         }
 
-        $this->mypoints->points += $points;
+        $this->mypoints->points += $skillpointobject->value;
 
         $DB->update_record('evokegame_points', $this->mypoints);
 
-        $this->insert_log_point_entry($pointsource, $pointsourcetype, $sourceid, $skill, $points);
+        // TODO: remove this table
+        $this->insert_log_point_entry($pointsource, $pointsourcetype, $sourceid, $skillpointobject);
+
+        $this->insert_skills_users_entry($skillpointobject);
 
         if ($USER->id === $this->mypoints->userid) {
             \core\notification::success(get_string('toastr_skillpoints', 'local_evokegame'));
@@ -60,7 +63,19 @@ class point {
         return $points;
     }
 
-    public function insert_log_point_entry($pointsource, $pointsourcetype, $sourceid, $skill, $points) {
+    public function insert_skills_users_entry($skillpointobject) {
+        global $DB;
+
+        $pointsdata = new \stdClass();
+        $pointsdata->skillmoduleid = $skillpointobject->skillmoduleid;
+        $pointsdata->userid = $this->mypoints->userid;
+        $pointsdata->value = $skillpointobject->value;
+        $pointsdata->timecreated = time();
+        $pointsdata->timemodified = time();
+
+        $DB->insert_record('evokegame_skills_users', $pointsdata);
+    }
+    public function insert_log_point_entry($pointsource, $pointsourcetype, $sourceid, $skillpointobject) {
         global $DB;
 
         $pointsdata = new \stdClass();
@@ -69,8 +84,8 @@ class point {
         $pointsdata->pointsource = $pointsource;
         $pointsdata->pointsourcetype = $pointsourcetype;
         $pointsdata->sourceid = $sourceid;
-        $pointsdata->skill = $skill;
-        $pointsdata->points = $points;
+        $pointsdata->skill = $skillpointobject->id;
+        $pointsdata->points = $skillpointobject->value;
         $pointsdata->timecreated = time();
         $pointsdata->timemodified = time();
 

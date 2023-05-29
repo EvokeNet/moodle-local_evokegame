@@ -13,9 +13,9 @@ namespace local_evokegame\observers;
 defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
-use local_evokegame\customfield\mod_handler as extrafieldshandler;
 use local_evokegame\util\game;
 use local_evokegame\util\point;
+use local_evokegame\util\skillmodule;
 
 class usergraded {
     public static function observer(baseevent $event) {
@@ -45,25 +45,24 @@ class usergraded {
             return;
         }
 
-        $handler = extrafieldshandler::create();
+        $skillmodule = new skillmodule();
 
-        $data = $handler->export_instance_data_object($cm->id);
+        $skillsgrade = $skillmodule->get_module_skills($cm->id, 'grading');
 
-        if (!preg_grep('/^grading_/', array_keys((array)$data))) {
-            // For performance.
+        if (!$skillsgrade) {
             return;
         }
 
         if ($gradeitem->itemmodule == 'evokeportfolio') {
-            self::handle_evokeportfolio($event, $cm, $data);
+            self::handle_evokeportfolio($event, $cm, $skillsgrade);
         }
 
         if ($gradeitem->itemmodule == 'portfoliobuilder' || $gradeitem->itemmodule == 'portfoliogroup') {
-            self::handle_portfoliobuilder_or_portfoliogroup($event, $cm, $data);
+            self::handle_portfoliobuilder_or_portfoliogroup($event, $cm, $skillsgrade);
         }
     }
 
-    protected static function handle_evokeportfolio($event, $cm, $data) {
+    protected static function handle_evokeportfolio($event, $cm, $skillsgrade) {
         global $DB;
 
         $evokeportfolio = $DB->get_record('evokeportfolio', ['id' => $cm->instance]);
@@ -92,10 +91,10 @@ class usergraded {
 
         $userpoints = new point($event->courseid, $event->relateduserid);
 
-        $skillpoints = self::get_skill_points_data($data, $event->get_grade());
+        $skillpoints = self::get_skill_points_data($skillsgrade, $event->get_grade());
 
-        foreach ($skillpoints as $skill => $points) {
-            $userpoints->add_points('module', 'grading', $cm->id, $skill, $points);
+        foreach ($skillpoints as $skillpointobject) {
+            $userpoints->add_points('module', 'grading', $cm->id, $skillpointobject);
 
             if (!$evokeportfolio->groupactivity && !$groupmembersids) {
                 continue;
@@ -104,39 +103,28 @@ class usergraded {
             foreach ($groupmembersids as $groupmemberid) {
                 $groupmemberpoints = new point($event->courseid, $groupmemberid);
 
-                $groupmemberpoints->add_points('module', 'grading', $cm->id, $skill, $points);
+                $groupmemberpoints->add_points('module', 'grading', $cm->id, $skillpointobject);
 
                 unset($groupmemberpoints);
             }
         }
     }
 
-    protected static function handle_portfoliobuilder_or_portfoliogroup($event, $cm, $data) {
+    protected static function handle_portfoliobuilder_or_portfoliogroup($event, $cm, $skillsgrade) {
         $userpoints = new point($event->courseid, $event->relateduserid);
 
-        $skillpoints = self::get_skill_points_data($data, $event->get_grade());
+        $skillpoints = self::get_skill_points_data($skillsgrade, $event->get_grade());
 
-        foreach ($skillpoints as $skill => $points) {
-            $userpoints->add_points('module', 'grading', $cm->id, $skill, $points);
+        foreach ($skillpoints as $skillpointobject) {
+            $userpoints->add_points('module', 'grading', $cm->id, $skillpointobject);
         }
     }
 
-    protected static function get_skill_points_data($data, $grade) {
+    protected static function get_skill_points_data($skillsgrade, $grade) {
         $skillpoints = [];
 
-        foreach ($data as $skill => $value) {
-            if (!$value || empty($value) || $value == 0) {
-                continue;
-            }
-
-            if (substr($skill, 0, 8) != 'grading_') {
-                continue;
-            }
-
-            // String grading_ length == 8.
-            $submissionskill = substr($skill, 8);
-
-            $pointstoadd = $value;
+        foreach ($skillsgrade as $skill) {
+            $pointstoadd = $skill->value;
 
             if ($grade->rawscaleid && (((int) $grade->rawgrademax) == 4)) {
                 $multiplier = 1;
@@ -153,10 +141,14 @@ class usergraded {
                     $multiplier = 1.5;
                 }
 
-                $pointstoadd = ceil($value * $multiplier);
+                $pointstoadd = ceil($pointstoadd * $multiplier);
             }
 
-            $skillpoints[$submissionskill] = $pointstoadd;
+            $skillpoints[$skill->id] = [
+                'id' => $skill->id,
+                'skillmoduleid' => $skill->skillmoduleid,
+                'pointstoadd' => $pointstoadd
+            ];
         }
 
         return $skillpoints;

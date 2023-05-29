@@ -20,7 +20,9 @@ require_course_login($course, true);
 
 $context = context_course::instance($course->id);
 
-require_capability('moodle/course:update', $context);
+if (!has_capability('moodle/course:update', $context)) {
+    redirect(new moodle_url('/course/view.php', ['id' => $id]), \core\notification::error('Illegal access!'));
+}
 
 $PAGE->set_url('/local/evokegame/badgecriterias.php', ['id' => $course->id]);
 $PAGE->set_title(format_string($course->fullname));

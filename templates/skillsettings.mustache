@@ -1,8 +1,17 @@
-<div class="text-right mb-3">
-    <a href="#"
-       class="btn btn-primary" data-action="create-skill-modal">
-        <i class="fa fa-plus-circle"></i> {{#str}}skills_create, local_evokegame{{/str}}
-    </a>
+<div class="mb-3 d-flex">
+    <div>
+        <a href="{{config.wwwroot}}/local/evokegame/report.php?id={{courseid}}"
+            class="btn btn-info">
+            <i class="fa fa-file-o"></i> {{#str}}game_report, local_evokegame{{/str}}
+        </a>
+    </div>
+
+    <div class="ml-auto">
+        <a href="#"
+           class="btn btn-primary" data-action="create-skill-modal">
+            <i class="fa fa-plus-circle"></i> {{#str}}skills_create, local_evokegame{{/str}}
+        </a>
+    </div>
 </div>
 
 <table class="table table-bordered table-hover table-evokegame-skills">

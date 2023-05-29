@@ -683,3 +683,59 @@ button.toast-close-button {
         padding: 15px 50px 15px 15px;
     }
 }
+
+#page-local-evokegame-report .bg-1 {
+    background-color: #1e88e5;
+}
+
+#page-local-evokegame-report .bg-2 {
+    background-color: #7460ee;
+}
+
+#page-local-evokegame-report .bg-3 {
+    background-color: #26c6da;
+}
+
+#page-local-evokegame-report .bg-4 {
+    background-color: #357a32;
+}
+
+#page-local-evokegame-report .small-box {
+    border-radius: 4px;
+    position: relative;
+    display: block;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+#page-local-evokegame-report .small-box > .inner {
+    padding: 5px 10px;
+}
+
+#page-local-evokegame-report .small-box h3,
+#page-local-evokegame-report .small-box p {
+    z-index: 5;
+    color: #fff;
+}
+
+#page-local-evokegame-report .small-box p {
+    margin-bottom: 0;
+}
+
+#page-local-evokegame-report .small-box h3 {
+    margin: 0 0 10px 0;
+    white-space: nowrap;
+    padding: 0;
+}
+
+#page-local-evokegame-report .small-box .icon {
+    -webkit-transition: all .3s linear;
+    -o-transition: all .3s linear;
+    transition: all .3s linear;
+    position: absolute;
+    top: 5px;
+    right: 40px;
+    z-index: 0;
+    font-size: 48px;
+    color: rgba(0, 0, 0, 0.15);
+}

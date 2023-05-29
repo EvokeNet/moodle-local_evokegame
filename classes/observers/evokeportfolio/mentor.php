@@ -13,9 +13,9 @@ namespace local_evokegame\observers\evokeportfolio;
 defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
-use local_evokegame\customfield\mod_handler as extrafieldshandler;
 use local_evokegame\util\game;
 use local_evokegame\util\point;
+use local_evokegame\util\skillmodule;
 
 class mentor {
     public static function observer(baseevent $event) {
@@ -42,22 +42,22 @@ class mentor {
             return;
         }
 
-        $handler = extrafieldshandler::create();
-
-        $data = $handler->export_instance_data_object($cm->id);
-
-        $customfields = (array)$data;
-
-        if (!$customfields) {
-            return;
-        }
+        $skillmodule = new skillmodule();
 
         if (get_class($event) === 'mod_evokeportfolio\event\comment_added') {
-            self::add_points($customfields, $event->courseid, $cm->id, $event->relateduserid, 'comment_');
+            $skillscomment = $skillmodule->get_module_skills($cm->id, 'comment');
+
+            if ($skillscomment) {
+                self::add_points($skillscomment, $event->courseid, $cm->id, $event->relateduserid, 'comment');
+            }
         }
 
         if (get_class($event) === 'mod_evokeportfolio\event\like_sent') {
-            self::add_points($customfields, $event->courseid, $cm->id, $event->relateduserid, 'like_');
+            $skillslike = $skillmodule->get_module_skills($cm->id, 'like');
+
+            if ($skillslike) {
+                self::add_points($skillslike, $event->courseid, $cm->id, $event->relateduserid, 'like');
+            }
         }
 
         $evokeportfolio = $DB->get_record('evokeportfolio', ['id' => $cm->instance], '*', MUST_EXIST);
@@ -87,37 +87,21 @@ class mentor {
         }
 
         foreach ($groupmembersids as $groupmemberid) {
-            if (get_class($event) === 'mod_evokeportfolio\event\comment_added') {
-                self::add_points($customfields, $event->courseid, $cm->id, $groupmemberid, 'comment_');
+            if (get_class($event) === 'mod_evokeportfolio\event\comment_added' && isset($skillscomment)) {
+                self::add_points($skillscomment, $event->courseid, $cm->id, $groupmemberid, 'comment');
             }
 
-            if (get_class($event) === 'mod_evokeportfolio\event\like_sent') {
-                self::add_points($customfields, $event->courseid, $cm->id, $groupmemberid, 'like_');
+            if (get_class($event) === 'mod_evokeportfolio\event\like_sent' && isset($skillslike)) {
+                self::add_points($skillslike, $event->courseid, $cm->id, $groupmemberid, 'like');
             }
         }
     }
 
-
-    private static function add_points($customfieldsdata, $courseid, $cmid, $relateduserid, $skillprefix) {
+    private static function add_points($skillsgrade, $courseid, $cmid, $relateduserid, $skillprefix) {
         $points = new point($courseid, $relateduserid);
 
-        foreach ($customfieldsdata as $skill => $value) {
-            if (!$value || empty($value) || $value == 0) {
-                continue;
-            }
-
-            // String grading_ length == 8.
-            $prefixlen = strlen($skillprefix);
-
-            if (substr($skill, 0, $prefixlen) != $skillprefix) {
-                continue;
-            }
-
-            $submissionskill = substr($skill, $prefixlen);
-
-            $eventsource = str_replace('_', '', $skillprefix);
-
-            $points->add_points('module', $eventsource, $cmid, $submissionskill, $value);
+        foreach ($skillsgrade as $skillpointobject) {
+            $points->add_points('module', $skillprefix, $cmid, $skillpointobject);
         }
     }
 }

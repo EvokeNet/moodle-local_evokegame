@@ -13,9 +13,9 @@ namespace local_evokegame\observers\evokeportfolio;
 defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
-use local_evokegame\customfield\mod_handler as extrafieldshandler;
 use local_evokegame\util\game;
 use local_evokegame\util\point;
+use local_evokegame\util\skillmodule;
 
 class submissionsent {
     public static function observer(baseevent $event) {
@@ -36,17 +36,16 @@ class submissionsent {
 
         $cmid = $event->contextinstanceid;
 
-        $handler = extrafieldshandler::create();
-
-        $data = $handler->export_instance_data_object($cmid);
-
-        if (!preg_grep('/^submission_/', array_keys((array)$data))) {
-            // For performance.
-            return;
-        }
-
         list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'evokeportfolio');
         $evokeportfolio = $DB->get_record('evokeportfolio', ['id' => $cm->instance], '*', MUST_EXIST);
+
+        $skillmodule = new skillmodule();
+
+        $skillssubmission = $skillmodule->get_module_skills($cmid, 'submission');
+
+        if (!$skillssubmission) {
+            return;
+        }
 
         $groupmembersids = [];
         if ($evokeportfolio->groupactivity) {
@@ -68,25 +67,14 @@ class submissionsent {
 
         $points = new point($event->courseid, $event->relateduserid);
 
-        foreach ($data as $skill => $value) {
-            if (!$value || empty($value) || $value == 0) {
-                continue;
-            }
-
-            if (substr($skill, 0, 11) != 'submission_') {
-                continue;
-            }
-
-            // String submission_ length == 11.
-            $submissionskill = substr($skill, 11);
-
-            $points->add_points('module', 'submission', $event->contextinstanceid, $submissionskill, $value);
+        foreach ($skillssubmission as $skillpointobject) {
+            $points->add_points('module', 'submission', $cmid, $skillpointobject);
 
             if ($evokeportfolio->groupactivity && $groupmembersids) {
                 foreach ($groupmembersids as $groupmemberid) {
                     $groupmemberpoints = new point($event->courseid, $groupmemberid);
 
-                    $groupmemberpoints->add_points('module', 'submission', $event->contextinstanceid, $submissionskill, $value);
+                    $groupmemberpoints->add_points('module', 'submission', $cmid, $skillpointobject);
 
                     unset($groupmemberpoints);
                 }

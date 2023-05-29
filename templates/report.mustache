@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="small-box bg-1">
+            <div class="inner">
+                <h3>{{{totalstudents}}}</h3>
+
+                <p>{{#str}}game_report_coursestudents, local_evokegame{{/str}}</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-users"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="small-box bg-3">
+            <div class="inner">
+                <h3>{{{totalskillspoints}}}</h3>
+
+                <p>{{#str}}game_report_coursesskillspoints, local_evokegame{{/str}}</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-institution"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="small-box bg-2">
+            <div class="inner">
+                <h3>{{{courseevocoins}}}</h3>
+
+                <p>{{#str}}game_report_courseevocoins, local_evokegame{{/str}}</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-money"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="small-box bg-4">
+            <div class="inner">
+                <h3>{{{totaldistributedevocoins}}}</h3>
+
+                <p>{{#str}}game_report_totaldeliveredvocoins, local_evokegame{{/str}}</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-graduation-cap"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="mt-4">{{#str}} game_report_courseskillstable, local_evokegame{{/str}}</h3>
+
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">{{#str}} name {{/str}}</th>
+        <th scope="col">{{#str}} game_report_skillspointsdistributed, local_evokegame {{/str}}</th>
+    </tr>
+    </thead>
+    <tbody>
+        {{#courseskills}}
+            <tr>
+                <th scope="row">{{id}}</th>
+                <td>{{name}}</td>
+                <td>{{value}}</td>
+            </tr>
+        {{/courseskills}}
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3 class="mt-4">Coins consumption</h3>
+
+        <div class="progress mb-2">
+            <div class="progress-bar" role="progressbar" style="width: {{evocoinsdistributionprogress}}%;" aria-valuenow="{{evocoinsdistributionprogress}}" aria-valuemin="0" aria-valuemax="100">{{evocoinsdistributionprogress}}%</div>
+        </div>
+
+        <p>In this course, every student can receive a maximum of {{courseevocoins}} evocoins.</p>
+
+        <p>In total, we can deliver {{totalpossiblecoins}} evocoins.</p>
+
+        <p>At this moment, we already delivered {{totaldistributedevocoins}} evocoins.</p>
+    </div>
+</div>

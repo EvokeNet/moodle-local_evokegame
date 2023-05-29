@@ -13,9 +13,9 @@ namespace local_evokegame\observers\portfoliogroup;
 defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
-use local_evokegame\customfield\mod_handler as extrafieldshandler;
 use local_evokegame\util\game;
 use local_evokegame\util\point;
+use local_evokegame\util\skillmodule;
 
 class commentadded {
     public static function observer(baseevent $event) {
@@ -37,18 +37,11 @@ class commentadded {
         list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'portfoliogroup');
         $portfoliogroup = $DB->get_record('portfoliogroup', ['id' => $cm->instance], '*', MUST_EXIST);
 
-        $handler = extrafieldshandler::create();
+        $skillmodule = new skillmodule();
 
-        $data = $handler->export_instance_data_object($cmid);
+        $skillscomment = $skillmodule->get_module_skills($cmid, 'comment');
 
-        $customfields = (array)$data;
-
-        if (!$customfields) {
-            return;
-        }
-
-        if (!preg_grep('/^comment_/', array_keys($customfields))) {
-            // For performance.
+        if (!$skillscomment) {
             return;
         }
 
@@ -60,20 +53,7 @@ class commentadded {
             return;
         }
 
-        foreach ($data as $skill => $value) {
-            if (!$value || empty($value) || $value == 0) {
-                continue;
-            }
-
-            $prefixlen = strlen('comment_');
-
-            if (substr($skill, 0, $prefixlen) != 'comment_') {
-                continue;
-            }
-
-            // String comment_ length == 8.
-            $commentskill = substr($skill, $prefixlen);
-
+        foreach ($skillscomment as $skillpointobject) {
             foreach ($groupmembers as $groupmember) {
                 // Avoid add points for teachers, admins, anyone who can edit course.
                 if (has_capability('moodle/course:update', $context, $groupmember->id)) {
@@ -82,7 +62,7 @@ class commentadded {
 
                 $groupmemberpoints = new point($event->courseid, $groupmember->id);
 
-                $groupmemberpoints->add_points('module', 'comment', $cmid, $commentskill, $value);
+                $groupmemberpoints->add_points('module', 'comment', $cm->id, $skillpointobject);
 
                 unset($groupmemberpoints);
             }

@@ -20,7 +20,7 @@ require_course_login($course, true);
 $context = context_course::instance($course->id);
 
 if (!has_capability('moodle/course:update', $context)) {
-    redirect(new moodle_url('/'), \core\notification::error('Illegal access!'));
+    redirect(new moodle_url('/course/view.php', ['id' => $id]), \core\notification::error('Illegal access!'));
 }
 
 $PAGE->set_url('/local/evokegame/skillsettings.php', ['id' => $course->id]);

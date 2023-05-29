@@ -16,7 +16,7 @@ class skillmodule {
     public function get_module_skills($cmid, $action) {
         global $DB;
 
-        $sql = 'SELECT skillid as id, value FROM {evokegame_skills_modules} WHERE cmid = :cmid AND action = :action';
+        $sql = 'SELECT skillid as id, id as skillmoduleid, value FROM {evokegame_skills_modules} WHERE cmid = :cmid AND action = :action';
 
         return $DB->get_records_sql($sql, ['cmid' => $cmid, 'action' => $action]);
     }

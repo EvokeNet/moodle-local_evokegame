@@ -91,8 +91,8 @@ class scoreboard {
             $totalpoints = 0;
             $userpoints = 0;
             foreach ($skills as $skill) {
-                $totalpoints += $skill['totalpoints'];
-                $userpoints += $skill['points'];
+                $totalpoints += $skill['points'];
+                $userpoints += $skill['userpoints'];
             }
 
             if ($userpoints != 0) {

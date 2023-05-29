@@ -13,9 +13,9 @@ namespace local_evokegame\observers\portfoliogroup;
 defined('MOODLE_INTERNAL') || die;
 
 use core\event\base as baseevent;
-use local_evokegame\customfield\mod_handler as extrafieldshandler;
 use local_evokegame\util\game;
 use local_evokegame\util\point;
+use local_evokegame\util\skillmodule;
 
 class likesent {
     public static function observer(baseevent $event) {
@@ -37,18 +37,11 @@ class likesent {
         list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'portfoliogroup');
         $portfoliogroup = $DB->get_record('portfoliogroup', ['id' => $cm->instance], '*', MUST_EXIST);
 
-        $handler = extrafieldshandler::create();
+        $skillmodule = new skillmodule();
 
-        $data = $handler->export_instance_data_object($cmid);
+        $skillslike = $skillmodule->get_module_skills($cmid, 'like');
 
-        $customfields = (array)$data;
-
-        if (!$customfields) {
-            return;
-        }
-
-        if (!preg_grep('/^like_/', array_keys($customfields))) {
-            // For performance.
+        if (!$skillslike) {
             return;
         }
 
@@ -60,20 +53,7 @@ class likesent {
             return;
         }
 
-        foreach ($data as $skill => $value) {
-            if (!$value || empty($value) || $value == 0) {
-                continue;
-            }
-
-            $prefixlen = strlen('like_');
-
-            if (substr($skill, 0, $prefixlen) != 'like_') {
-                continue;
-            }
-
-            // String like_ length == 5.
-            $likeskill = substr($skill, $prefixlen);
-
+        foreach ($skillslike as $skillpointobject) {
             foreach ($groupmembers as $groupmember) {
                 // Avoid add points for teachers, admins, anyone who can edit course.
                 if (has_capability('moodle/course:update', $context, $groupmember->id)) {
@@ -82,7 +62,7 @@ class likesent {
 
                 $groupmemberpoints = new point($event->courseid, $groupmember->id);
 
-                $groupmemberpoints->add_points('module', 'like', $cmid, $likeskill, $value);
+                $groupmemberpoints->add_points('module', 'like', $cmid, $skillpointobject);
 
                 unset($groupmemberpoints);
             }
