@@ -94,8 +94,8 @@ class badgecriteria extends \local_evokegame\badgecriteria {
         $skills = [];
         foreach ($usercourseskills as $usercourseskill) {
             foreach ($criteriaskills as $skill) {
-                if (strtolower($usercourseskill['skill']) == $skill) {
-                    $skills[$skill] = $usercourseskill['points'];
+                if ($usercourseskill['id'] == $skill) {
+                    $skills[$usercourseskill['skill']] = $usercourseskill['userpoints'];
                 }
             }
         }
@@ -121,7 +121,7 @@ class badgecriteria extends \local_evokegame\badgecriteria {
         }
 
         $langdata = new \stdClass();
-        $langdata->name = $this->badgecriteria->target;
+        $langdata->name = implode(', ', array_keys($skillsprogress));
         $langdata->value = $this->badgecriteria->value;
 
         $criteriaprogresdesc = get_string('criteriaprogresdesc', 'evokegamebadgecriteria_skillpointsaggregation', $langdata);
