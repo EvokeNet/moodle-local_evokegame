@@ -126,3 +126,6 @@ $string['game_report_coursesskillspoints'] = 'Total skills points';
 $string['game_report_courseskillstable'] = 'Course skills table';
 $string['game_report_totaldeliveredvocoins'] = 'Total delivered evocoins';
 $string['game_report_skillspointsdistributed'] = 'Total distributed points';
+$string['game_report_totalportfolioentries'] = 'Total portfolio entries';
+$string['game_report_totalportfoliolikes'] = 'Total portfolio likes';
+$string['game_report_totalportfoliocomments'] = 'Total portfolio comments';

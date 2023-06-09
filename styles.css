@@ -739,3 +739,8 @@ button.toast-close-button {
     font-size: 48px;
     color: rgba(0, 0, 0, 0.15);
 }
+
+#page-local-evokegame-report .chart-area .chart-image {
+    height: auto;
+    width: 100%;
+}
