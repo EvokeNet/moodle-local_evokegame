@@ -12,8 +12,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Evoke Game';
 
-$string['customfields'] = 'Evoke Game - Activity custom fields';
-
 $string['scoreboard'] = 'Scoreboard';
 $string['backtomission'] = 'Back to mission';
 $string['totheleaderboard'] = 'To the leaderboard';
@@ -119,7 +117,7 @@ $string['skills_like_desc'] = 'Like skill points are given to students when a me
 $string['skills_grade'] = 'Grade skills';
 $string['skills_grade_desc'] = 'Grade skill points are given to students when a mentor add a grade to their work.';
 
-$string['game_report'] = 'View game report';
+$string['game_report'] = 'Evoke game report';
 $string['game_report_courseevocoins'] = 'Total evocoins';
 $string['game_report_coursestudents'] = 'Total students';
 $string['game_report_coursesskillspoints'] = 'Total skills points';

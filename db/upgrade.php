@@ -134,7 +134,7 @@ function xmldb_local_evokegame_upgrade($oldversion) {
         $table = new xmldb_table('evokegame_badges');
 
         if ($dbman->table_exists($table)) {
-                $field = new xmldb_field('highlight', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'name');
+            $field = new xmldb_field('highlight', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'name');
 
             $dbman->add_field($table, $field);
         }
@@ -218,6 +218,40 @@ function xmldb_local_evokegame_upgrade($oldversion) {
         }
 
         upgrade_plugin_savepoint(true, 2023051700, 'local', 'evokegame');
+    }
+
+    if ($oldversion < 2023061400) {
+        $dbman = $DB->get_manager();
+
+        $table = new xmldb_table('evokegame_logs');
+
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+        upgrade_plugin_savepoint(true, 2023061400, 'local', 'evokegame');
+    }
+
+    if ($oldversion < 2023061500) {
+        $categories = $DB->get_records('customfield_category', ['component' => 'local_evokegame']);
+
+        foreach ($categories as $category) {
+            $fields = $DB->get_records('customfield_field', ['categoryid' => $category->id]);
+
+            if (!$fields) {
+                continue;
+            }
+
+            foreach ($fields as $field) {
+                $DB->delete_records('customfield_data', ['fieldid' => $field->id]);
+
+                $DB->delete_records('customfield_field', ['id' => $field->id]);
+            }
+
+            $DB->delete_records('customfield_category', ['id' => $category->id]);
+        }
+
+        upgrade_plugin_savepoint(true, 2023061500, 'local', 'evokegame');
     }
 
     return true;

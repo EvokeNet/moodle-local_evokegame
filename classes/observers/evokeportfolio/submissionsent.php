@@ -68,13 +68,13 @@ class submissionsent {
         $points = new point($event->courseid, $event->relateduserid);
 
         foreach ($skillssubmission as $skillpointobject) {
-            $points->add_points('module', 'submission', $cmid, $skillpointobject);
+            $points->add_points($skillpointobject);
 
             if ($evokeportfolio->groupactivity && $groupmembersids) {
                 foreach ($groupmembersids as $groupmemberid) {
                     $groupmemberpoints = new point($event->courseid, $groupmemberid);
 
-                    $groupmemberpoints->add_points('module', 'submission', $cmid, $skillpointobject);
+                    $groupmemberpoints->add_points($skillpointobject);
 
                     unset($groupmemberpoints);
                 }

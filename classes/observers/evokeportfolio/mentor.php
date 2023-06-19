@@ -48,7 +48,7 @@ class mentor {
             $skillscomment = $skillmodule->get_module_skills($cm->id, 'comment');
 
             if ($skillscomment) {
-                self::add_points($skillscomment, $event->courseid, $cm->id, $event->relateduserid, 'comment');
+                self::add_points($skillscomment, $event->courseid, $event->relateduserid);
             }
         }
 
@@ -56,7 +56,7 @@ class mentor {
             $skillslike = $skillmodule->get_module_skills($cm->id, 'like');
 
             if ($skillslike) {
-                self::add_points($skillslike, $event->courseid, $cm->id, $event->relateduserid, 'like');
+                self::add_points($skillslike, $event->courseid, $event->relateduserid);
             }
         }
 
@@ -88,20 +88,20 @@ class mentor {
 
         foreach ($groupmembersids as $groupmemberid) {
             if (get_class($event) === 'mod_evokeportfolio\event\comment_added' && isset($skillscomment)) {
-                self::add_points($skillscomment, $event->courseid, $cm->id, $groupmemberid, 'comment');
+                self::add_points($skillscomment, $event->courseid, $groupmemberid);
             }
 
             if (get_class($event) === 'mod_evokeportfolio\event\like_sent' && isset($skillslike)) {
-                self::add_points($skillslike, $event->courseid, $cm->id, $groupmemberid, 'like');
+                self::add_points($skillslike, $event->courseid, $groupmemberid);
             }
         }
     }
 
-    private static function add_points($skillsgrade, $courseid, $cmid, $relateduserid, $skillprefix) {
+    private static function add_points($skillsgrade, $courseid, $relateduserid) {
         $points = new point($courseid, $relateduserid);
 
         foreach ($skillsgrade as $skillpointobject) {
-            $points->add_points('module', $skillprefix, $cmid, $skillpointobject);
+            $points->add_points($skillpointobject);
         }
     }
 }

@@ -62,7 +62,7 @@ class likesent {
 
                 $groupmemberpoints = new point($event->courseid, $groupmember->id);
 
-                $groupmemberpoints->add_points('module', 'like', $cmid, $skillpointobject);
+                $groupmemberpoints->add_points($skillpointobject);
 
                 unset($groupmemberpoints);
             }

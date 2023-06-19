@@ -62,7 +62,7 @@ class commentadded {
 
                 $groupmemberpoints = new point($event->courseid, $groupmember->id);
 
-                $groupmemberpoints->add_points('module', 'comment', $cm->id, $skillpointobject);
+                $groupmemberpoints->add_points($skillpointobject);
 
                 unset($groupmemberpoints);
             }

@@ -12,8 +12,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Evoke Game';
 
-$string['customfields'] = 'Evoke Game - Campos personalizados de actividad';
-
 $string['scoreboard'] = 'Marcador';
 $string['backtomission'] = 'Volver a las misiones';
 $string['totheleaderboard'] = 'Ir a la tabla de posiciones';

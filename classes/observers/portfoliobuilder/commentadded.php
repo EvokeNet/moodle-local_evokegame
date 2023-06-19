@@ -58,7 +58,7 @@ class commentadded {
         $points = new point($event->courseid, $event->relateduserid);
 
         foreach ($skillscomment as $skillpointobject) {
-            $points->add_points('module', 'comment', $cmid, $skillpointobject);
+            $points->add_points($skillpointobject);
         }
     }
 }

@@ -50,7 +50,7 @@ class entryadded {
         $points = new point($event->courseid, $event->relateduserid);
 
         foreach ($skillssubmission as $skillpointobject) {
-            $points->add_points('module', 'submission', $cmid, $skillpointobject);
+            $points->add_points($skillpointobject);
         }
     }
 }

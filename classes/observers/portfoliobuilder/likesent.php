@@ -58,7 +58,7 @@ class likesent {
         $points = new point($event->courseid, $event->relateduserid);
 
         foreach ($skillslike as $skillpointobject) {
-            $points->add_points('module', 'like', $cmid, $skillpointobject);
+            $points->add_points($skillpointobject);
         }
     }
 }

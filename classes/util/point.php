@@ -19,19 +19,16 @@ class point {
         $this->mypoints = $this->get_user_course_points($courseid, $userid);
     }
 
-    public function add_points($pointsource, $pointsourcetype, $sourceid, $skillpointobject) {
+    public function add_points($skillpointobject) {
         global $DB, $USER;
 
-        if ($this->points_already_added($pointsource, $pointsourcetype, $sourceid, $skillpointobject->id)) {
+        if ($this->points_already_added($skillpointobject->skillmoduleid)) {
             return;
         }
 
         $this->mypoints->points += $skillpointobject->value;
 
         $DB->update_record('evokegame_points', $this->mypoints);
-
-        // TODO: remove this table
-        $this->insert_log_point_entry($pointsource, $pointsourcetype, $sourceid, $skillpointobject);
 
         $this->insert_skills_users_entry($skillpointobject);
 
@@ -73,24 +70,8 @@ class point {
         $pointsdata->timecreated = time();
         $pointsdata->timemodified = time();
 
-        $DB->insert_record('evokegame_skills_users', $pointsdata);
-    }
-    public function insert_log_point_entry($pointsource, $pointsourcetype, $sourceid, $skillpointobject) {
-        global $DB;
-
-        $pointsdata = new \stdClass();
-        $pointsdata->courseid = $this->mypoints->courseid;
-        $pointsdata->userid = $this->mypoints->userid;
-        $pointsdata->pointsource = $pointsource;
-        $pointsdata->pointsourcetype = $pointsourcetype;
-        $pointsdata->sourceid = $sourceid;
-        $pointsdata->skill = $skillpointobject->id;
-        $pointsdata->points = $skillpointobject->value;
-        $pointsdata->timecreated = time();
-        $pointsdata->timemodified = time();
-
-        $pointid = $DB->insert_record('evokegame_logs', $pointsdata);
-        $pointsdata->id = $pointid;
+        $id = $DB->insert_record('evokegame_skills_users', $pointsdata);
+        $pointsdata->id = $id;
 
         $context = \context_course::instance($this->mypoints->courseid);
 
@@ -101,22 +82,15 @@ class point {
             'relateduserid' => $this->mypoints->userid
         );
         $event = \local_evokegame\event\points_added::create($params);
-        $event->add_record_snapshot('evokegame_logs', $pointsdata);
         $event->trigger();
-
-        return $pointsdata;
     }
 
-    public function points_already_added($pointsource, $pointsourcetype, $sourceid, $skill) {
+    public function points_already_added($skillmoduleid) {
         global $DB;
 
-        $records = $DB->get_records('evokegame_logs', [
-            'courseid' => $this->mypoints->courseid,
-            'userid' => $this->mypoints->userid,
-            'pointsource' => $pointsource,
-            'pointsourcetype' => $pointsourcetype,
-            'sourceid' => $sourceid,
-            'skill' => $skill
+        $records = $DB->get_records('evokegame_skills_users', [
+            'skillmoduleid' => $skillmoduleid,
+            'userid' => $this->mypoints->userid
         ]);
 
         if ($records) {

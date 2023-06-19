@@ -218,7 +218,18 @@ function local_evokegame_output_fragment_chooseavatar_form($args) {
 
 function local_evokegame_extend_navigation_course($navigation, $course, $context) {
     if (has_capability('moodle/course:update', $context)) {
-        $url = new moodle_url('/local/evokegame/skillsettings.php', array('id' => $course->id));
+        $url = new moodle_url('/local/evokegame/report.php', ['id' => $course->id]);
+
+        $navigation->add(
+            get_string('game_report', 'local_evokegame'),
+            $url,
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'skillsettings',
+            new pix_icon('i/course', '')
+        );
+
+        $url = new moodle_url('/local/evokegame/skillsettings.php', ['id' => $course->id]);
 
         $navigation->add(
             get_string('skills_settings', 'local_evokegame'),
@@ -229,7 +240,7 @@ function local_evokegame_extend_navigation_course($navigation, $course, $context
             new pix_icon('i/course', '')
         );
 
-        $url = new moodle_url('/local/evokegame/badge.php', array('id' => $course->id));
+        $url = new moodle_url('/local/evokegame/badge.php', ['id' => $course->id]);
 
         $navigation->add(
             get_string('badgessettings', 'local_evokegame'),
@@ -240,7 +251,7 @@ function local_evokegame_extend_navigation_course($navigation, $course, $context
             new pix_icon('t/award', '')
         );
 
-        $url = new moodle_url('/local/evokegame/coursesettings.php', array('id' => $course->id));
+        $url = new moodle_url('/local/evokegame/coursesettings.php', ['id' => $course->id]);
 
         $navigation->add(
             get_string('coursesettings', 'local_evokegame'),
@@ -355,7 +366,7 @@ function local_evokegame_output_fragment_skill_form($args) {
 function local_evokegame_before_footer() {
     global $PAGE;
 
-//    $PAGE->requires->js_call_amd('local_evokegame/alerttotoastr', 'init');
+    $PAGE->requires->js_call_amd('local_evokegame/alerttotoastr', 'init');
 }
 
 /**

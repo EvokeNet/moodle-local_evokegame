@@ -47,7 +47,6 @@ class evocoin {
             'relateduserid' => $this->userid
         );
         $event = \local_evokegame\event\evocoins_added::create($params);
-        $event->add_record_snapshot('evokegame_evcs', $evcrecord);
         $event->trigger();
 
         if ($USER->id === $this->userid) {

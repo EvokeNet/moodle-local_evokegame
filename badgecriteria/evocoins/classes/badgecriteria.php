@@ -23,7 +23,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 class badgecriteria extends \local_evokegame\badgecriteria {
     public function user_achieved_criteria(): bool {
-        $evocoinutil = new evocoin();
+        $evocoinutil = new evocoin($this->userid);
         $coins = $evocoinutil->get_coins();
 
         $requiredcoins = (int) $this->badgecriteria->value;
@@ -35,7 +35,7 @@ class badgecriteria extends \local_evokegame\badgecriteria {
     }
 
     public function get_user_criteria_progress(): int {
-        $evocoinutil = new evocoin();
+        $evocoinutil = new evocoin($this->userid);
         $coins = $evocoinutil->get_coins();
 
         if ($coins == 0) {

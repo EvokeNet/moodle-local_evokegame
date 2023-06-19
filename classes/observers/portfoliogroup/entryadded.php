@@ -66,7 +66,7 @@ class entryadded {
 
                 $groupmemberpoints = new point($event->courseid, $groupmember->id);
 
-                $groupmemberpoints->add_points('module', 'submission', $cmid, $skillpointobject);
+                $groupmemberpoints->add_points($skillpointobject);
 
                 unset($groupmemberpoints);
             }

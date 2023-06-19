@@ -12,8 +12,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Jeu Evoke';
 
-$string['customfields'] = 'Jeu Evoke - Champs personnalisés d\'activité';
-
 $string['scoreboard'] = 'Tableau de bord';
 $string['backtomission'] = 'Retour à la mission';
 $string['totheleaderboard'] = 'Vers le classement';
