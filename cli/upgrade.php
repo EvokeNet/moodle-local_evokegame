@@ -28,19 +28,27 @@ if (!$options['migration']) {
 $migration = new \local_evokegame\temp_migration\migration();
 
 if ($options['migration'] == 'evocoins') {
+    echo "Starting Evocoins Migration" . PHP_EOL;
     $migration->migrate_courses();
+    echo "Migration Finished" . PHP_EOL;
 }
 
 if ($options['migration'] == 'skills') {
+    echo "Starting Skills Migration" . PHP_EOL;
     $migration->migrate_courses('skills');
+    echo "Migration Finished" . PHP_EOL;
 }
 
 if ($options['migration'] == 'skillsusers') {
+    echo "Starting Skills Users Migration" . PHP_EOL;
     $migration->migrate_courses('skillsusers');
+    echo "Migration Finished" . PHP_EOL;
 }
 
 if ($options['migration'] == 'badgescriterias') {
+    echo "Starting Badges Criterias Migration" . PHP_EOL;
     $migration->migrate_courses('badgescriterias');
+    echo "Migration Finished" . PHP_EOL;
 }
 
 exit(0);

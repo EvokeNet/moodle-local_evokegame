@@ -41,12 +41,12 @@ function local_evokegame_coursemodule_standard_elements($formwrapper, $mform) {
     }
 
     // Skill points.
-    if (!in_array($formwrapper->get_coursemodule()->modname, ['evokeportfolio', 'portfoliobuilder', 'portfoliogroup'])) {
+    if (!in_array($formwrapper->get_current()->modulename, ['evokeportfolio', 'portfoliobuilder', 'portfoliogroup'])) {
         return;
     }
 
     $skillutil = new \local_evokegame\util\skill();
-    $skills = $skillutil->get_course_skills($formwrapper->get_current()->course);
+    $skills = $skillutil->get_course_skills($course->id);
 
     $dbskillssubmission = false;
     $dbskillscomment = false;
