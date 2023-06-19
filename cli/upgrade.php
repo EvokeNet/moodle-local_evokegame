@@ -13,8 +13,6 @@ list($options, $unrecognized) = cli_get_params(
     ['h' => 'help', 'm' => 'migration'],
 );
 
-echo $options['migration'];
-
 if ($options['help']) {
     echo $help . PHP_EOL;
 
@@ -29,6 +27,20 @@ if (!$options['migration']) {
 
 $migration = new \local_evokegame\temp_migration\migration();
 
-$migration->migrate_courses($options['migration']);
+if ($options['migration'] == 'evocoins') {
+    $migration->migrate_courses();
+}
+
+if ($options['migration'] == 'skills') {
+    $migration->migrate_courses('skills');
+}
+
+if ($options['migration'] == 'skillsusers') {
+    $migration->migrate_courses('skillsusers');
+}
+
+if ($options['migration'] == 'badgescriterias') {
+    $migration->migrate_courses('badgescriterias');
+}
 
 exit(0);
