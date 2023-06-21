@@ -218,47 +218,43 @@ function local_evokegame_output_fragment_chooseavatar_form($args) {
 
 function local_evokegame_extend_navigation_course($navigation, $course, $context) {
     if (has_capability('moodle/course:update', $context)) {
-        $url = new moodle_url('/local/evokegame/report.php', ['id' => $course->id]);
-
-        $navigation->add(
-            get_string('game_report', 'local_evokegame'),
-            $url,
-            navigation_node::TYPE_CUSTOM,
-            null,
-            'skillsettings',
-            new pix_icon('i/course', '')
-        );
-
-        $url = new moodle_url('/local/evokegame/skillsettings.php', ['id' => $course->id]);
-
-        $navigation->add(
-            get_string('skills_settings', 'local_evokegame'),
-            $url,
-            navigation_node::TYPE_CUSTOM,
-            null,
-            'skillsettings',
-            new pix_icon('i/course', '')
-        );
-
-        $url = new moodle_url('/local/evokegame/badge.php', ['id' => $course->id]);
-
-        $navigation->add(
-            get_string('badgessettings', 'local_evokegame'),
-            $url,
-            navigation_node::TYPE_CUSTOM,
-            null,
-            'badgessettings',
-            new pix_icon('t/award', '')
-        );
-
         $url = new moodle_url('/local/evokegame/coursesettings.php', ['id' => $course->id]);
-
         $navigation->add(
             get_string('coursesettings', 'local_evokegame'),
             $url,
             navigation_node::TYPE_CUSTOM,
             null,
             'evokegamecoursesettings',
+            new pix_icon('i/course', '')
+        );
+
+        $url = new moodle_url('/local/evokegame/skillsettings.php', ['id' => $course->id]);
+        $navigation->add(
+            get_string('skills_settings', 'local_evokegame'),
+            $url,
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'evokegameskillsettings',
+            new pix_icon('i/course', '')
+        );
+
+        $url = new moodle_url('/local/evokegame/badge.php', ['id' => $course->id]);
+        $navigation->add(
+            get_string('badgessettings', 'local_evokegame'),
+            $url,
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'evokegamebadgessettings',
+            new pix_icon('t/award', '')
+        );
+
+        $url = new moodle_url('/local/evokegame/report.php', ['id' => $course->id]);
+        $navigation->add(
+            get_string('game_report', 'local_evokegame'),
+            $url,
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'evokegamereport',
             new pix_icon('i/course', '')
         );
     }

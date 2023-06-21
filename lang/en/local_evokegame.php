@@ -22,7 +22,7 @@ $string['points'] = 'Points';
 $string['viewscoreboard'] = 'View scoreboard';
 $string['chooseavatar'] = 'Choose your avatar';
 $string['chooseavatar_success'] = 'Avatar successfully saved.';
-$string['badgessettings'] = 'Evoke badges settings';
+$string['badgessettings'] = 'Evoke game badges';
 $string['createbadge'] = 'Create badge';
 $string['name'] = 'Name';
 $string['actions'] = 'Actions';
@@ -100,7 +100,7 @@ $string['scoreboard_badges'] = 'Badges';
 $string['chooseavalue'] = 'Choose a value';
 $string['evocoins'] = 'Evocoins';
 
-$string['skills_settings'] = 'Evoke game skills management';
+$string['skills_settings'] = 'Evoke game skills';
 $string['skills_create'] = 'Create skill';
 $string['skills_nameinuse'] = 'This course already have a skill with this name';
 $string['skills_create_success'] = 'Skill successfully created';
