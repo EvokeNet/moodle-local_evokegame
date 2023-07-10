@@ -48,6 +48,7 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
         $paths = [];
 
         $paths[] = new restore_path_element('evokegame_evocoins', '/module/evokegame/evocoins');
+        $paths[] = new restore_path_element('evokegame_moduleskills', '/module/evokegame/skills/skill');
 
         return $paths;
     }
@@ -84,5 +85,19 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
         $data['timemodified'] = time();
 
         $DB->insert_record('evokegame_evcs_modules', $data);
+    }
+
+    public function process_evokegame_moduleskills($data) {
+        global $DB;
+
+        if (!$data) {
+            return;
+        }
+
+        $data['cmid'] = $this->task->get_moduleid();
+        $data['timecreated'] = time();
+        $data['timemodified'] = time();
+
+        $DB->insert_record('evokegame_skills_modules', $data);
     }
 }

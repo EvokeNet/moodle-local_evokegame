@@ -23,7 +23,6 @@ class backup_local_evokegame_plugin extends backup_local_plugin {
     protected function define_course_plugin_structure() {
         $plugin = $this->get_plugin_element();
         $evokegame = new backup_nested_element('evokegame');
-//        $evokegame = new backup_nested_element($this->get_recommended_name());
 
         $skills = new backup_nested_element('skills', ['id'], ['courseid', 'name']);
 
@@ -43,8 +42,18 @@ class backup_local_evokegame_plugin extends backup_local_plugin {
         $plugin->add_child($evokegame);
         $evokegame->add_child($evocoins);
 
-        if ($fieldsforbackup = $this->get_activity_evocoins($this->task->get_moduleid())) {
-            $evocoins->set_source_array($fieldsforbackup);
+        if ($dataforbackup = $this->get_activity_evocoins($this->task->get_moduleid())) {
+            $evocoins->set_source_array($dataforbackup);
+        }
+
+        $skills = new backup_nested_element('skills');
+        $skill = new backup_nested_element('skill', ['id'], ['skillid', 'cmid', 'value', 'action']);
+
+        $evokegame->add_child($skills);
+        $skills->add_child($skill);
+
+        if ($dataforbackup = $this->get_activity_skills($this->task->get_moduleid())) {
+            $skill->set_source_array($dataforbackup);
         }
 
         return $plugin;
@@ -54,6 +63,23 @@ class backup_local_evokegame_plugin extends backup_local_plugin {
         global $DB;
 
         $records = $DB->get_records('evokegame_evcs_modules', ['cmid' => $cmid]);
+
+        if (!$records) {
+            return false;
+        }
+
+        $data = [];
+        foreach ($records as $record) {
+            $data[] = (array) $record;
+        }
+
+        return $data;
+    }
+
+    private function get_activity_skills($cmid) {
+        global $DB;
+
+        $records = $DB->get_records('evokegame_skills_modules', ['cmid' => $cmid]);
 
         if (!$records) {
             return false;
