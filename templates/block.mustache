@@ -1,0 +1,80 @@
+{{#showblock}}
+    <div class="gameblock">
+        <div class="profile border border-radius mb-3">
+            <div class="userpicture" data-action="choose-avatar-modal">
+                <img id="evokegame-user-avatar" src="{{{useravatar}}}" alt="{{{firstname}}}">
+            </div>
+
+            <h2 class="text-center">{{firstname}}</h2>
+
+            <div class="border-top points p-2">
+                <div class="score">
+                    <div class="icon">
+                        <img class="evocoin black" src="{{{config.wwwroot}}}/local/evokegame/pix/evocoin.svg" alt="Evocoin">
+                    </div>
+                    <div class="points">{{{evcs}}}</div>
+                </div>
+            </div>
+            <div class="border-top points p-2">
+                <div class="btn-group d-flex" role="group" aria-label="Game links">
+                    <a href="{{config.wwwroot}}/local/evokegame/profile.php?id={{courseid}}" class="btn btn-outline-primary">
+                        <i class="fa fa-trophy"></i>
+                        My progress
+                    </a>
+                    <a href="{{config.wwwroot}}/local/marketplace/index.php?id={{courseid}}" class="btn btn-outline-primary">
+                        <i class="fa fa-shopping-bag"></i>
+                        Marketplace
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="gamebadges border border-radius p-2 mb-3">
+            <h3>Scoreboard</h3>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="week" role="tabpanel" aria-labelledby="week-tab">
+                    <div class="border border-radius">
+                        <table class="table table-hover table-borderless mb-0">
+                            <tbody>
+                            <tr class="border-bottom">
+                                <td>1º John Doe</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>2º Richard Roe</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>3º Willian Mano</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>4º Fulano de Tal</td>
+                            </tr>
+                            <tr>
+                                <td>5º Cicrano Fulano</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="month" role="tabpanel" aria-labelledby="month-tab">..asdasd.</div>
+                <div class="tab-pane fade" id="global" role="tabpanel" aria-labelledby="global-tab">...</div>
+            </div>
+            <nav class="nav nav-pills flex-column flex-sm-row mt-2" id="myTab" role="tablist">
+                <button id="week-tab" data-toggle="tab" data-target="#week" type="button" role="tab" aria-controls="week" aria-selected="true" class="flex-sm-fill text-sm-center nav-link active">Week</button>
+                <button id="month-tab" data-toggle="tab" data-target="#month" type="button" role="tab" aria-controls="month" aria-selected="false" class="flex-sm-fill text-sm-center nav-link">Month</button>
+                <button id="global-tab" data-toggle="tab" data-target="#global" type="button" role="tab" aria-controls="global" aria-selected="false" class="flex-sm-fill text-sm-center nav-link">Global</button>
+            </nav>
+        </div>
+
+        {{#hasbadges}}
+            <div class="gamebadges border border-radius p-2">
+                <h3>{{#str}}badges{{/str}}</h3>
+                <div class="d-flex align-items-center p-2 my-2">
+                    {{#badges}}
+                            <img {{^awarded}}class="dimmed"{{/awarded}} src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge">
+                    {{/badges}}
+                </div>
+            </div>
+        {{/hasbadges}}
+    </div>
+{{/showblock}}
