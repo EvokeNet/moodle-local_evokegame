@@ -6,8 +6,6 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 
-use local_evokegame\util\badge as badgeutil;
-
 /**
  * The mform class for creating a badge
  *

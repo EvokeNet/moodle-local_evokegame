@@ -3,7 +3,6 @@
 namespace local_evokegame\forms;
 
 use local_evokegame\util\skill;
-use local_evokegame\util\badgecriteria as badgecriteriautil;
 
 defined('MOODLE_INTERNAL') || die();
 

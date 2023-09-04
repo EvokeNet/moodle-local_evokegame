@@ -2,11 +2,11 @@
 
 namespace local_evokegame\external;
 
-use context;
-use external_api;
-use external_value;
-use external_single_structure;
-use external_function_parameters;
+use core\context;
+use core_external\external_api;
+use core_external\external_value;
+use core_external\external_single_structure;
+use core_external\external_function_parameters;
 use local_evokegame\forms\skill as skillform;
 
 /**
@@ -45,8 +45,6 @@ class skill extends external_api {
      * @throws \moodle_exception
      */
     public static function create($contextid, $courseid, $jsonformdata) {
-        global $DB;
-
         // We always must pass webservice params through validate_parameters.
         $params = self::validate_parameters(self::create_parameters(),
             ['contextid' => $contextid, 'courseid' => $courseid, 'jsonformdata' => $jsonformdata]);
