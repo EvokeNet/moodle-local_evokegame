@@ -112,7 +112,7 @@ class scoreboard {
         $skillsjoin = $this->get_scoreboard_by_skills_query($datestart, $dateend);
         $evocoinsjoin = $this->get_scoreboard_by_evocoins_query($datestart, $dateend);
 
-        $sql = "SELECT DISTINCT u.*, skills.points, coins.evcs, (skills.points + coins.evcs) as score
+        $sql = "SELECT DISTINCT u.*, skills.points, coins.evcs, (IFNULL(skills.points, 0) + IFNULL(coins.evcs, 0)) as score
                 FROM {user} u
                 {$capjoin->joins}
                 LEFT JOIN ({$skillsjoin->query}) skills ON (skills.userid = u.id AND skills.course = :courseid1)
