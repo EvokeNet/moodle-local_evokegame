@@ -117,7 +117,7 @@ class scoreboard {
                 {$capjoin->joins}
                 LEFT JOIN ({$skillsjoin->query}) skills ON (skills.userid = u.id AND skills.course = :courseid1)
                 LEFT JOIN ({$evocoinsjoin->query}) coins ON (coins.userid = u.id AND coins.courseid = :courseid2)
-                HAVING score is not null
+                HAVING score > 0
                 ORDER BY score DESC
                 LIMIT 10";
 
