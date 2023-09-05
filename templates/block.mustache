@@ -100,9 +100,11 @@
         {{#hasbadges}}
             <div class="gamebadges border border-radius p-2">
                 <h3>{{#str}}badges{{/str}}</h3>
-                <div class="d-flex align-items-center p-2 my-2">
+                <div class="d-flex align-items-center p-2 my-2 flex-wrap justify-content-around">
                     {{#badges}}
+                        <div class="badge">
                             <img {{^awarded}}class="dimmed"{{/awarded}} src="{{{badgeimage}}}" alt="{{{name}}}" class="evokebadge">
+                        </div>
                     {{/badges}}
                 </div>
             </div>
