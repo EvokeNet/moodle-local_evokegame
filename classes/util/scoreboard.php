@@ -100,4 +100,102 @@ class scoreboard {
             }
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function get_by_skill_and_evc_date($datestart = null, $dateend = null, $limit = 10) {
+        global $DB;
+
+        $capjoin = get_enrolled_with_capabilities_join($this->context, '', 'moodle/course:viewparticipants');
+
+        $skillsjoin = $this->get_scoreboard_by_skills_query($datestart, $dateend);
+        $evocoinsjoin = $this->get_scoreboard_by_evocoins_query($datestart, $dateend);
+
+        $sql = "SELECT DISTINCT u.*, skills.points, coins.evcs, (skills.points + coins.evcs) as score
+                FROM {user} u
+                {$capjoin->joins}
+                LEFT JOIN ({$skillsjoin->query}) skills ON (skills.userid = u.id AND skills.course = :courseid1)
+                LEFT JOIN ({$evocoinsjoin->query}) coins ON (coins.userid = u.id AND coins.courseid = :courseid2)
+                HAVING score is not null
+                ORDER BY score DESC
+                LIMIT 10";
+
+        $params = [
+            'courseid1' => $this->course->id,
+            'courseid2' => $this->course->id,
+            'limit' => $limit
+        ];
+
+        $params = array_merge($params, $capjoin->params, $skillsjoin->params, $evocoinsjoin->params);
+
+        $records = $DB->get_records_sql($sql, $params);
+
+        if (!$records) {
+            return [];
+        }
+
+        return array_values($records);
+    }
+
+    private function get_scoreboard_by_skills_query($datestart = null, $dateend = null) {
+        $data = new \stdClass();
+
+        if (!$datestart || !$dateend) {
+            $sql = 'SELECT sku.userid, cm.course, SUM(sku.value) as points
+                FROM {evokegame_skills_users} sku
+                INNER JOIN {evokegame_skills_modules} skm ON skm.id = sku.skillmoduleid
+                INNER JOIN {course_modules} cm ON cm.id = skm.cmid
+                GROUP BY userid, course';
+
+            $data->query = $sql;
+            $data->params = [];
+
+            return $data;
+        }
+
+        $sql = 'SELECT sku.userid, cm.course, SUM(sku.value) as points
+                FROM {evokegame_skills_users} sku
+                INNER JOIN {evokegame_skills_modules} skm ON skm.id = sku.skillmoduleid
+                INNER JOIN {course_modules} cm ON cm.id = skm.cmid
+                WHERE sku.timecreated BETWEEN :skillsdatestart AND :skillsdateend
+                GROUP BY userid, course';
+
+        $data->query = $sql;
+        $data->params = [
+            'skillsdatestart' => $datestart,
+            'skillsdateend' => $dateend
+        ];
+
+        return $data;
+    }
+
+    private function get_scoreboard_by_evocoins_query($datestart = null, $dateend = null) {
+        $data = new \stdClass();
+
+        if (!$datestart || !$dateend) {
+            $sql = "SELECT userid, courseid, SUM(coins) as evcs
+                    FROM {evokegame_evcs_transactions}
+                    WHERE action = 'in'
+                    GROUP BY userid, courseid";
+
+            $data->query = $sql;
+            $data->params = [];
+
+            return $data;
+        }
+
+        $sql = "SELECT userid, courseid, SUM(coins) as evcs
+                FROM {evokegame_evcs_transactions}
+                WHERE action = 'in' AND timecreated BETWEEN :evocoinsdatestart AND :evocoinsdateend
+                GROUP BY userid, courseid";
+
+        $data->query = $sql;
+        $data->params = [
+            'evocoinsdatestart' => $datestart,
+            'evocoinsdateend' => $dateend
+        ];
+
+        return $data;
+    }
 }

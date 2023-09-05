@@ -53,6 +53,17 @@ class block implements renderable, templatable {
 
         $evcs = new evocoin($USER->id);
 
+        $scoreboard = new \local_evokegame\util\scoreboard($this->course, $this->context);
+
+        $weekstart = strtotime(date('d-m-Y', strtotime('-'.date('w').' days')));
+        $monthstart = strtotime(date('Y-m-01'));
+
+        $ranking = [
+            'general' => $scoreboard->get_by_skill_and_evc_date(),
+            'weekly' => $scoreboard->get_by_skill_and_evc_date($weekstart, time()),
+            'monthly' => $scoreboard->get_by_skill_and_evc_date($monthstart, time())
+        ];
+
         return [
             'showblock' => true,
             'evcs' => (int) $evcs->get_coins(),
@@ -64,7 +75,8 @@ class block implements renderable, templatable {
             'useravatar' => $userutil->get_user_avatar_or_image($USER),
             'courseid' => $this->course->id,
             'hasbadges' => !empty($badges),
-            'badges' => $badges
+            'badges' => $badges,
+            'ranking' => $ranking
         ];
     }
 }
