@@ -402,3 +402,25 @@ function local_evokegame_pluginfile($course, $cm, $context, $filearea, $args, $f
 
     send_stored_file($file, 0, 0, $forcedownload, $options);
 }
+
+function local_evokegame_moove_additional_header() {
+    global $PAGE;
+
+    if (isguestuser() || !isloggedin()) {
+        return false;
+    }
+
+    $context = \context_course::instance($PAGE->course->id);
+
+    if (!is_enrolled($context)) {
+        return false;
+    }
+
+    if ($PAGE->course->format == 'dots') {
+        return false;
+    }
+
+    $evokegame = new \local_evokegame\output\evokegame();
+
+    return $evokegame->get_dashboardnavbar($PAGE->course, $context);
+}
