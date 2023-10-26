@@ -24,12 +24,14 @@ class backup_local_evokegame_plugin extends backup_local_plugin {
         $plugin = $this->get_plugin_element();
         $evokegame = new backup_nested_element('evokegame');
 
-        $skills = new backup_nested_element('skills', ['id'], ['courseid', 'name']);
+        $skills = new backup_nested_element('skills');
+        $skill = new backup_nested_element('skill', ['id'], ['courseid', 'name']);
 
         $plugin->add_child($evokegame);
         $evokegame->add_child($skills);
+        $skills->add_child($skill);
 
-        $skills->set_source_table('evokegame_skills', ['courseid' => backup::VAR_COURSEID]);
+        $skill->set_source_table('evokegame_skills', ['courseid' => backup::VAR_COURSEID]);
 
         return $plugin;
     }

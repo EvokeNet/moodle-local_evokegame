@@ -38,8 +38,7 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
     protected function define_course_plugin_structure() {
         $paths = array();
 
-        $elepath = $this->get_pathfor('/');
-        $paths[] = new restore_path_element('evokegame_skills', $elepath.'/skills');
+        $paths[] = new restore_path_element('evokegame_skills', '/course/evokegame/skills/skill');
 
         return $paths;
     }
@@ -70,7 +69,7 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
 
         $newitemid = $DB->insert_record('evokegame_skills', $data);
 
-        $this->set_mapping('evokegame_skills', $oldid, $newitemid);
+        $this->set_mapping('skill', $oldid, $newitemid);
     }
 
     public function process_evokegame_evocoins($data) {
@@ -92,6 +91,10 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
 
         if (!$data) {
             return;
+        }
+
+        if ($skillid = $this->get_mappingid('skill', $data['skillid'])) {
+            $data['skillid'] = $skillid;
         }
 
         $data['cmid'] = $this->task->get_moduleid();

@@ -424,3 +424,18 @@ function local_evokegame_moove_additional_header() {
 
     return $evokegame->get_dashboardnavbar($PAGE->course, $context);
 }
+
+
+/**
+ * We run this hook when a course is deleted. Its purpose is to delete all game data.
+ *
+ * @param stdClass $course
+ * @return void
+ */
+function local_evokegame_pre_course_delete(\stdClass $course) {
+    $cleanup = new \local_evokegame\util\cleanup();
+
+    $cleanup->delete_course_skills($course->id);
+
+    $cleanup->delete_course_coins($course->id);
+}

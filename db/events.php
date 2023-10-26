@@ -81,4 +81,9 @@ $observers = [
         'callback' => '\local_evokegame\observers\badgeissuer::observer',
         'internal' => false
     ],
+    [
+        'eventname'   => '\core\event\course_module_deleted',
+        'callback'    => '\local_evokegame\observers\cleanup::moduledeleted',
+        'internal' => false
+    ],
 ];
