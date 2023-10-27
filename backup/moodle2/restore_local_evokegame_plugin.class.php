@@ -149,6 +149,10 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
     }
 
     public function after_restore_course() {
+        if (get_config('local_evokegame', 'isgameenabledincourse-' . $this->task->get_old_courseid())) {
+            set_config('isgameenabledincourse-' . $this->task->get_courseid(), 1, 'local_evokegame');
+        }
+
         $this->sync_badges_ids();
     }
 
@@ -173,26 +177,12 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
             $evokebadge->badgeid = $badge->id;
 
             $DB->update_record('evokegame_badges', $evokebadge);
+
+            if (!$badge->status) {
+                $badge->status = 1;
+
+                $DB->update_record('badge', $badge);
+            }
         }
     }
-//
-//    private function sync_badges_criterias_skills_ids() {
-//        global $DB;
-//
-//        $courseid = $this->task->get_courseid();
-//
-//        $sql = "SELECT * FROM {evokegame_badges_criterias} WHERE courseid = :courseid AND method LIKE 'skill%'";
-//
-//        $skills = $DB->get_records_sql($sql, ['courseid' => $courseid]);
-//
-//        if (!$skills) {
-//            return;
-//        }
-//
-//        foreach ($skills as $skill) {
-//            if ($skills->metnod == 'skillpoints') {
-//
-//            }
-//        }
-//    }
 }
