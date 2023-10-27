@@ -438,4 +438,6 @@ function local_evokegame_pre_course_delete(\stdClass $course) {
     $cleanup->delete_course_skills($course->id);
 
     $cleanup->delete_course_coins($course->id);
+
+    $cleanup->delete_course_badges($course->id);
 }

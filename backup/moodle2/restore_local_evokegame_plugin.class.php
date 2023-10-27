@@ -39,6 +39,8 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
         $paths = array();
 
         $paths[] = new restore_path_element('evokegame_skills', '/course/evokegame/skills/skill');
+        $paths[] = new restore_path_element('evokegame_badges', '/course/evokegame/badges/badge');
+        $paths[] = new restore_path_element('evokegame_badges_criterias', '/course/evokegame/badges/badge/badgecriterias/criteria');
 
         return $paths;
     }
@@ -72,6 +74,34 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
         $this->set_mapping('skill', $oldid, $newitemid);
     }
 
+    public function process_evokegame_badges($data) {
+        global $DB;
+
+        $data = (object) $data;
+        $oldid = $data->id;
+
+        $data->courseid = $this->task->get_courseid();
+        $data->timecreated = time();
+        $data->timemodified = time();
+
+        $newitemid = $DB->insert_record('evokegame_badges', $data);
+
+        $this->set_mapping('evokebadge', $oldid, $newitemid);
+    }
+
+    public function process_evokegame_badges_criterias($data) {
+        global $DB;
+
+        $data = (object) $data;
+
+        $data->courseid = $this->task->get_courseid();
+        $data->evokebadgeid = $this->get_mappingid('evokebadge', $data->evokebadgeid);
+        $data->timecreated = time();
+        $data->timemodified = time();
+
+        $DB->insert_record('evokegame_badges_criterias', $data);
+    }
+
     public function process_evokegame_evocoins($data) {
         global $DB;
 
@@ -102,5 +132,29 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
         $data['timemodified'] = time();
 
         $DB->insert_record('evokegame_skills_modules', $data);
+    }
+
+    public function after_restore_course() {
+        global $DB;
+
+        $courseid = $this->task->get_courseid();
+
+        $evokebadges = $DB->get_records('evokegame_badges', ['courseid' => $courseid]);
+
+        if (!$evokebadges) {
+            return;
+        }
+
+        foreach ($evokebadges as $evokebadge) {
+            $badge = $DB->get_record('badge', ['courseid' => $evokebadge->courseid, 'name' => $evokebadge->name]);
+
+            if (!$badge) {
+                continue;
+            }
+
+            $evokebadge->badgeid = $badge->id;
+
+            $DB->update_record('evokegame_badges', $evokebadge);
+        }
     }
 }

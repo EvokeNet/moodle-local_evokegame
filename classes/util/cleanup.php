@@ -69,4 +69,22 @@ class cleanup {
 
         return true;
     }
+
+    public function delete_course_badges($courseid) {
+        global $DB;
+
+        $badges = $DB->get_records('evokegame_badges', ['courseid' => $courseid]);
+
+        if (!$badges) {
+            return true;
+        }
+
+        foreach ($badges as $badge) {
+            $DB->delete_records('evokegame_badges_criterias', ['evokebadgeid' => $badge->id]);
+        }
+
+        $DB->delete_records('evokegame_badges', ['courseid' => $courseid]);
+
+        return true;
+    }
 }

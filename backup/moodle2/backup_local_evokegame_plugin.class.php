@@ -33,6 +33,21 @@ class backup_local_evokegame_plugin extends backup_local_plugin {
 
         $skill->set_source_table('evokegame_skills', ['courseid' => backup::VAR_COURSEID]);
 
+        $badges = new backup_nested_element('badges');
+        $badge = new backup_nested_element('badge', ['id'], ['courseid', 'badgeid', 'type', 'name', 'highlight']);
+
+        $criterias = new backup_nested_element('badgecriterias');
+        $criteria = new backup_nested_element('criteria', ['id'], ['courseid', 'evokebadgeid', 'method', 'target', 'value', 'extras']);
+
+        $evokegame->add_child($badges);
+        $badges->add_child($badge);
+        $badge->add_child($criterias);
+        $criterias->add_child($criteria);
+
+        $badge->set_source_table('evokegame_badges', ['courseid' => backup::VAR_COURSEID]);
+
+        $criteria->set_source_table('evokegame_badges_criterias', ['courseid' => backup::VAR_COURSEID]);
+
         return $plugin;
     }
 
