@@ -99,6 +99,20 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
         $data->timecreated = time();
         $data->timemodified = time();
 
+        if ($data->method == 'skillpoints') {
+            $data->target = $this->get_mappingid('skill', $data->target);
+        }
+
+        if ($data->method == 'skillpointsaggregation') {
+            $skills = explode(',', $data->target);
+
+            $skills = array_map(function($skill) {
+                return $this->get_mappingid('skill', $skill);
+            }, $skills);
+
+            $data->target = implode(',', $skills);
+        }
+
         $DB->insert_record('evokegame_badges_criterias', $data);
     }
 
@@ -135,6 +149,10 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
     }
 
     public function after_restore_course() {
+        $this->sync_badges_ids();
+    }
+
+    private function sync_badges_ids() {
         global $DB;
 
         $courseid = $this->task->get_courseid();
@@ -157,4 +175,24 @@ class restore_local_evokegame_plugin extends restore_local_plugin {
             $DB->update_record('evokegame_badges', $evokebadge);
         }
     }
+//
+//    private function sync_badges_criterias_skills_ids() {
+//        global $DB;
+//
+//        $courseid = $this->task->get_courseid();
+//
+//        $sql = "SELECT * FROM {evokegame_badges_criterias} WHERE courseid = :courseid AND method LIKE 'skill%'";
+//
+//        $skills = $DB->get_records_sql($sql, ['courseid' => $courseid]);
+//
+//        if (!$skills) {
+//            return;
+//        }
+//
+//        foreach ($skills as $skill) {
+//            if ($skills->metnod == 'skillpoints') {
+//
+//            }
+//        }
+//    }
 }
