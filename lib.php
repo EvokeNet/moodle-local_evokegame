@@ -40,8 +40,8 @@ function local_evokegame_coursemodule_standard_elements($formwrapper, $mform) {
         $mform->setDefault('evocoins', $evocoins);
     }
 
-    // Skill points.
-    if (!in_array($formwrapper->get_current()->modulename, ['evokeportfolio', 'portfoliobuilder', 'portfoliogroup'])) {
+    // Skill points: enable for supported modules (extended to include assignment).
+    if (!in_array($formwrapper->get_current()->modulename, ['evokeportfolio', 'portfoliobuilder', 'portfoliogroup', 'assign'])) {
         return;
     }
 

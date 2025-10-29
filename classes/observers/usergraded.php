@@ -59,6 +59,15 @@ class usergraded {
 
         if ($gradeitem->itemmodule == 'portfoliobuilder' || $gradeitem->itemmodule == 'portfoliogroup') {
             self::handle_portfoliobuilder_or_portfoliogroup($event, $cm, $skillsgrade);
+        } else {
+            // Generic handling for other modules (e.g., assignment).
+            $userpoints = new point($event->courseid, $event->relateduserid);
+
+            $skillpoints = self::get_skill_points_data($skillsgrade, $event->get_grade());
+
+            foreach ($skillpoints as $skillpointobject) {
+                $userpoints->add_points($skillpointobject);
+            }
         }
     }
 

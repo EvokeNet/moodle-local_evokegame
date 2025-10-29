@@ -17,6 +17,11 @@ $observers = [
         'internal' => false
     ],
     [
+        'eventname' => '\core\event\assessable_submitted',
+        'callback' => '\local_evokegame\observers\assessablesubmitted::observer',
+        'internal' => false
+    ],
+    [
         'eventname' => '\mod_evokeportfolio\event\submission_sent',
         'callback' => '\local_evokegame\observers\evokeportfolio\submissionsent::observer',
         'internal' => false
