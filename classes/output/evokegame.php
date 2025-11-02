@@ -26,10 +26,19 @@ class evokegame {
     public function get_dashboardnavbar($course, $context) {
         global $PAGE;
 
-        $renderer = $PAGE->get_renderer('local_evokegame');
+        try {
+            $renderer = $PAGE->get_renderer('local_evokegame');
 
-        $contentrenderable = new \local_evokegame\output\dashboardnavbar($course, $context);
+            $contentrenderable = new \local_evokegame\output\dashboardnavbar($course, $context);
 
-        return $renderer->render($contentrenderable);
+            $result = $renderer->render($contentrenderable);
+
+            debugging("[evokegame] get_dashboardnavbar rendered result length: " . strlen($result ?? ''), DEBUG_NORMAL);
+
+            return $result;
+        } catch (\Exception $e) {
+            debugging("[evokegame] Error in get_dashboardnavbar: " . $e->getMessage(), DEBUG_NORMAL);
+            return '';
+        }
     }
 }

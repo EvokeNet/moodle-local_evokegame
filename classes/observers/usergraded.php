@@ -66,7 +66,11 @@ class usergraded {
             $skillpoints = self::get_skill_points_data($skillsgrade, $event->get_grade());
 
             foreach ($skillpoints as $skillpointobject) {
-                $userpoints->add_points($skillpointobject);
+                // Convert array to object and rename pointstoadd to value
+                $obj = (object)$skillpointobject;
+                $obj->value = $obj->pointstoadd;
+                unset($obj->pointstoadd);
+                $userpoints->add_points($obj);
             }
         }
     }
@@ -103,7 +107,11 @@ class usergraded {
         $skillpoints = self::get_skill_points_data($skillsgrade, $event->get_grade());
 
         foreach ($skillpoints as $skillpointobject) {
-            $userpoints->add_points($skillpointobject);
+            // Convert array to object and rename pointstoadd to value
+            $obj = (object)$skillpointobject;
+            $obj->value = $obj->pointstoadd;
+            unset($obj->pointstoadd);
+            $userpoints->add_points($obj);
 
             if (!$evokeportfolio->groupactivity && !$groupmembersids) {
                 continue;
@@ -112,7 +120,7 @@ class usergraded {
             foreach ($groupmembersids as $groupmemberid) {
                 $groupmemberpoints = new point($event->courseid, $groupmemberid);
 
-                $groupmemberpoints->add_points($skillpointobject);
+                $groupmemberpoints->add_points($obj);
 
                 unset($groupmemberpoints);
             }
@@ -125,7 +133,11 @@ class usergraded {
         $skillpoints = self::get_skill_points_data($skillsgrade, $event->get_grade());
 
         foreach ($skillpoints as $skillpointobject) {
-            $userpoints->add_points($skillpointobject);
+            // Convert array to object and rename pointstoadd to value
+            $obj = (object)$skillpointobject;
+            $obj->value = $obj->pointstoadd;
+            unset($obj->pointstoadd);
+            $userpoints->add_points($obj);
         }
     }
 

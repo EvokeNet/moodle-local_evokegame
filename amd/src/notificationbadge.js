@@ -1,7 +1,6 @@
 /**
  * Delete badge js logic.
  *
- * @package    local_evokegame
  * @copyright  2021 World Bank Group <https://worldbank.org>
  * @author     Willian Mano <willianmanoaraujo@gmail.com>
  */
@@ -10,10 +9,9 @@ define([
     'jquery',
     'core/ajax',
     'core/config',
-    'core/modal_factory',
     'local_evokegame/sweetalert',
     'local_evokegame/modal_notificationbadge'],
-    function($, Ajax, Config, ModalFactory, Swal, ModalNotificationBadge) {
+    function($, Ajax, Config, Swal, ModalNotificationBadge) {
 
     var NotificationBadge = function() {
         this.checkIfHasNotification();
@@ -27,18 +25,33 @@ define([
 
         request[0].done(function(result) {
             if (result.status == true) {
-                ModalFactory.create({
-                    type: ModalNotificationBadge.TYPE,
+                // Generate a unique ID for the modal
+                var uniqid = 'evokegame-badge-notification-' + Math.random().toString(36).substr(2, 9);
+
+                ModalNotificationBadge.create({
                     templateContext: {
-                        isachievement: result.isachievement,
-                        badgename: result.badgename,
-                        badgeimage: result.badgeimage,
-                        courseid: result.courseid,
-                        profileurl: Config.wwwroot + '/local/evokegame/profile.php?id=' + result.courseid
-                    }
-                }).then(function(modal) {
-                    return modal.show();
-                });
+                        uniqid: uniqid,
+                        isachievement: result.isachievement || false,
+                        badgename: result.badgename || 'Badge',
+                        badgeimage: result.badgeimage || '',
+                        courseid: result.courseid || 0,
+                        profileurl: Config.wwwroot + '/local/evokegame/profile.php?id=' +
+                            (result.courseid || 0),
+                        title: result.title || (result.isachievement ?
+                            'You\'ve earned an achievement!' : 'You\'ve earned a badge!'),
+                        description: result.description || '',
+                        buttontext: result.buttontext || 'Check your scoreboard',
+                        closetext: result.closetext || 'Close',
+                        classes: 'evoke-game-badge-modal',
+                        headerclasses: '',
+                        footer: ''
+                    },
+                    large: true,
+                    removeOnClose: true,
+                    show: true
+                }).catch(function(error) {
+                    this.showToast('error', 'Failed to display badge notification');
+                }.bind(this));
             }
         }.bind(this)).fail(function(error) {
             var message = error.message;

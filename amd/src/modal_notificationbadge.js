@@ -1,37 +1,89 @@
 /**
  * Custom notification modal js logic.
  *
- * @package    local_evokegame
  * @copyright  2021 World Bank Group <https://worldbank.org>
  * @author     Willian Mano <willianmanoaraujo@gmail.com>
  */
 
-define(['jquery', 'core/notification', 'core/custom_interaction_events', 'core/modal', 'core/modal_registry'],
-    function($, Notification, CustomEvents, Modal, ModalRegistry) {
+define([
+    'jquery',
+    'core/notification',
+    'core/custom_interaction_events',
+    'core/templates',
+    'core/pending',
+    'core/modal',
+    'core/modal_registry'
+],
+    function($, Notification, CustomEvents, Templates, Pending, Modal, ModalRegistry) {
 
         var registered = false;
 
         /**
-         * Constructor for the Modal.
+         * ModalNotificationBadge class.
          *
-         * @param {object} root The root jQuery element for the modal
+         * @class
+         * @extends Modal
          */
-        var ModalNotificationBadge = function(root) {
-            Modal.call(this, root);
-        };
+        class ModalNotificationBadge extends Modal {
+            /**
+             * Constructor for the Modal.
+             *
+             * @param {HTMLElement} root The root HTMLElement for the modal
+             */
+            constructor(root) {
+                super(root);
+            }
+
+            /**
+             * Set up all of the event handling for the modal.
+             *
+             * @method registerEventListeners
+             */
+            registerEventListeners() {
+                // Apply parent event listeners.
+                super.registerEventListeners();
+            }
+        }
 
         ModalNotificationBadge.TYPE = 'local_evokegame-modal_notificationbadge';
-        ModalNotificationBadge.prototype = Object.create(Modal.prototype);
-        ModalNotificationBadge.prototype.constructor = ModalNotificationBadge;
+        ModalNotificationBadge.TEMPLATE = 'local_evokegame/modal_notificationbadge';
 
         /**
-         * Set up all of the event handling for the modal.
+         * Create a new modal using the supplied configuration.
          *
-         * @method registerEventListeners
+         * @param {object} modalConfig The configuration to create the modal instance
+         * @returns {Promise} Resolved with a ModalNotificationBadge instance
          */
-        ModalNotificationBadge.prototype.registerEventListeners = function() {
-            // Apply parent event listeners.
-            Modal.prototype.registerEventListeners.call(this);
+        ModalNotificationBadge.create = function(modalConfig) {
+            var pendingModalPromise = new Pending('local_evokegame/modal_notificationbadge:create');
+            modalConfig = modalConfig || {};
+            modalConfig.type = ModalNotificationBadge.TYPE;
+
+            var templateName = modalConfig.template || ModalNotificationBadge.TEMPLATE;
+            var templateContext = modalConfig.templateContext || {};
+
+            return Templates.renderForPromise(templateName, templateContext)
+                .then(function(rendered) {
+                    var html = rendered.html;
+                    var js = rendered.js;
+
+                    var modal = new ModalNotificationBadge(html);
+                    if (js) {
+                        modal.setTemplateJS(js);
+                    }
+
+                    // Configure the modal (this will handle show if configured)
+                    modal.configure(modalConfig);
+
+                    pendingModalPromise.resolve();
+
+                    return modal;
+                })
+                .catch(function(error) {
+                    pendingModalPromise.resolve();
+                    Notification.exception(error);
+                    throw error;
+                });
         };
 
         // Automatically register with the modal registry the first time this module is imported so that you can create modals

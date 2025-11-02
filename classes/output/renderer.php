@@ -29,8 +29,19 @@ class renderer extends plugin_renderer_base {
     }
 
     public function render_dashboardnavbar(renderable $page) {
-        $data = $page->export_for_template($this);
+        try {
+            $data = $page->export_for_template($this);
 
-        return parent::render_from_template('local_evokegame/dashboardnavbar', $data);
+            debugging("[evokegame] render_dashboardnavbar: data keys: " . implode(', ', array_keys($data)), DEBUG_NORMAL);
+
+            $result = parent::render_from_template('local_evokegame/dashboardnavbar', $data);
+
+            debugging("[evokegame] render_dashboardnavbar: rendered length: " . strlen($result ?? ''), DEBUG_NORMAL);
+
+            return $result;
+        } catch (\Exception $e) {
+            debugging("[evokegame] Error in render_dashboardnavbar: " . $e->getMessage(), DEBUG_NORMAL);
+            return '';
+        }
     }
 }

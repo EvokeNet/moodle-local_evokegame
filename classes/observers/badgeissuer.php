@@ -98,13 +98,26 @@ class badgeissuer {
 
         $badge = new \core_badges\badge($evokebadge->badgeid);
 
+        // Check if badge was already issued to avoid duplicate notifications
+        if ($badge->is_issued($userid)) {
+            return;
+        }
+
         $badgeadded = process_manual_award($userid, $issuerid, $issuerrole, $evokebadge->badgeid);
 
-        if ($badgeadded) {
+        // Issue the badge (process_manual_award might return false even when it works)
+        try {
             $badge->issue($userid);
+        } catch (\Exception $e) {
+            // If badge was already issued, that's okay - just continue
+            if (!$badge->is_issued($userid)) {
+                throw $e;
+            }
+        }
 
+        // Set notification regardless of process_manual_award return value if badge was successfully issued
+        if ($badge->is_issued($userid)) {
             $notification = new \local_evokegame\notification\badge($userid);
-
             $notification->notify($evokebadge->id);
         }
     }

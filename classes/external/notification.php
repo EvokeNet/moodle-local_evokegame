@@ -44,9 +44,13 @@ class notification extends external_api {
             return [
                 'status' => false,
                 'isachievement' => false,
-                'badgename' => null,
+                'badgename' => '',
                 'courseid' => 0,
-                'badgeimage' => null
+                'badgeimage' => '',
+                'title' => '',
+                'description' => '',
+                'buttontext' => '',
+                'closetext' => '',
             ];
         }
 
@@ -62,12 +66,30 @@ class notification extends external_api {
         $badgeutil = new \local_evokegame\util\badge();
         $badgeimage = $badgeutil->get_badge_image_url($context->id, $evokebadge->badgeid);
 
+        $isachievement = $evokebadge->type == 2;
+        
+        // Get translated strings
+        $title = $isachievement 
+            ? get_string('youveearnedanachievement', 'local_evokegame')
+            : get_string('youveearnedabadge', 'local_evokegame');
+        
+        $description = $isachievement
+            ? get_string('youjustearnedanewachievement_desc', 'local_evokegame', $evokebadge->name)
+            : get_string('youjustearnedanewbadge_desc', 'local_evokegame', $evokebadge->name);
+        
+        $buttontext = get_string('checkyourscoreboard', 'local_evokegame');
+        $closetext = get_string('closebuttontitle');
+
         return [
             'status' => true,
-            'isachievement' => $evokebadge->type == 2,
+            'isachievement' => $isachievement,
             'badgename' => $evokebadge->name,
             'courseid' => $evokebadge->courseid,
             'badgeimage' => $badgeimage->out(),
+            'title' => $title,
+            'description' => $description,
+            'buttontext' => $buttontext,
+            'closetext' => $closetext,
         ];
     }
 
@@ -84,6 +106,10 @@ class notification extends external_api {
                 'badgename' => new external_value(PARAM_TEXT, 'Badge name'),
                 'courseid' => new external_value(PARAM_INT, 'Badge course id'),
                 'badgeimage' => new external_value(PARAM_RAW, 'Badge image'),
+                'title' => new external_value(PARAM_RAW, 'Modal title'),
+                'description' => new external_value(PARAM_RAW, 'Modal description'),
+                'buttontext' => new external_value(PARAM_TEXT, 'Button text'),
+                'closetext' => new external_value(PARAM_TEXT, 'Close button text'),
             )
         );
     }

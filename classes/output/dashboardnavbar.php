@@ -29,37 +29,46 @@ class dashboardnavbar implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $USER;
 
-        $isgameenabledincourse = get_config('local_evokegame', 'isgameenabledincourse-' . $this->course->id);
-        $isgameenabled = false;
-        if (is_null($isgameenabledincourse) || $isgameenabledincourse == 1) {
-            $isgameenabled = true;
-        }
+        try {
+            $isgameenabledincourse = get_config('local_evokegame', 'isgameenabledincourse-' . $this->course->id);
+            $isgameenabled = false;
+            if (is_null($isgameenabledincourse) || $isgameenabledincourse == 1) {
+                $isgameenabled = true;
+            }
 
-        if (!$isgameenabled || !isloggedin() || isguestuser() || $this->course->id == 1) {
+            if (!$isgameenabled || !isloggedin() || isguestuser() || $this->course->id == 1) {
+                debugging("[evokegame] dashboardnavbar export: showblock=false - game enabled: " . ($isgameenabled ? 'yes' : 'no') . ", courseid: {$this->course->id}", DEBUG_NORMAL);
+                return [
+                    'showblock' => false
+                ];
+            }
+
+            $evcs = new evocoin($USER->id);
+
+            $badgeutil = new badge();
+
+            $hasbadges = $badgeutil->get_course_highlight_badges_with_user_award($USER->id, $this->course->id, $this->context->id);
+            $badges = [];
+            if ($hasbadges) {
+                $badges = $hasbadges;
+                $hasbadges = true;
+            }
+
+            debugging("[evokegame] dashboardnavbar export: showblock=true, badges count: " . count($badges), DEBUG_NORMAL);
+
+            return [
+                'showblock' => true,
+                'contextid' => $this->context->id,
+                'courseid' => $this->course->id,
+                'evcs' => (int) $evcs->get_coins(),
+                'hasbadges' => $hasbadges,
+                'badges' => $badges
+            ];
+        } catch (\Exception $e) {
+            debugging("[evokegame] Error in dashboardnavbar export_for_template: " . $e->getMessage(), DEBUG_NORMAL);
             return [
                 'showblock' => false
             ];
         }
-
-        $evcs = new evocoin($USER->id);
-
-        $badgeutil = new badge();
-
-        $hasbadges = $badgeutil->get_course_highlight_badges_with_user_award($USER->id, $this->course->id, $this->context->id);
-        $badges = [];
-        if ($hasbadges) {
-            $badges = $hasbadges;
-
-            $hasbadges = true;
-        }
-
-        return [
-            'showblock' => true,
-            'contextid' => $this->context->id,
-            'courseid' => $this->course->id,
-            'evcs' => (int) $evcs->get_coins(),
-            'hasbadges' => $hasbadges,
-            'badges' => $badges
-        ];
     }
 }

@@ -265,20 +265,32 @@ function local_evokegame_output_fragment_badge_form($args) {
     $o = '';
 
     $formdata = [];
+    $customdata = [];
+    
     if (!empty($args->jsonformdata)) {
         $serialiseddata = json_decode($args->jsonformdata);
-        $formdata = (array) $serialiseddata;
+        if ($serialiseddata) {
+            $formdata = (array) $serialiseddata;
+            
+            // Extract customdata from serialised data if present
+            $customdata = [
+                'id' => !empty($serialiseddata->id) ? $serialiseddata->id : null,
+                'name' => !empty($serialiseddata->name) ? $serialiseddata->name : null,
+                'description' => !empty($serialiseddata->description) ? $serialiseddata->description : null,
+                'type' => !empty($serialiseddata->type) ? $serialiseddata->type : 0,
+                'highlight' => !empty($serialiseddata->highlight) ? $serialiseddata->highlight : 0,
+                'courseid' => !empty($serialiseddata->courseid) ? $serialiseddata->courseid : (!empty($args->course) ? $args->course : null),
+                'badgeid' => !empty($serialiseddata->badgeid) ? $serialiseddata->badgeid : null,
+            ];
+        }
+    } else {
+        // If no form data, use course from args if provided
+        if (!empty($args->course)) {
+            $customdata['courseid'] = $args->course;
+        }
     }
 
-    $mform = new \local_evokegame\forms\badge($formdata, [
-        'id' => $serialiseddata->id,
-        'name' => $serialiseddata->name,
-        'description' => $serialiseddata->description,
-        'type' => $serialiseddata->type,
-        'highlight' => $serialiseddata->highlight,
-        'courseid' => $serialiseddata->courseid,
-        'badgeid' => $serialiseddata->badgeid,
-    ]);
+    $mform = new \local_evokegame\forms\badge($formdata, $customdata);
 
     if (!empty($args->jsonformdata)) {
         // If we were passed non-empty form data we want the mform to call validation functions and show errors.
@@ -423,6 +435,56 @@ function local_evokegame_moove_additional_header() {
     $evokegame = new \local_evokegame\output\evokegame();
 
     return $evokegame->get_dashboardnavbar($PAGE->course, $context);
+}
+
+/**
+ * Classplay theme header callback to display EvokeGame navbar in course header.
+ *
+ * @return string|false
+ */
+function local_evokegame_classplay_additional_header() {
+    global $PAGE;
+
+    try {
+        if (isguestuser() || !isloggedin()) {
+            return '';
+        }
+
+        // Get course from PAGE - handle cases where it might not be set yet
+        $course = null;
+        if (!empty($PAGE->course) && !empty($PAGE->course->id)) {
+            $course = $PAGE->course;
+        } else {
+            // Try to get course from context
+            $context = $PAGE->context;
+            if ($context && $context->contextlevel == CONTEXT_COURSE) {
+                $courseid = $context->instanceid;
+                if ($courseid && $courseid != 1) {
+                    $course = get_course($courseid);
+                }
+            }
+        }
+
+        // If still no course, we're not in a course context
+        if (!$course || empty($course->id) || $course->id == 1) {
+            return '';
+        }
+
+        $context = \context_course::instance($course->id);
+
+        // Allow teachers/admins (manage course) or enrolled users to see it.
+        if (!has_capability('moodle/course:update', $context) && !is_enrolled($context)) {
+            return '';
+        }
+
+        $evokegame = new \local_evokegame\output\evokegame();
+        $result = $evokegame->get_dashboardnavbar($course, $context);
+
+        return $result ?? '';
+    } catch (\Exception $e) {
+        debugging("[evokegame] Error in classplay_additional_header: " . $e->getMessage(), DEBUG_NORMAL);
+        return '';
+    }
 }
 
 

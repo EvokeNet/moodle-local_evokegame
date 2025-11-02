@@ -62,11 +62,23 @@ class badge extends external_api {
         $data = [];
         parse_str($serialiseddata, $data);
 
-        $mform = new badgeform($data);
+        $mform = new badgeform($data, ['courseid' => $params['course']]);
 
-        $validateddata = $mform->get_data();
+        // Check if form was submitted
+        if ($mform->is_submitted()) {
+            $validateddata = $mform->get_data();
 
-        if (!$validateddata) {
+            if (!$validateddata) {
+                // Form validation failed - return error with form HTML containing validation errors
+                ob_start();
+                $mform->display();
+                $formhtml = ob_get_contents();
+                ob_end_clean();
+                
+                throw new \moodle_exception('invalidformdata', 'local_evokegame', '', null, json_encode(['formhtml' => $formhtml]));
+            }
+        } else {
+            // Form not submitted - this shouldn't happen but handle it
             throw new \moodle_exception('invalidformdata');
         }
 
