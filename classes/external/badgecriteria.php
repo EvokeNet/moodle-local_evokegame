@@ -78,7 +78,8 @@ class badgecriteria extends external_api {
         $badgecriteria->courseid = $courseid;
         $badgecriteria->evokebadgeid = $validateddata->badgeid;
         $badgecriteria->method = $validateddata->method;
-        $badgecriteria->value = $validateddata->value;
+        // For coursecompletion, value is not used but required by DB structure
+        $badgecriteria->value = ($validateddata->method === 'coursecompletion') ? 0 : $validateddata->value;
         $badgecriteria->timecreated = $now;
         $badgecriteria->timemodified = $now;
 

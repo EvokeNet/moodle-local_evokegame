@@ -71,8 +71,11 @@ class badgecriteria extends \moodleform {
         $mform->getElement('skilltargetaggregation')->setMultiple(true);
 
         $mform->addElement('text', 'value', get_string('value', 'local_evokegame'));
-        $mform->addRule('value', get_string('required'), 'required', null, 'client');
         $mform->setType('value', PARAM_INT);
+        $mform->setDefault('value', '0');
+        $mform->hideIf('value', 'method', 'eq', 'coursecompletion');
+        $mform->disabledIf('value', 'method', 'eq', 'coursecompletion');
+        // Value is required for all methods except coursecompletion - we'll handle this in validation
     }
 
     /**
@@ -112,7 +115,8 @@ class badgecriteria extends \moodleform {
             }
         }
 
-        if ($this->is_submitted() && (empty($value))) {
+        // Value is not required for coursecompletion criteria
+        if ($this->is_submitted() && (empty($value)) && $method !== 'coursecompletion') {
             $errors['value'] = get_string('required');
         }
 
