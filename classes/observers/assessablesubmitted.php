@@ -22,12 +22,16 @@ class assessablesubmitted {
             return;
         }
 
-        if (!is_enrolled($event->get_context(), $event->relateduserid)) {
+        $userid = $event->relateduserid ?? $event->userid;
+        if (empty($userid)) {
             return;
         }
 
-        // Avoid adding points for users who can edit the course.
-        if (has_capability('moodle/course:update', $event->get_context(), $event->relateduserid)) {
+        if (!is_enrolled($event->get_context(), $userid)) {
+            return;
+        }
+
+        if (has_capability('moodle/course:update', $event->get_context(), $userid)) {
             return;
         }
 
@@ -40,7 +44,7 @@ class assessablesubmitted {
             return;
         }
 
-        $points = new point($event->courseid, $event->relateduserid);
+        $points = new point($event->courseid, $userid);
         foreach ($skillssubmission as $skillpointobject) {
             $points->add_points($skillpointobject);
         }
