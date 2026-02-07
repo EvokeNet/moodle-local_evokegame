@@ -39,14 +39,21 @@ class report implements renderable, templatable {
         $totaldistributedevocoins = $evocoins->get_course_total_distributed($this->course->id);
 
         $courseskills = $skills->get_course_skills_with_totalpoints($this->course->id);
+        if (!$courseskills || !is_array($courseskills)) {
+            $courseskills = [];
+        }
 
         $totalskillspoints = array_reduce($courseskills, function($carry, $item) {
             $carry += $item->value;
 
             return $carry;
-        });
+        }, 0);
 
-        $evocoinsdistributionprogress = (int)(ceil($totaldistributedevocoins * 100 / $totalpossiblecoins));
+        if ($totalpossiblecoins > 0) {
+            $evocoinsdistributionprogress = (int)(ceil($totaldistributedevocoins * 100 / $totalpossiblecoins));
+        } else {
+            $evocoinsdistributionprogress = 0;
+        }
 
         $portfoliochart = new \local_evokegame\util\report\chart\portfolio();
 

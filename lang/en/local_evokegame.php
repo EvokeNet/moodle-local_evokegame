@@ -37,6 +37,11 @@ $string['editbadge'] = 'Edit badge';
 $string['deletebadge'] = 'Delete badge';
 
 $string['badgedeliver'] = 'Deliver badges';
+$string['deliverbadgeusers'] = 'Deliver to students';
+$string['deliverbadgeusers_title'] = 'Deliver badge to students';
+$string['deliverbadgeusers_success'] = 'Evoke Badge delivered for {$a} users.';
+$string['deliverbadgeusers_select'] = 'Select students';
+$string['deliverbadgeusers_nousers'] = 'No enrolled students found for this course.';
 $string['badgecriteria'] = 'Badge criterias';
 $string['badgecriterias'] = 'Criterias to achieve this badge:';
 $string['deliverbadge_confirm_title'] = 'Are you sure?';

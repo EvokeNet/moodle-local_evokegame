@@ -403,4 +403,86 @@ class badge extends external_api {
             )
         );
     }
+
+    /**
+     * Deliver badge to selected users parameters
+     *
+     * @return external_function_parameters
+     */
+    public static function deliver_to_users_parameters() {
+        return new external_function_parameters([
+            'contextid' => new external_value(PARAM_INT, 'The context id for the course'),
+            'jsonformdata' => new external_value(PARAM_RAW, 'The data from the delivery form, encoded as a json array')
+        ]);
+    }
+
+    /**
+     * Deliver badge to selected users method
+     *
+     * @param int $contextid
+     * @param string $jsonformdata
+     * @return array
+     */
+    public static function deliver_to_users($contextid, $jsonformdata) {
+        global $DB;
+
+        $params = self::validate_parameters(self::deliver_to_users_parameters(), [
+            'contextid' => $contextid,
+            'jsonformdata' => $jsonformdata
+        ]);
+
+        $context = context::instance_by_id($params['contextid'], MUST_EXIST);
+        self::validate_context($context);
+        require_capability('moodle/course:update', $context);
+
+        $serialiseddata = json_decode($params['jsonformdata']);
+        $data = [];
+        parse_str($serialiseddata, $data);
+
+        $badgeid = !empty($data['badgeid']) ? (int)$data['badgeid'] : 0;
+        $courseid = !empty($data['courseid']) ? (int)$data['courseid'] : 0;
+        $userids = $data['userids'] ?? [];
+        if (!is_array($userids)) {
+            $userids = [$userids];
+        }
+
+        if (!$badgeid || !$courseid || empty($userids)) {
+            throw new \moodle_exception('invalidparameters');
+        }
+
+        $evokebadge = $DB->get_record('evokegame_badges', ['id' => $badgeid, 'courseid' => $courseid], '*', MUST_EXIST);
+        $coursecontext = \context_course::instance($courseid);
+
+        $delivered = 0;
+        foreach ($userids as $userid) {
+            $userid = (int)$userid;
+            if (!$userid || !is_enrolled($coursecontext, $userid)) {
+                continue;
+            }
+            if (badgeissuer::user_already_have_badge($userid, $evokebadge->badgeid)) {
+                continue;
+            }
+            badgeissuer::deliver_badge($userid, $evokebadge);
+            $delivered++;
+        }
+
+        return [
+            'status' => 'ok',
+            'message' => get_string('deliverbadgeusers_success', 'local_evokegame', $delivered)
+        ];
+    }
+
+    /**
+     * Deliver badge to selected users return fields
+     *
+     * @return external_single_structure
+     */
+    public static function deliver_to_users_returns() {
+        return new external_single_structure(
+            array(
+                'status' => new external_value(PARAM_TEXT, 'Operation status'),
+                'message' => new external_value(PARAM_TEXT, 'Return message')
+            )
+        );
+    }
 }

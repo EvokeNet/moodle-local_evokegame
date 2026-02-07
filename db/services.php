@@ -75,6 +75,14 @@ $functions = [
         'type' => 'write',
         'ajax' => true
     ],
+    'local_evokegame_deliverbadge_users' => [
+        'classname' => 'local_evokegame\external\badge',
+        'classpath' => 'local/evokegame/classes/external/badge.php',
+        'methodname' => 'deliver_to_users',
+        'description' => 'Deliver a badge for selected users',
+        'type' => 'write',
+        'ajax' => true
+    ],
     'local_evokegame_createskill' => [
         'classname' => 'local_evokegame\external\skill',
         'classpath' => 'local/evokegame/classes/external/skill.php',

@@ -22,6 +22,9 @@
                 <a href="#" data-id="{{id}}" class="btn btn-info btn-sm deliver-evokegame-badge" title="{{#str}}badgedeliver, local_evokegame{{/str}}">
                     <i class="fa fa-refresh"></i>
                 </a>
+                <a href="#" data-action="deliver-badge-users" data-id="{{id}}" data-courseid="{{courseid}}" class="btn btn-secondary btn-sm deliver-evokegame-badge-users" title="{{#str}}deliverbadgeusers, local_evokegame{{/str}}">
+                    <i class="fa fa-user-plus"></i>
+                </a>
                 <a href="{{{config.wwwroot}}}/local/evokegame/badgecriterias.php?id={{id}}" data-id="{{id}}" class="btn btn-primary btn-sm" title="{{#str}}badgecriteria, local_evokegame{{/str}}">
                     <i class="fa fa-cog"></i>
                 </a>
@@ -38,7 +41,7 @@
 </table>
 
 {{#js}}
-    require(['local_evokegame/createbadge', 'local_evokegame/editbadge', 'local_evokegame/deletebadge', 'local_evokegame/deliverbadge'], function(CreateBadge, EditBadge, DeleteBadge, DeliverBadge) {
+    require(['local_evokegame/createbadge', 'local_evokegame/editbadge', 'local_evokegame/deletebadge', 'local_evokegame/deliverbadge', 'local_evokegame/deliverbadgeusers'], function(CreateBadge, EditBadge, DeleteBadge, DeliverBadge, DeliverBadgeUsers) {
         CreateBadge.init('[data-action=create-badge-modal]', {{{contextid}}}, {{{courseid}}});
 
         EditBadge.init({{{contextid}}});
@@ -46,5 +49,7 @@
         DeleteBadge.init();
 
         DeliverBadge.init();
+
+        DeliverBadgeUsers.init('[data-action=deliver-badge-users]', {{{contextid}}}, {{{courseid}}});
     });
 {{/js}}

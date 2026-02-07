@@ -333,6 +333,55 @@ function local_evokegame_output_fragment_badgecriteria_form($args) {
     return $o;
 }
 
+function local_evokegame_output_fragment_badge_delivery_form($args) {
+    $args = (object) $args;
+    $o = '';
+
+    $serialiseddata = null;
+    if (!empty($args->jsonformdata)) {
+        $serialiseddata = json_decode($args->jsonformdata);
+    }
+
+    $courseid = $serialiseddata->courseid ?? $args->courseid ?? null;
+    $badgeid = $serialiseddata->badgeid ?? $args->badgeid ?? null;
+
+    $options = [];
+    if (!empty($courseid)) {
+        $context = \context_course::instance($courseid);
+        $users = get_enrolled_users($context, 'moodle/course:viewparticipants', 0, 'u.id,u.firstname,u.lastname,u.email');
+        foreach ($users as $user) {
+            $options[$user->id] = fullname($user) . ' (' . $user->email . ')';
+        }
+    }
+
+    $o .= html_writer::start_tag('form');
+    $o .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'courseid', 'value' => $courseid]);
+    $o .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'badgeid', 'value' => $badgeid]);
+    $o .= html_writer::start_div('form-group');
+    $o .= html_writer::tag('label', get_string('deliverbadgeusers_select', 'local_evokegame'), ['class' => 'font-weight-bold']);
+
+    if (!empty($options)) {
+        $attrs = [
+            'name' => 'userids[]',
+            'multiple' => 'multiple',
+            'size' => 10,
+            'class' => 'custom-select'
+        ];
+        $o .= html_writer::start_tag('select', $attrs);
+        foreach ($options as $value => $label) {
+            $o .= html_writer::tag('option', s($label), ['value' => $value]);
+        }
+        $o .= html_writer::end_tag('select');
+    } else {
+        $o .= html_writer::tag('div', get_string('deliverbadgeusers_nousers', 'local_evokegame'), ['class' => 'text-muted']);
+    }
+
+    $o .= html_writer::end_div();
+    $o .= html_writer::end_tag('form');
+
+    return $o;
+}
+
 /**
  * Returns create skill form fragment.
  *
