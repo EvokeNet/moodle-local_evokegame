@@ -107,15 +107,16 @@ class report implements renderable, templatable {
         $params['courseid'] = $courseid;
 
         $skillsmap = [];
-        $skillssql = "SELECT su.userid, s.name
+        $skillssql = "SELECT su.userid, s.name, SUM(su.value) AS points
                         FROM {evokegame_skills_users} su
                         JOIN {evokegame_skills_modules} sm ON sm.id = su.skillmoduleid
                         JOIN {evokegame_skills} s ON s.id = sm.skillid
                        WHERE s.courseid = :courseid
                          AND su.userid {$insql}";
+        $skillssql .= " GROUP BY su.userid, s.name";
         $skillrecords = $DB->get_records_sql($skillssql, $params);
         foreach ($skillrecords as $record) {
-            $skillsmap[$record->userid][$record->name] = true;
+            $skillsmap[$record->userid][$record->name] = (int)$record->points;
         }
 
         $badgesmap = [];
@@ -123,8 +124,7 @@ class report implements renderable, templatable {
         $badgessql = "SELECT bi.userid, b.name, b.id as badgeid
                         FROM {badge_issued} bi
                         JOIN {badge} b ON b.id = bi.badgeid
-                        JOIN {evokegame_badges} eb ON eb.badgeid = b.id
-                       WHERE eb.courseid = :courseid
+                       WHERE b.courseid = :courseid
                          AND bi.userid {$insql}";
         $badgerecords = $DB->get_records_sql($badgessql, $params);
         foreach ($badgerecords as $record) {
@@ -132,15 +132,15 @@ class report implements renderable, templatable {
         }
 
         $activitiesmap = [];
-        $activitysql = "SELECT s.userid, a.name, cm.id AS cmid
+        $activitysql = "SELECT DISTINCT s.userid, a.name, cm.id AS cmid
                           FROM {assign_submission} s
                           JOIN {assign} a ON a.id = s.assignment
                           JOIN {modules} m ON m.name = :modname
                           JOIN {course_modules} cm ON cm.instance = a.id AND cm.module = m.id
                          WHERE a.course = :courseid
-                           AND s.status = :status
+                           AND s.status IN (:submitted, :reopened)
                            AND s.userid {$insql}";
-        $activityparams = $params + ['status' => 'submitted'];
+        $activityparams = $params + ['submitted' => 'submitted', 'reopened' => 'reopened'];
         $activityparams['modname'] = 'assign';
         $activityrecords = $DB->get_records_sql($activitysql, $activityparams);
         foreach ($activityrecords as $record) {
@@ -160,7 +160,15 @@ class report implements renderable, templatable {
                 }
             }
 
-            $skillslist = !empty($skillsmap[$user->id]) ? array_keys($skillsmap[$user->id]) : [];
+            $skillslist = [];
+            if (!empty($skillsmap[$user->id])) {
+                foreach ($skillsmap[$user->id] as $skillname => $points) {
+                    $skillslist[] = [
+                        'name' => $skillname,
+                        'points' => $points
+                    ];
+                }
+            }
             $badgeslist = [];
             if (!empty($badgesmap[$user->id])) {
                 foreach ($badgesmap[$user->id] as $badgeid => $badgename) {
