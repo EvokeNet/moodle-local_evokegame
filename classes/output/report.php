@@ -107,7 +107,7 @@ class report implements renderable, templatable {
         $params['courseid'] = $courseid;
 
         $skillsmap = [];
-        $skillssql = "SELECT su.userid, s.name, SUM(su.value) AS points
+        $skillssql = "SELECT su.userid AS id, su.userid, s.name, SUM(su.value) AS points
                         FROM {evokegame_skills_users} su
                         JOIN {evokegame_skills_modules} sm ON sm.id = su.skillmoduleid
                         JOIN {evokegame_skills} s ON s.id = sm.skillid
@@ -121,7 +121,7 @@ class report implements renderable, templatable {
 
         $badgesmap = [];
         $badgeutil = new \local_evokegame\util\badge();
-        $badgessql = "SELECT bi.userid, b.name, b.id as badgeid
+        $badgessql = "SELECT bi.id AS id, bi.userid, b.name, b.id as badgeid
                         FROM {badge_issued} bi
                         JOIN {badge} b ON b.id = bi.badgeid
                        WHERE b.courseid = :courseid
