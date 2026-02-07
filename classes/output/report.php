@@ -114,10 +114,11 @@ class report implements renderable, templatable {
                        WHERE s.courseid = :courseid
                          AND su.userid {$insql}";
         $skillssql .= " GROUP BY su.userid, s.name";
-        $skillrecords = $DB->get_records_sql($skillssql, $params);
+        $skillrecords = $DB->get_recordset_sql($skillssql, $params);
         foreach ($skillrecords as $record) {
             $skillsmap[$record->userid][$record->name] = (int)$record->points;
         }
+        $skillrecords->close();
 
         $badgesmap = [];
         $badgeutil = new \local_evokegame\util\badge();
