@@ -29,16 +29,18 @@ class report implements renderable, templatable {
         $portfolio = new \local_evokegame\util\report\portfolio();
         $skills = new \local_evokegame\util\report\skills();
         $students = new \local_evokegame\util\report\students();
+        $courseid = $this->course->id;
+        $context = $this->context;
 
-        $totalevocoins = $evocoins->get_course_total($this->course->id);
+        $totalevocoins = $evocoins->get_course_total($courseid);
 
-        $totalstudents = $students->get_course_total($this->context);
+        $totalstudents = $students->get_course_total($context);
 
         $totalpossiblecoins = $totalevocoins * $totalstudents;
 
-        $totaldistributedevocoins = $evocoins->get_course_total_distributed($this->course->id);
+        $totaldistributedevocoins = $evocoins->get_course_total_distributed($courseid);
 
-        $courseskills = $skills->get_course_skills_with_totalpoints($this->course->id);
+        $courseskills = $skills->get_course_skills_with_totalpoints($courseid);
         if (!$courseskills || !is_array($courseskills)) {
             $courseskills = [];
         }
@@ -57,20 +59,22 @@ class report implements renderable, templatable {
 
         $portfoliochart = new \local_evokegame\util\report\chart\portfolio();
 
-        $entriesbychapter = $portfoliochart->entries_by_chapter($this->course->id);
+        $entriesbychapter = $portfoliochart->entries_by_chapter($courseid);
         if ($entriesbychapter) {
             $entriesbychapter = $output->render($entriesbychapter);
         }
 
-        $likesbychapter = $portfoliochart->likes_by_chapter($this->course->id);
+        $likesbychapter = $portfoliochart->likes_by_chapter($courseid);
         if ($likesbychapter) {
             $likesbychapter = $output->render($likesbychapter);
         }
 
-        $commentsbychapter = $portfoliochart->comments_by_chapter($this->course->id);
+        $commentsbychapter = $portfoliochart->comments_by_chapter($courseid);
         if ($commentsbychapter) {
             $commentsbychapter = $output->render($commentsbychapter);
         }
+
+        $studentslist = $this->build_students_report($courseid, $context);
 
         return [
             'courseevocoins' => $totalevocoins,
@@ -86,6 +90,101 @@ class report implements renderable, templatable {
             'chartentriesbychapter' => $entriesbychapter,
             'chartlikesbychapter' => $likesbychapter,
             'chartcommentsbychapter' => $commentsbychapter,
+            'studentsreport' => $studentslist
         ];
+    }
+
+    private function build_students_report(int $courseid, \context_course $context): array {
+        global $DB;
+
+        $enrolled = get_enrolled_users($context, 'moodle/course:viewparticipants', 0, 'u.id,u.firstname,u.lastname,u.email');
+        if (!$enrolled) {
+            return [];
+        }
+
+        $useridlist = array_keys($enrolled);
+        list($insql, $params) = $DB->get_in_or_equal($useridlist, SQL_PARAMS_NAMED);
+        $params['courseid'] = $courseid;
+
+        $skillsmap = [];
+        $skillssql = "SELECT su.userid, s.name
+                        FROM {evokegame_skills_users} su
+                        JOIN {evokegame_skills_modules} sm ON sm.id = su.skillmoduleid
+                        JOIN {evokegame_skills} s ON s.id = sm.skillid
+                       WHERE s.courseid = :courseid
+                         AND su.userid {$insql}";
+        $skillrecords = $DB->get_records_sql($skillssql, $params);
+        foreach ($skillrecords as $record) {
+            $skillsmap[$record->userid][$record->name] = true;
+        }
+
+        $badgesmap = [];
+        $badgeutil = new \local_evokegame\util\badge();
+        $badgessql = "SELECT bi.userid, b.name, b.id as badgeid
+                        FROM {badge_issued} bi
+                        JOIN {badge} b ON b.id = bi.badgeid
+                        JOIN {evokegame_badges} eb ON eb.badgeid = b.id
+                       WHERE eb.courseid = :courseid
+                         AND bi.userid {$insql}";
+        $badgerecords = $DB->get_records_sql($badgessql, $params);
+        foreach ($badgerecords as $record) {
+            $badgesmap[$record->userid][$record->badgeid] = $record->name;
+        }
+
+        $activitiesmap = [];
+        $activitysql = "SELECT s.userid, a.name, cm.id AS cmid
+                          FROM {assign_submission} s
+                          JOIN {assign} a ON a.id = s.assignment
+                          JOIN {modules} m ON m.name = :modname
+                          JOIN {course_modules} cm ON cm.instance = a.id AND cm.module = m.id
+                         WHERE a.course = :courseid
+                           AND s.status = :status
+                           AND s.userid {$insql}";
+        $activityparams = $params + ['status' => 'submitted'];
+        $activityparams['modname'] = 'assign';
+        $activityrecords = $DB->get_records_sql($activitysql, $activityparams);
+        foreach ($activityrecords as $record) {
+            $activitiesmap[$record->userid][] = [
+                'name' => $record->name,
+                'url' => new \moodle_url('/mod/assign/view.php', ['id' => $record->cmid])
+            ];
+        }
+
+        $rows = [];
+        foreach ($enrolled as $user) {
+            $groups = groups_get_all_groups($courseid, $user->id, 0, 'g.id,g.name');
+            $groupnames = [];
+            if (!empty($groups)) {
+                foreach ($groups as $group) {
+                    $groupnames[] = $group->name;
+                }
+            }
+
+            $skillslist = !empty($skillsmap[$user->id]) ? array_keys($skillsmap[$user->id]) : [];
+            $badgeslist = [];
+            if (!empty($badgesmap[$user->id])) {
+                foreach ($badgesmap[$user->id] as $badgeid => $badgename) {
+                    $badgeslist[] = [
+                        'name' => $badgename,
+                        'image' => $badgeutil->get_badge_image_url($context->id, $badgeid)
+                    ];
+                }
+            }
+            $activitieslist = $activitiesmap[$user->id] ?? [];
+
+            $rows[] = [
+                'name' => fullname($user),
+                'email' => $user->email,
+                'groups' => !empty($groupnames) ? implode(', ', $groupnames) : '-',
+                'skills' => $skillslist,
+                'badges' => $badgeslist,
+                'activities' => $activitieslist,
+                'has_skills' => !empty($skillslist),
+                'has_badges' => !empty($badgeslist),
+                'has_activities' => !empty($activitieslist),
+            ];
+        }
+
+        return $rows;
     }
 }
