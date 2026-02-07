@@ -107,6 +107,13 @@ $string['evocoins'] = 'Evocoins';
 
 $string['skills_settings'] = 'Evoke game skills';
 $string['skills_create'] = 'Create skill';
+$string['skills_deliver'] = 'Deliver skill points';
+$string['skills_deliver_title'] = 'Deliver skill points to students';
+$string['skills_deliver_success'] = 'Skill points delivered for {$a} users.';
+$string['skills_deliver_select_skill'] = 'Select skill module';
+$string['skills_deliver_select_users'] = 'Select students';
+$string['skills_deliver_noskillmodules'] = 'No skill modules found for this course.';
+$string['skills_deliver_nousers'] = 'No enrolled students found for this course.';
 $string['skills_nameinuse'] = 'This course already have a skill with this name';
 $string['skills_create_success'] = 'Skill successfully created';
 $string['skills_delete_success'] = 'Skill successfully deleted';

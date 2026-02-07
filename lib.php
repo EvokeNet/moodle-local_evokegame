@@ -415,6 +415,80 @@ function local_evokegame_output_fragment_skill_form($args) {
     return $o;
 }
 
+function local_evokegame_output_fragment_skill_points_form($args) {
+    global $DB;
+
+    $args = (object) $args;
+    $o = '';
+
+    $serialiseddata = null;
+    if (!empty($args->jsonformdata)) {
+        $serialiseddata = json_decode($args->jsonformdata);
+    }
+
+    $courseid = $serialiseddata->courseid ?? $args->courseid ?? null;
+
+    $skillsoptions = [];
+    if (!empty($courseid)) {
+        $sql = "SELECT sm.id AS skillmoduleid, s.name AS skillname, sm.action, sm.value, cm.id AS cmid
+                  FROM {evokegame_skills_modules} sm
+                  JOIN {evokegame_skills} s ON s.id = sm.skillid
+                  JOIN {course_modules} cm ON cm.id = sm.cmid
+                 WHERE s.courseid = :courseid
+                 ORDER BY s.name";
+        $records = $DB->get_records_sql($sql, ['courseid' => $courseid]);
+        foreach ($records as $record) {
+            $label = $record->skillname . ' (' . $record->action . ', +' . $record->value . ')';
+            $skillsoptions[$record->skillmoduleid] = $label;
+        }
+    }
+
+    $useroptions = [];
+    if (!empty($courseid)) {
+        $context = \context_course::instance($courseid);
+        $users = get_enrolled_users($context, 'moodle/course:viewparticipants', 0, 'u.id,u.firstname,u.lastname,u.email');
+        foreach ($users as $user) {
+            $useroptions[$user->id] = fullname($user) . ' (' . $user->email . ')';
+        }
+    }
+
+    $o .= html_writer::start_tag('form');
+    $o .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'courseid', 'value' => $courseid]);
+    $o .= html_writer::start_div('form-group');
+    $o .= html_writer::tag('label', get_string('skills_deliver_select_skill', 'local_evokegame'), ['class' => 'font-weight-bold']);
+    if (!empty($skillsoptions)) {
+        $o .= html_writer::start_tag('select', ['name' => 'skillmoduleid', 'class' => 'custom-select']);
+        foreach ($skillsoptions as $value => $label) {
+            $o .= html_writer::tag('option', s($label), ['value' => $value]);
+        }
+        $o .= html_writer::end_tag('select');
+    } else {
+        $o .= html_writer::tag('div', get_string('skills_deliver_noskillmodules', 'local_evokegame'), ['class' => 'text-muted']);
+    }
+    $o .= html_writer::end_div();
+
+    $o .= html_writer::start_div('form-group');
+    $o .= html_writer::tag('label', get_string('skills_deliver_select_users', 'local_evokegame'), ['class' => 'font-weight-bold']);
+    if (!empty($useroptions)) {
+        $o .= html_writer::start_tag('select', [
+            'name' => 'userids[]',
+            'multiple' => 'multiple',
+            'size' => 10,
+            'class' => 'custom-select'
+        ]);
+        foreach ($useroptions as $value => $label) {
+            $o .= html_writer::tag('option', s($label), ['value' => $value]);
+        }
+        $o .= html_writer::end_tag('select');
+    } else {
+        $o .= html_writer::tag('div', get_string('skills_deliver_nousers', 'local_evokegame'), ['class' => 'text-muted']);
+    }
+    $o .= html_writer::end_div();
+    $o .= html_writer::end_tag('form');
+
+    return $o;
+}
+
 /**
  * Add callback to invoke conversion of bootstrap alert to Toastr notifications
  *

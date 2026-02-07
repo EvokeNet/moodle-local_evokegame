@@ -99,4 +99,12 @@ $functions = [
         'type' => 'write',
         'ajax' => true
     ],
+    'local_evokegame_deliverskillpoints' => [
+        'classname' => 'local_evokegame\external\skill',
+        'classpath' => 'local/evokegame/classes/external/skill.php',
+        'methodname' => 'deliver_points',
+        'description' => 'Deliver skill points to selected users',
+        'type' => 'write',
+        'ajax' => true
+    ],
 ];

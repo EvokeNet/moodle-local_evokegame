@@ -18,6 +18,99 @@ use local_evokegame\forms\skill as skillform;
  */
 class skill extends external_api {
     /**
+     * Deliver skill points parameters
+     *
+     * @return external_function_parameters
+     */
+    public static function deliver_points_parameters() {
+        return new external_function_parameters([
+            'contextid' => new external_value(PARAM_INT, 'The context id for the course'),
+            'jsonformdata' => new external_value(PARAM_RAW, 'The data from the delivery form, encoded as a json array')
+        ]);
+    }
+
+    /**
+     * Deliver skill points to selected users method
+     *
+     * @param int $contextid
+     * @param string $jsonformdata
+     * @return array
+     */
+    public static function deliver_points($contextid, $jsonformdata) {
+        global $DB;
+
+        $params = self::validate_parameters(self::deliver_points_parameters(), [
+            'contextid' => $contextid,
+            'jsonformdata' => $jsonformdata
+        ]);
+
+        $context = context::instance_by_id($params['contextid'], MUST_EXIST);
+        self::validate_context($context);
+        require_capability('moodle/course:update', $context);
+
+        $serialiseddata = json_decode($params['jsonformdata']);
+        $data = [];
+        parse_str($serialiseddata, $data);
+
+        $courseid = !empty($data['courseid']) ? (int)$data['courseid'] : 0;
+        $skillmoduleid = !empty($data['skillmoduleid']) ? (int)$data['skillmoduleid'] : 0;
+        $userids = $data['userids'] ?? [];
+        if (!is_array($userids)) {
+            $userids = [$userids];
+        }
+
+        if (!$courseid || !$skillmoduleid || empty($userids)) {
+            throw new \moodle_exception('invalidparameters');
+        }
+
+        $sql = "SELECT sm.id, sm.value, s.courseid
+                  FROM {evokegame_skills_modules} sm
+                  JOIN {evokegame_skills} s ON s.id = sm.skillid
+                 WHERE sm.id = :skillmoduleid";
+        $skillmodule = $DB->get_record_sql($sql, ['skillmoduleid' => $skillmoduleid], MUST_EXIST);
+
+        if ((int)$skillmodule->courseid !== (int)$courseid) {
+            throw new \moodle_exception('invalidparameters');
+        }
+
+        $coursecontext = \context_course::instance($courseid);
+
+        $delivered = 0;
+        foreach ($userids as $userid) {
+            $userid = (int)$userid;
+            if (!$userid || !is_enrolled($coursecontext, $userid)) {
+                continue;
+            }
+
+            $points = new \local_evokegame\util\point($courseid, $userid);
+            $skillpointobject = (object)[
+                'skillmoduleid' => $skillmoduleid,
+                'value' => (int)$skillmodule->value
+            ];
+            $points->add_points($skillpointobject);
+            $delivered++;
+        }
+
+        return [
+            'status' => 'ok',
+            'message' => get_string('skills_deliver_success', 'local_evokegame', $delivered)
+        ];
+    }
+
+    /**
+     * Deliver skill points return fields
+     *
+     * @return external_single_structure
+     */
+    public static function deliver_points_returns() {
+        return new external_single_structure(
+            array(
+                'status' => new external_value(PARAM_TEXT, 'Operation status'),
+                'message' => new external_value(PARAM_TEXT, 'Return message')
+            )
+        );
+    }
+    /**
      * Create skill parameters
      *
      * @return external_function_parameters

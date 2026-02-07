@@ -1,4 +1,9 @@
 <div class="mb-3 d-flex">
+    <div>
+        <a href="#" class="btn btn-secondary" data-action="deliver-skill-points">
+            <i class="fa fa-user-plus"></i> {{#str}}skills_deliver, local_evokegame{{/str}}
+        </a>
+    </div>
     <div class="ml-auto">
         <a href="#"
            class="btn btn-primary" data-action="create-skill-modal">
@@ -29,9 +34,11 @@
 </table>
 
 {{#js}}
-    require(['local_evokegame/skill/create', 'local_evokegame/skill/delete'], function(CreateSkill, DeleteSkill) {
+    require(['local_evokegame/skill/create', 'local_evokegame/skill/delete', 'local_evokegame/skill/deliverpoints'], function(CreateSkill, DeleteSkill, DeliverPoints) {
         CreateSkill.init('[data-action=create-skill-modal]', {{{contextid}}}, {{{courseid}}}, {{{skillid}}});
 
         DeleteSkill.init();
+
+        DeliverPoints.init('[data-action=deliver-skill-points]', {{{contextid}}}, {{{courseid}}});
     });
 {{/js}}
