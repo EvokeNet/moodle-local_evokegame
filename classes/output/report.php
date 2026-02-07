@@ -132,7 +132,7 @@ class report implements renderable, templatable {
         }
 
         $activitiesmap = [];
-        $activitysql = "SELECT DISTINCT s.userid, a.name, cm.id AS cmid
+        $activitysql = "SELECT DISTINCT s.id AS id, s.userid, a.name, cm.id AS cmid
                           FROM {assign_submission} s
                           JOIN {assign} a ON a.id = s.assignment
                           JOIN {modules} m ON m.name = :modname
@@ -148,6 +148,31 @@ class report implements renderable, templatable {
                 'name' => $record->name,
                 'url' => new \moodle_url('/mod/assign/view.php', ['id' => $record->cmid])
             ];
+        }
+
+        $dbman = $DB->get_manager();
+        $entries = new \xmldb_table('portfoliobuilder_entries');
+        $portfolio = new \xmldb_table('portfoliobuilder');
+        if ($dbman->table_exists($entries) && $dbman->table_exists($portfolio)) {
+            $portfolioSql = "SELECT e.id AS id, e.userid, p.name, cm.id AS cmid, e.id AS entryid
+                               FROM {portfoliobuilder_entries} e
+                               JOIN {portfoliobuilder} p ON p.id = e.portfolioid
+                               JOIN {modules} m ON m.name = :modname
+                               JOIN {course_modules} cm ON cm.instance = p.id AND cm.module = m.id
+                              WHERE e.courseid = :courseid
+                                AND e.userid {$insql}
+                              ORDER BY e.timecreated ASC";
+            $portfolioParams = $params + ['modname' => 'portfoliobuilder'];
+            $portfoliorecords = $DB->get_records_sql($portfolioSql, $portfolioParams);
+            foreach ($portfoliorecords as $record) {
+                $activitiesmap[$record->userid][] = [
+                    'name' => get_string('activity_portfolio_entry', 'local_evokegame', [
+                        'name' => $record->name,
+                        'id' => $record->entryid
+                    ]),
+                    'url' => new \moodle_url('/mod/portfoliobuilder/view.php', ['id' => $record->cmid])
+                ];
+            }
         }
 
         $rows = [];

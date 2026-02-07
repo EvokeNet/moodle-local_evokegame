@@ -145,3 +145,4 @@ $string['skills_missing'] = '-';
 $string['[[skills]]'] = 'Skills';
 $string['badges'] = 'Badges';
 $string['activities'] = 'Activities';
+$string['activity_portfolio_entry'] = 'Portfolio: {$a->name} (Entry #{$a->id})';
