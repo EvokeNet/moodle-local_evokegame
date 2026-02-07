@@ -77,19 +77,6 @@ class report implements renderable, templatable {
         $studentslist = $this->build_students_report($courseid, $context);
 
         return [
-            'courseevocoins' => $totalevocoins,
-            'totalstudents' => $totalstudents,
-            'totalpossiblecoins' => $totalpossiblecoins,
-            'totalskillspoints' => $totalskillspoints,
-            'totaldistributedevocoins' => $totaldistributedevocoins,
-            'evocoinsdistributionprogress' => $evocoinsdistributionprogress,
-            'courseskills' => $courseskills,
-            'totalportfolioentries' => $portfolio->get_course_total_entries($this->course->id),
-            'totalportfoliolikes' => $portfolio->get_course_total_likes($this->course->id),
-            'totalportfoliocomments' => $portfolio->get_course_total_comments($this->course->id),
-            'chartentriesbychapter' => $entriesbychapter,
-            'chartlikesbychapter' => $likesbychapter,
-            'chartcommentsbychapter' => $commentsbychapter,
             'studentsreport' => $studentslist
         ];
     }
@@ -208,6 +195,8 @@ class report implements renderable, templatable {
 
             $rows[] = [
                 'name' => fullname($user),
+                'sortname' => fullname($user),
+                'sortgroup' => !empty($groupnames) ? $groupnames[0] : '',
                 'email' => $user->email,
                 'groups' => !empty($groupnames) ? implode(', ', $groupnames) : '-',
                 'skills' => $skillslist,
@@ -218,6 +207,19 @@ class report implements renderable, templatable {
                 'has_activities' => !empty($activitieslist),
             ];
         }
+
+        usort($rows, function($a, $b) {
+            $aempty = $a['sortgroup'] === '';
+            $bempty = $b['sortgroup'] === '';
+            if ($aempty !== $bempty) {
+                return $aempty ? 1 : -1;
+            }
+            $groupcmp = strcasecmp($a['sortgroup'], $b['sortgroup']);
+            if ($groupcmp !== 0) {
+                return $groupcmp;
+            }
+            return strcasecmp($a['sortname'], $b['sortname']);
+        });
 
         return $rows;
     }
