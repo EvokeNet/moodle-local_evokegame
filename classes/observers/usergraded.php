@@ -60,18 +60,32 @@ class usergraded {
         if ($gradeitem->itemmodule == 'portfoliobuilder' || $gradeitem->itemmodule == 'portfoliogroup') {
             self::handle_portfoliobuilder_or_portfoliogroup($event, $cm, $skillsgrade);
         } else {
-            // Generic handling for other modules (e.g., assignment).
-            $userpoints = new point($event->courseid, $event->relateduserid);
+            self::process_generic_grading($event->courseid, $event->relateduserid, $cm, $event->get_grade());
+        }
+    }
 
-            $skillpoints = self::get_skill_points_data($skillsgrade, $event->get_grade());
-
-            foreach ($skillpoints as $skillpointobject) {
-                // Convert array to object and rename pointstoadd to value
-                $obj = (object)$skillpointobject;
-                $obj->value = $obj->pointstoadd;
-                unset($obj->pointstoadd);
-                $userpoints->add_points($obj);
-            }
+    /**
+     * Apply skill points for grading (generic modules e.g. assign).
+     * Used by user_graded observer and by assign submission_graded observer.
+     *
+     * @param int $courseid
+     * @param int $relateduserid Student who was graded
+     * @param object $cm Course module (from get_coursemodule_from_instance)
+     * @param object $grade Grade object with rawscaleid, rawgrademax, finalgrade
+     */
+    public static function process_generic_grading($courseid, $relateduserid, $cm, $grade) {
+        $skillmodule = new skillmodule();
+        $skillsgrade = $skillmodule->get_module_skills($cm->id, 'grading');
+        if (!$skillsgrade) {
+            return;
+        }
+        $userpoints = new point($courseid, $relateduserid);
+        $skillpoints = self::get_skill_points_data($skillsgrade, $grade);
+        foreach ($skillpoints as $skillpointobject) {
+            $obj = (object)$skillpointobject;
+            $obj->value = $obj->pointstoadd;
+            unset($obj->pointstoadd);
+            $userpoints->add_points($obj);
         }
     }
 

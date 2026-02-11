@@ -42,6 +42,11 @@ $observers = [
         'internal' => false
     ],
     [
+        'eventname' => '\mod_assign\event\submission_graded',
+        'callback' => '\local_evokegame\observers\assigngraded::observer',
+        'internal' => false
+    ],
+    [
         'eventname' => '\mod_evokeportfolio\event\comment_added',
         'callback' => '\local_evokegame\observers\evokeportfolio\mentor::observer',
         'internal' => false
