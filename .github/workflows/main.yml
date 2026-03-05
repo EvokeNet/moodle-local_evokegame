@@ -17,7 +17,7 @@ jobs:
       - name: Prepare plugin package
         run: |
           mkdir -p local_evokegame_deploy
-          rsync -a --exclude='.github' --exclude='.git' --exclude='.DS_Store' . local_evokegame_deploy/
+          rsync -a --exclude='.github' --exclude='.git' --exclude='.DS_Store' --exclude='local_evokegame_deploy' . local_evokegame_deploy/
 
       - name: Copy plugin via SCP
         uses: appleboy/scp-action@v0.1.7
