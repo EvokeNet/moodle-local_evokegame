@@ -1,0 +1,52 @@
+name: Deploy moodle plugin to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy local_evokegame to Moodle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare plugin package
+        run: |
+          mkdir -p local_evokegame_deploy
+          rsync -a --exclude='.github' --exclude='.git' --exclude='.DS_Store' . local_evokegame_deploy/
+
+      - name: Copy plugin via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: 'local_evokegame_deploy'
+          target: '~'
+
+      - name: Install plugin in Moodle container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # Criar pasta como uid 1
+            sudo docker exec -u 1 moodle mkdir -p /bitnami/moodle/local/evokegame
+
+            # Copiar arquivos
+            sudo docker cp ~/local_evokegame_deploy/. moodle:/bitnami/moodle/local/evokegame/
+
+            # Ajustar ownership após copiar
+            sudo docker exec moodle chown -R 1:1 /bitnami/moodle/local/evokegame
+
+            sudo rm -rf ~/local_evokegame_deploy
+
+            # Rodar upgrade como uid correto
+            sudo docker exec -u 1 -w /bitnami/moodle moodle php admin/cli/upgrade.php --non-interactive
+
+            sudo docker exec -u 1 -w /bitnami/moodle moodle php admin/cli/purge_caches.php
